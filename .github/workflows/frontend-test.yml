@@ -1,0 +1,12 @@
+name: fontend tests
+on:
+  push:
+    paths:
+      - frontend/**
+jobs:
+  frontend_test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: npm install
+      run: cd backend && npm install
