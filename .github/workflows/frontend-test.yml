@@ -1,4 +1,4 @@
-name: fontend tests
+name: frontend tests
 on:
   push:
     paths:

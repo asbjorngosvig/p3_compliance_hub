@@ -1,5 +1,5 @@
 -- USERS
-INSERT INTO "user" (name, email, password, role)
+INSERT INTO users (name, email, password, role)
 VALUES
 ('Mikkel H', 'mikkel@compliancehub.dk', 'hashedpassword1', 'admin'),
 ('Sofie J', 'sofie@compliancehub.dk', 'hashedpassword2', 'employee'),
