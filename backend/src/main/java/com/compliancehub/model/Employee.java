@@ -11,5 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @DiscriminatorValue("EMPLOYEE")
 public class Employee extends User {
-
+    public Employee(String name, String email, String password) {
+        super(null, name, email, password); // id = null, Hibernate sætter det
+    }
 }
