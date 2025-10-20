@@ -9,4 +9,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: npm install
-      run: cd backend && npm install
+      run: cd frontend && npm install
