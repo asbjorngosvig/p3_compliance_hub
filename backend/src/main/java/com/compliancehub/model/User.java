@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @Data
 //hibernate SKAL bruge en no args for at instantiere objekter fra databasen
 @NoArgsConstructor
-@AllArgsConstructor
 public abstract class User {
 
     @Id
@@ -31,7 +30,21 @@ public abstract class User {
     @Column(nullable = false)
     private String password;
 
-    public void createUser() {
-        throw new UnsupportedOperationException("Not allowed");
+    @Column(name = "role", insertable = false, updatable = false)
+    private String role;
+
+    public User(Long id, String name, String email, String password) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+    public boolean isAdmin(){
+        return "ADMIN".equalsIgnoreCase(this.role);
+    }
+
+    public boolean isEmployee(){
+        return "EMPLOYEE".equalsIgnoreCase(this.role);
     }
 }
