@@ -3,7 +3,7 @@ spring:
     name: backend
 
   datasource:
-    url: jdbc:postgresql://localhost:${DB_HOST_PORT}/${POSTGRES_DB}
+    url: jdbc:${DATABASE_URL} # NAME MUST NOT CHANGE
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
 
