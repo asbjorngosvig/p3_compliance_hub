@@ -1,9 +1,9 @@
 -- USERS
 INSERT INTO users (name, email, password, role)
 VALUES
-('Mikkel H', 'mikkel@compliancehub.dk', 'hashedpassword1', 'admin'),
-('Sofie J', 'sofie@compliancehub.dk', 'hashedpassword2', 'employee'),
-('Jonas K', 'jonas@compliancehub.dk', 'hashedpassword3', 'employee');
+('Mikkel H', 'mikkel@compliancehub.dk', 'hashedpassword1', 'ADMIN'),
+('Sofie J', 'sofie@compliancehub.dk', 'hashedpassword2', 'EMPLOYEE'),
+('Jonas K', 'jonas@compliancehub.dk', 'hashedpassword3', 'EMPLOYEE');
 
 -- CUSTOMERS
 INSERT INTO customer (name, institution_type)
