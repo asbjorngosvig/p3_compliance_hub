@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 /*
  Metoder (dækket automatisk):
- * DataProcessorRepository.save(user)             - gemmer nyt User/Admin/Employee eller opdaterer eksisterende
+ * DataProcessorRepository.save(DataProcessor)             - gemmer nyt User/Admin/Employee eller opdaterer eksisterende
  * DataProcessorRepository.saveAll(users)         - gemmer/opdaterer flere Users samtidig
  * DataProcessorRepository.findById(id)           - finder User efter id, returnerer Optional<User>
  * DataProcessorRepository.existsById(id)         - tjekker om User med givet id findes
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
  * DataProcessorRepository.findAllById(ids)       - henter flere Users efter liste af id'er
  * DataProcessorRepository.count()                - tæller hvor mange Users der findes
  * DataProcessorRepository.deleteById(id)         - sletter User med given id
- * DataProcessorRepository.delete(user)           - sletter et givet User objekt
+ * DataProcessorRepository.delete(DataProcessor)           - sletter et givet User objekt
  * DataProcessorRepository.deleteAllById(ids)     - sletter Users med liste af id'er
  * DataProcessorRepository.deleteAll(users)       - sletter flere Users
  * DataProcessorRepository.deleteAll()            - sletter alle Users i tabellen
