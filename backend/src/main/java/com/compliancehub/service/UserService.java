@@ -12,9 +12,6 @@ import org.springframework.security.access.AccessDeniedException;
 public class UserService {
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 /*
     public User createUser(User caller, CreateUserDto dto) {
         if (!caller.isAdmin()) {
