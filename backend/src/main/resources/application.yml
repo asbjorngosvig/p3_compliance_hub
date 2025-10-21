@@ -3,7 +3,7 @@ spring:
     name: backend
 
   datasource:
-    url: jdbc:${POSTGRES_URL}
+    url: jdbc:${DATABASE_URL} # NAME MUST NOT CHANGE
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
 
