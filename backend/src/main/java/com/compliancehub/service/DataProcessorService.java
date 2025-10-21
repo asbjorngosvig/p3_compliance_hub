@@ -12,20 +12,20 @@ public class DataProcessorService {
     private final DataProcessorRepository dataProcessorRepository;
 
     public DataProcessor createDataProcessor() {
-        DataProcessorRepository.save(DataProcessor)
+        DataProcessorRepository.save(DataProcessor);
         return new DataProcessor();
     }
 
     public DataProcessor updateDataProcessor(Long id) {
-        DataProcessor = DataProcessorRepository.findDataProcessorById(Long id)
+        DataProcessor = DataProcessorRepository.findDataProcessorById(Long id);
         if(DataProcessorRepository.existsById(id)) {
-            DataProcessorRepository.save(DataProcessor)
+            DataProcessorRepository.save(DataProcessor);
         }
         return new DataProcessor();
     }
 
     public DataProcessor deleteDataProcessor(Long id) {
-        DataProcessorRepository.delete(DataProcessor)
+        DataProcessorRepository.delete(DataProcessor);
         return null;
     }
 
