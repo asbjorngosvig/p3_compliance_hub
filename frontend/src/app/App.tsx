@@ -1,11 +1,11 @@
-import { useState } from 'react'
+//import { useState } from 'react'
 import '../shared/styles/App.css'
 import { Button } from '../shared/components/Buttons';
 import { Logo } from '../shared/components/Logo';
 
 // test
 function App() {
-  const [count, setCount] = useState(0)
+ // const [count, setCount] = useState(0);
 
   return (
     <>
