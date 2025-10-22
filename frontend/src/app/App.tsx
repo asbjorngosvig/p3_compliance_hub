@@ -5,7 +5,7 @@ import { Logo } from '../shared/components/Logo';
 
 // test
 function App() {
-  const [count, setCount] = useState(0)
+ // const [count, setCount] = useState(0);
 
   return (
     <>
