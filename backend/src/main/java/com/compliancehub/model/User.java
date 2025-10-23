@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 // Fortæller JPA, at kolonnen "role" afgør, hvilken subklasse (fx ADMIN eller EMPLOYEE) en række tilhører.
 @DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 @Data
-//hibernate SKAL bruge en no args for at instantiere objekter fra databasen
+
 @NoArgsConstructor
 public abstract class User {
 

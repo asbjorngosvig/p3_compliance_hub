@@ -1,29 +1,54 @@
 package com.compliancehub.service;
 
 import com.compliancehub.model.Customer;
-import com.compliancehub.repository.CustomerRepositoryJdbc;
+import com.compliancehub.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CustomerService {
 
-    private final CustomerRepositoryJdbc repo;
-    public CustomerService(CustomerRepositoryJdbc repo) { this.repo = repo; }
+    private final CustomerRepository repo;
 
-    public int create(String name, String institutionType) {
-        return repo.create(name, institutionType);
+    public CustomerService(CustomerRepository repo) {
+        this.repo = repo;
     }
 
-    public List<Customer> recent(int limit) { return repo.recent(limit); }
-
-    public Optional<Customer> find(int id) { return repo.find(id); }
-
-    public boolean update(int id, String name, String institutionType) {
-        return repo.update(id, name, institutionType);
+    // CREATE
+    public UUID create(String name, String email, String institutionType) {
+        Customer c = new Customer(name, email, institutionType);
+        repo.save(c);
+        return c.getId();
     }
 
-    public boolean delete(int id) { return repo.delete(id); }
+    // READ - recent
+    public List<Customer> recent(int limit) {
+        return repo.findTop20ByOrderByCreatedAtDesc();
+    }
+
+    // READ - single
+    public Optional<Customer> find(UUID id) {
+        return repo.findById(id);
+    }
+
+    // UPDATE
+    public boolean update(UUID id, String name, String email, String institutionType) {
+        return repo.findById(id).map(c -> {
+            if (name != null) c.setName(name);
+            if (email != null) c.setEmail(email);
+            if (institutionType != null) c.setInstitutionType(institutionType);
+            repo.save(c);
+            return true;
+        }).orElse(false);
+    }
+
+    // DELETE
+    public boolean delete(UUID id) {
+        if (repo.existsById(id)) {
+            repo.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }
