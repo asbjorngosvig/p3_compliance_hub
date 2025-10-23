@@ -4,51 +4,51 @@ import com.compliancehub.model.Customer;
 import com.compliancehub.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerService {
 
-    private final CustomerRepository repo;
+    private final CustomerRepository repository;
 
-    public CustomerService(CustomerRepository repo) {
-        this.repo = repo;
+    public CustomerService(CustomerRepository repository) {
+        this.repository = repository;
     }
 
     // CREATE
-    public UUID create(String name, String email, String institutionType) {
-        Customer c = new Customer(name, email, institutionType);
-        repo.save(c);
-        return c.getId();
+    public int create(String name, String institutionType) {
+        Customer c = new Customer();
+        c.setName(name);
+        c.setInstitutionType(institutionType);
+        repository.save(c);
+        return c.getCustomerId(); // returnér det genererede id
     }
 
-    // READ - recent
+    // READ (recent customers)
     public List<Customer> recent(int limit) {
-        return repo.findTop20ByOrderByCreatedAtDesc();
+        return repository.findTop20ByOrderByCustomerIdDesc(); // max 20 kunder fx
     }
 
-    // READ - single
-    public Optional<Customer> find(UUID id) {
-        return repo.findById(id);
+    // READ one
+    public Optional<Customer> find(int id) {
+        return repository.findById(id);
     }
 
     // UPDATE
-    public boolean update(UUID id, String name, String email, String institutionType) {
-        return repo.findById(id).map(c -> {
-            if (name != null) c.setName(name);
-            if (email != null) c.setEmail(email);
-            if (institutionType != null) c.setInstitutionType(institutionType);
-            repo.save(c);
+    public boolean update(int id, String name, String institutionType) {
+        return repository.findById(id).map(c -> {
+            if (name != null && !name.isBlank()) c.setName(name);
+            if (institutionType != null && !institutionType.isBlank()) c.setInstitutionType(institutionType);
+            repository.save(c);
             return true;
         }).orElse(false);
     }
 
     // DELETE
-    public boolean delete(UUID id) {
-        if (repo.existsById(id)) {
-            repo.deleteById(id);
-            return true;
-        }
-        return false;
+    public boolean delete(int id) {
+        if (!repository.existsById(id)) return false;
+        repository.deleteById(id);
+        return true;
     }
 }
