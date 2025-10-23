@@ -2,19 +2,17 @@ package com.compliancehub.service;
 
 import com.compliancehub.model.Customer;
 import com.compliancehub.repository.CustomerRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CustomerService {
 
     private final CustomerRepository repository;
-
-    public CustomerService(CustomerRepository repository) {
-        this.repository = repository;
-    }
 
     // CREATE
     public int create(String name, String institutionType) {
