@@ -1,5 +1,7 @@
 package com.compliancehub.service;
 
+import com.compliancehub.dto.customer.CustomerCreateRequest;
+import com.compliancehub.dto.customer.CustomerCreateResponse;
 import com.compliancehub.model.Customer;
 import com.compliancehub.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +16,15 @@ public class CustomerService {
 
     private final CustomerRepository repository;
 
-    // CREATE
-    public int create(String name, String institutionType) {
-        Customer c = new Customer();
-        c.setName(name);
-        c.setInstitutionType(institutionType);
-        repository.save(c);
-        return c.getCustomerId(); // returnér det genererede id
+    // CREATE NEW CUSTOMER
+    public CustomerCreateResponse create(CustomerCreateRequest req) {
+        //1. create and save entity
+        Customer newCustomer = new Customer();
+        newCustomer.setName(req.name());
+        Customer savedCustomer = repository.save(newCustomer);
+
+        //2. build and return response DTO
+        return new CustomerCreateResponse(savedCustomer.getCustomerId());
     }
 
     // READ (recent customers)
@@ -29,12 +33,12 @@ public class CustomerService {
     }
 
     // READ one
-    public Optional<Customer> find(int id) {
+    public Optional<Customer> find(Long id) {
         return repository.findById(id);
     }
 
     // UPDATE
-    public boolean update(int id, String name, String institutionType) {
+    public boolean update(Long id, String name, String institutionType) {
         return repository.findById(id).map(c -> {
             if (name != null && !name.isBlank()) c.setName(name);
             if (institutionType != null && !institutionType.isBlank()) c.setInstitutionType(institutionType);
@@ -44,7 +48,7 @@ public class CustomerService {
     }
 
     // DELETE
-    public boolean delete(int id) {
+    public boolean delete(Long id) {
         if (!repository.existsById(id)) return false;
         repository.deleteById(id);
         return true;

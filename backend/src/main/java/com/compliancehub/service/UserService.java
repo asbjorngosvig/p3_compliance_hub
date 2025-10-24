@@ -1,16 +1,13 @@
 package com.compliancehub.service;
 
 import com.compliancehub.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-
     private final UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     // Her kan du tilføje dine metoder senere
 }

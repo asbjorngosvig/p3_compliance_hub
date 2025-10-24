@@ -1,28 +1,33 @@
 package com.compliancehub.controller;
 
+import com.compliancehub.dto.customer.CustomerCreateRequest;
+import com.compliancehub.dto.customer.CustomerCreateResponse;
 import com.compliancehub.model.Customer;
 import com.compliancehub.service.CustomerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.net.URI;
 import java.util.*;
 
 @RestController
 @RequestMapping("/customers")
+@RequiredArgsConstructor
 public class CustomerController {
-
-
     private final CustomerService service;
-    public CustomerController(CustomerService service) { this.service = service; }
 
     // CREATE
     @PostMapping
-    public ResponseEntity<Map<String, Object>> create(@RequestBody Map<String, String> body) {
-        String name = body.get("name");
-        String institutionType = body.get("institutionType");
-        int id = service.create(name, institutionType);
-        return ResponseEntity.created(URI.create("/customers/" + id)).body(Map.of("id", id));
+    public ResponseEntity<CustomerCreateResponse> create(@RequestBody CustomerCreateRequest req) {
+        // 1. Call the service to create the resource and get the response DTO
+        CustomerCreateResponse newCustomer = service.create(req);
+
+        // 2. Build the URI using the ID from the returned res-DTO
+        // hedder ik newCustomer.getId(), fordi det en record. getteren er bare navnet
+        URI location = URI.create("/customers/" + newCustomer.id());
+
+        // 3. Return the response using the res-DTO
+        return ResponseEntity.created(location).body(newCustomer);
     }
 
     // READ recent
@@ -33,21 +38,21 @@ public class CustomerController {
 
     // READ one
     @GetMapping("/{id}")
-    public ResponseEntity<Customer> get(@PathVariable int id) {
+    public ResponseEntity<Customer> get(@PathVariable Long id) {
         return service.find(id).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // UPDATE (partial)
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable int id, @RequestBody Map<String, String> body) {
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody Map<String, String> body) {
         boolean ok = service.update(id, body.get("name"), body.get("institutionType"));
         return ok ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
     // DELETE
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         return service.delete(id) ? ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();
     }

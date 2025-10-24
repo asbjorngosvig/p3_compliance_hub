@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CustomerRepository extends JpaRepository<Customer, Integer> {
+public interface CustomerRepository extends JpaRepository<Customer, Long> {
     // Henter de 20 nyeste kunder (baseret på id som proxy for recency)
     List<Customer> findTop20ByOrderByCustomerIdDesc();
 }

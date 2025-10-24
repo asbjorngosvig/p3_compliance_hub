@@ -16,12 +16,8 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id")
-    private int customerId;
+    private Long customerId;
 
     @Column(nullable = false)
     private String name;
-
-    @Column(name = "institution_type", nullable = false)
-    private String institutionType;
-
 }
