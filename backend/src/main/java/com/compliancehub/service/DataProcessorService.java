@@ -34,6 +34,7 @@ public class DataProcessorService {
 
 
     public DataProcessorCreateResponse create(DataProcessorCreateRequest req) {
+        // convert DTO to DP entity here:
         DataProcessor newDP = new DataProcessor();
         newDP.setName(req.name());
         newDP.setService(req.service());
@@ -44,6 +45,7 @@ public class DataProcessorService {
 
         DataProcessor savedDP = dataProcessorRepository.save(newDP);
 
+        // convert the entity back to DTO
         return new DataProcessorCreateResponse(newDP.getId(), savedDP.getName(), savedDP.getHosting_location(), savedDP.getService(), savedDP.getPurpose(), savedDP.getNote(), savedDP.getWebsite());
 
     }
