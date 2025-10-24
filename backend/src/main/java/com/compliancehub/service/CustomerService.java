@@ -27,7 +27,7 @@ public class CustomerService {
         return new CustomerCreateResponse(savedCustomer.getCustomerId());
     }
 
-    // READ (recent customers)
+    /* READ (recent customers)
     public List<Customer> recent(int limit) {
         return repository.findTop20ByOrderByCustomerIdDesc(); // max 20 kunder fx
     }
@@ -52,5 +52,5 @@ public class CustomerService {
         if (!repository.existsById(id)) return false;
         repository.deleteById(id);
         return true;
-    }
+    }*/
 }

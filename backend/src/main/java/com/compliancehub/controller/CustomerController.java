@@ -30,7 +30,7 @@ public class CustomerController {
         return ResponseEntity.created(location).body(newCustomer);
     }
 
-    // READ recent
+    /* READ recent
     @GetMapping("/recent")
     public List<Customer> recent(@RequestParam(defaultValue = "20") int limit) {
         return service.recent(limit);
@@ -55,5 +55,5 @@ public class CustomerController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         return service.delete(id) ? ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();
-    }
+    }*/
 }
