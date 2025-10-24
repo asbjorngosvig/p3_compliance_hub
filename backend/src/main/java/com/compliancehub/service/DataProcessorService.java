@@ -1,5 +1,8 @@
 package com.compliancehub.service;
 
+import com.compliancehub.dto.customer.CustomerCreateResponse;
+import com.compliancehub.dto.dataprocessor.DataProcessorCreateRequest;
+import com.compliancehub.dto.dataprocessor.DataProcessorCreateResponse;
 import com.compliancehub.dto.dataprocessor.DataProcessorGetResponse;
 
 import com.compliancehub.dto.user.UserGetResponse;
@@ -23,9 +26,27 @@ public class DataProcessorService {
         // make sure that data processor exists before returning
         if (optionalDataProcessor.isPresent()) {
             DataProcessor dp = optionalDataProcessor.get();
-            return new DataProcessorGetResponse(dp.getId(),dp.getName(),dp.getHosting_location(),dp.getService(),dp.getNote(),dp.getWebsite());
+            return new DataProcessorGetResponse(dp.getId(),dp.getName(),dp.getHosting_location(),dp.getService(), dp.getPurpose(), dp.getNote(),dp.getWebsite());
         } else {
             throw new InputMismatchException("Could not find data processor with id: " +  id);
         }
     }
+
+
+    public DataProcessorCreateResponse create(DataProcessorCreateRequest req) {
+        DataProcessor newDP = new DataProcessor();
+        newDP.setName(req.name());
+        newDP.setService(req.service());
+        newDP.setPurpose(req.purpose());
+        newDP.setNote(req.note());
+        newDP.setWebsite(req.website());
+        newDP.setHosting_location(req.hosting_location());
+
+        DataProcessor savedDP = dataProcessorRepository.save(newDP);
+
+        return new DataProcessorCreateResponse(newDP.getId(), savedDP.getName(), savedDP.getHosting_location(), savedDP.getService(), savedDP.getPurpose(), savedDP.getNote(), savedDP.getWebsite());
+
+    }
+
+
 }

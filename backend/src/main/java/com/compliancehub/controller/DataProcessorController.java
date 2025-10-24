@@ -2,14 +2,14 @@ package com.compliancehub.controller;
 
 
 
+import com.compliancehub.dto.customer.CustomerCreateResponse;
+import com.compliancehub.dto.dataprocessor.DataProcessorCreateRequest;
+import com.compliancehub.dto.dataprocessor.DataProcessorCreateResponse;
 import com.compliancehub.dto.dataprocessor.DataProcessorGetResponse;
 import com.compliancehub.dto.user.UserGetResponse;
 import com.compliancehub.service.DataProcessorService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
@@ -29,5 +29,14 @@ public class DataProcessorController {
         URI location = URI.create("/dataprocessor/" + dp.id());
 
         return ResponseEntity.created(location).body(dp);
+    }
+
+    @PostMapping("/")
+    ResponseEntity<DataProcessorCreateResponse> create(@RequestBody DataProcessorCreateRequest req) {
+        DataProcessorCreateResponse newDataProcessor = service.create(req);
+
+        URI location = URI.create("/dataprocessor/" + newDataProcessor.id());
+
+        return ResponseEntity.created(location).body(newDataProcessor);
     }
 }

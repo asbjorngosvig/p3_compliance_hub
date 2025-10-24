@@ -1,6 +1,6 @@
 package com.compliancehub.dto.dataprocessor;
 
-public record DataProcessorGetResponse(
+public record DataProcessorCreateResponse(
         long id,
         String name,
         String hosting_location,
