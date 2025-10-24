@@ -16,13 +16,22 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class UserController {
     UserService service;
+
     @GetMapping("/{id}")
     private ResponseEntity<UserGetResponse> getUserById(@PathVariable long id) {
         UserGetResponse user = service.getById(id);
 
         URI location = URI.create("/users/" + user.id());
 
-        // 3. Return the response using the res-DTO
+        return ResponseEntity.created(location).body(user);
+    }
+
+    @GetMapping("/{email}")
+    private ResponseEntity<UserGetResponse> getUserByEmail(@PathVariable String email) {
+        UserGetResponse user = service.getByEmail(email);
+
+        URI location = URI.create("/users/" + user.email());
+
         return ResponseEntity.created(location).body(user);
     }
 
