@@ -2,8 +2,8 @@ package com.compliancehub.controller;
 
 import com.compliancehub.dto.customer.CustomerCreateRequest;
 import com.compliancehub.dto.customer.CustomerCreateResponse;
-import com.compliancehub.model.Customer;
 import com.compliancehub.service.CustomerService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +12,12 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/customers")
-@RequiredArgsConstructor
 public class CustomerController {
     private final CustomerService service;
+
+    public CustomerController(CustomerService service) {
+        this.service = service;
+    }
 
     // CREATE
     @PostMapping
