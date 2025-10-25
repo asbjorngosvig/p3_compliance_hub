@@ -2,20 +2,28 @@ package com.compliancehub.utils;
 
 import lombok.Data;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 
 @Data
 public class Locations {
-    public static Set<String> locations = new HashSet<>();
+    public static Set<String> locations = new HashSet<>(); // Hashset is FAST as F
 
+    // define da groups here
     public final static Set<String> EU = new HashSet<>(Arrays.asList("AUSTRIA", "BELGIUM", "BULGARIA", "CROATIA", "CYPRUS", "CZECHIA", "DENMARK", "ESTONIA", "FINLAND", "FRANCE", "GERMANY", "GREECE", "HUNGARY", "IRELAND", "ITALY", "LATVIA", "LITHUANIA", "LUXEMBOURG", "MALTA", "NETHERLANDS", "POLAND", "PORTUGAL", "ROMANIA", "SLOVAKIA", "SLOVENIA", "SPAIN", "SWEDEN"));
     public final static Set<String> EEA = new HashSet<>(Arrays.asList("AUSTRIA", "BELGIUM", "BULGARIA", "CROATIA", "CYPRUS", "CZECHIA", "DENMARK", "ESTONIA", "FINLAND", "FRANCE", "GERMANY", "GREECE", "HUNGARY", "IRELAND", "ITALY", "LATVIA", "LITHUANIA", "LUXEMBOURG", "MALTA", "NETHERLANDS", "POLAND", "PORTUGAL", "ROMANIA", "SLOVAKIA", "SLOVENIA", "SPAIN", "SWEDEN", "NORWAY", "LICHTENSTEIN", "ICELAND"));
-    public final static Set<String> North_America = new HashSet<>(Arrays.asList("Antigua and Barbuda", "Bahamas", "Barbados", "Belize", "Canada", "Costa Rica", "Cuba", "Dominica", "Dominican Republic", "El Salvador", "Grenada", "Guatemala", "Haiti", "Honduras", "Jamaica", "Mexico", "Nicaragua", "Panama", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Trinidad and Tobago", "United States of America"));
+    public final static Set<String> NORTH_AMERICA = new HashSet<>(Arrays.asList("ANTIGUA AND BARBUDA", "BAHAMAS", "BARBADOS", "BELIZE", "CANADA", "COSTA RICA", "CUBA", "DOMINICA", "DOMINIAN REPUBLiC", "EL SALVADOR", "GRENADA", "GUATEMALA", "HAITI", "HONDURAS", "JAMAICE", "MEXICO", "NICARAGUA", "PANAMA", "SAINT KITTS AND NEVIS", "SAINT LUCIA", "SAINT VINCENT AND THE GRENADINES", "TRINIDAD AND TOBAGO", "UNITED STATES"));
 
+    public final static Map<String, Set<String>> groups = new HashMap<>();
+    // create groups here
     static {
+        groups.put("EEA", EEA);
+        groups.put("EU", EU);
+        groups.put("NORTH AMERICA", NORTH_AMERICA);
+        // ... More groups here, if ya know any!  ! !
+    }
+
+    static { // All the countriez/locations here
         locations.add("UNDEFINED");
         locations.add("AFGHANISTAN");
         locations.add("ÅLAND ISLANDS");
