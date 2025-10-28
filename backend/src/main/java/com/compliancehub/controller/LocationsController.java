@@ -25,10 +25,15 @@ public class LocationsController {
     // Returnere alle lande som indeholder den streng der kommer ind. gør det muligt at søge.
     @GetMapping("/{name}")
     List<String> getLocationsWhereNameIs(@PathVariable String name) {
-        List<String> newArr = new ArrayList<>();
-        return Locations.locations.stream()
-                .filter(loc -> loc.contains(name.toUpperCase()))
-                .toList();
+        List newArr = new ArrayList<>();
+
+        for (String loc : Locations.locations) {
+            if (loc.contains(name.toUpperCase())) {
+                newArr.add(loc);
+            }
+        }
+
+        return newArr;
     }
 
 }
