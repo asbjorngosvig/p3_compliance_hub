@@ -26,12 +26,9 @@ public class LocationsController {
     @GetMapping("/{name}")
     List<String> getLocationsWhereNameIs(@PathVariable String name) {
         List<String> newArr = new ArrayList<>();
-        Locations.locations.forEach((loc)->{
-            if (loc.contains(name.toUpperCase())) {
-                newArr.add(loc);
-            }
-        });
-        return newArr;
+        return Locations.locations.stream()
+                .filter(loc -> loc.contains(name.toUpperCase()))
+                .toList();
     }
 
 }
