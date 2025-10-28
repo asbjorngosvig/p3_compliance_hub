@@ -1,0 +1,51 @@
+package com.compliancehub.service;
+
+import com.compliancehub.dto.dataprocessor.DataProcessorCreateRequest;
+import com.compliancehub.dto.dataprocessor.DataProcessorCreateResponse;
+import com.compliancehub.dto.dataprocessor.DataProcessorGetByIdResponse;
+
+import com.compliancehub.model.DataProcessor;
+import com.compliancehub.repository.DataProcessorRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.InputMismatchException;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class DataProcessorService {
+    private final DataProcessorRepository dataProcessorRepository;
+
+    public DataProcessorGetByIdResponse getById(long id) {
+        Optional<DataProcessor> optionalDataProcessor = dataProcessorRepository.findById(id);
+
+        // make sure that data processor exists before returning
+        if (optionalDataProcessor.isPresent()) {
+            DataProcessor dp = optionalDataProcessor.get();
+            return new DataProcessorGetByIdResponse(dp.getId(),dp.getName(),dp.getHosting_location(),dp.getService(), dp.getPurpose(), dp.getNote(),dp.getWebsite());
+        } else {
+            throw new InputMismatchException("Could not find data processor with id: " +  id);
+        }
+    }
+
+
+    public DataProcessorCreateResponse create(DataProcessorCreateRequest req) {
+        // convert DTO to DP entity here:
+        DataProcessor newDP = new DataProcessor();
+        newDP.setName(req.name());
+        newDP.setService(req.service());
+        newDP.setPurpose(req.purpose());
+        newDP.setNote(req.note());
+        newDP.setWebsite(req.website());
+        newDP.setHosting_location(req.hosting_location());
+
+        DataProcessor savedDP = dataProcessorRepository.save(newDP);
+
+        // convert the entity back to DTO
+        return new DataProcessorCreateResponse(newDP.getId(), savedDP.getName(), savedDP.getHosting_location(), savedDP.getService(), savedDP.getPurpose(), savedDP.getNote(), savedDP.getWebsite());
+
+    }
+
+
+}
