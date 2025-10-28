@@ -2,7 +2,7 @@ package com.compliancehub.service;
 
 import com.compliancehub.dto.dataprocessor.DataProcessorCreateRequest;
 import com.compliancehub.dto.dataprocessor.DataProcessorCreateResponse;
-import com.compliancehub.dto.dataprocessor.DataProcessorGetResponse;
+import com.compliancehub.dto.dataprocessor.DataProcessorGetByIdResponse;
 
 import com.compliancehub.model.DataProcessor;
 import com.compliancehub.repository.DataProcessorRepository;
@@ -17,13 +17,13 @@ import java.util.Optional;
 public class DataProcessorService {
     private final DataProcessorRepository dataProcessorRepository;
 
-    public DataProcessorGetResponse getById(long id) {
+    public DataProcessorGetByIdResponse getById(long id) {
         Optional<DataProcessor> optionalDataProcessor = dataProcessorRepository.findById(id);
 
         // make sure that data processor exists before returning
         if (optionalDataProcessor.isPresent()) {
             DataProcessor dp = optionalDataProcessor.get();
-            return new DataProcessorGetResponse(dp.getId(),dp.getName(),dp.getHosting_location(),dp.getService(), dp.getPurpose(), dp.getNote(),dp.getWebsite());
+            return new DataProcessorGetByIdResponse(dp.getId(),dp.getName(),dp.getHosting_location(),dp.getService(), dp.getPurpose(), dp.getNote(),dp.getWebsite());
         } else {
             throw new InputMismatchException("Could not find data processor with id: " +  id);
         }
