@@ -2,11 +2,9 @@ package com.compliancehub.controller;
 
 
 
-import com.compliancehub.dto.customer.CustomerCreateResponse;
 import com.compliancehub.dto.dataprocessor.DataProcessorCreateRequest;
 import com.compliancehub.dto.dataprocessor.DataProcessorCreateResponse;
 import com.compliancehub.dto.dataprocessor.DataProcessorGetResponse;
-import com.compliancehub.dto.user.UserGetResponse;
 import com.compliancehub.service.DataProcessorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

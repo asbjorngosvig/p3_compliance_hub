@@ -1,13 +1,10 @@
 package com.compliancehub.service;
 
-import com.compliancehub.dto.customer.CustomerCreateResponse;
 import com.compliancehub.dto.dataprocessor.DataProcessorCreateRequest;
 import com.compliancehub.dto.dataprocessor.DataProcessorCreateResponse;
 import com.compliancehub.dto.dataprocessor.DataProcessorGetResponse;
 
-import com.compliancehub.dto.user.UserGetResponse;
 import com.compliancehub.model.DataProcessor;
-import com.compliancehub.model.User;
 import com.compliancehub.repository.DataProcessorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
