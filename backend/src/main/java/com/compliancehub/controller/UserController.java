@@ -1,6 +1,6 @@
 package com.compliancehub.controller;
 
-import com.compliancehub.dto.user.UserGetByIdResponse;
+import com.compliancehub.dto.user.UserGetUserResponse;
 import com.compliancehub.service.UserService;
 
 import org.springframework.http.ResponseEntity;
@@ -22,8 +22,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<UserGetByIdResponse> getUserById(@PathVariable long id) {
-        UserGetByIdResponse user = service.getById(id);
+    private ResponseEntity<UserGetUserResponse> getUserById(@PathVariable long id) {
+        UserGetUserResponse user = service.getById(id);
 
         URI location = URI.create("/users/" + user.id());
 
@@ -31,8 +31,8 @@ public class UserController {
     }
 
     @GetMapping("/email/{email}")
-    private ResponseEntity<UserGetByIdResponse> getUserByEmail(@PathVariable String email) {
-        UserGetByIdResponse user = service.getByEmail(email);
+    private ResponseEntity<UserGetUserResponse> getUserByEmail(@PathVariable String email) {
+        UserGetUserResponse user = service.getByEmail(email);
 
         URI location = URI.create("/users/" + user.email());
 

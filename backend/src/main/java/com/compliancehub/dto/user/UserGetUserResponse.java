@@ -1,6 +1,6 @@
 package com.compliancehub.dto.user;
 
-public record UserGetByIdResponse(
+public record UserGetUserResponse(
         long id,
         String email,
         String name,

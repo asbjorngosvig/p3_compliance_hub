@@ -1,6 +1,6 @@
 package com.compliancehub.service;
 
-import com.compliancehub.dto.user.UserGetByIdResponse;
+import com.compliancehub.dto.user.UserGetUserResponse;
 import com.compliancehub.model.User;
 import com.compliancehub.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,25 +14,25 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
-    public UserGetByIdResponse getById(long id) {
+    public UserGetUserResponse getById(long id) {
         Optional<User> optionalUser = userRepository.findById(id);
 
         // make sure that user exists before returning
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            return new UserGetByIdResponse(user.getId(), user.getEmail(), user.getName(), user.getRole());
+            return new UserGetUserResponse(user.getId(), user.getEmail(), user.getName(), user.getRole());
         } else {
             throw new InputMismatchException("Could not find user with id: " +  id);
         }
     }
 
-    public UserGetByIdResponse getByEmail(String email) {
+    public UserGetUserResponse getByEmail(String email) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
 
         // make sure that user exists before returning
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            return new UserGetByIdResponse(user.getId(), user.getEmail(), user.getName(), user.getRole());
+            return new UserGetUserResponse(user.getId(), user.getEmail(), user.getName(), user.getRole());
         } else {
             throw new InputMismatchException("Could not find user with email: " +  email);
         }
