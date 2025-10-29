@@ -24,4 +24,4 @@ jobs:
       - name: Build backend
         run: |
           cd backend 
-          mvn clean package -DskipTests 
+          mvn clean package -DskipTests
