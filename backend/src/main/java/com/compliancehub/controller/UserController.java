@@ -27,7 +27,7 @@ public class UserController {
 
         URI location = URI.create("/users/" + user.id());
 
-        return ResponseEntity.created(location).body(user);
+        return ResponseEntity.ok().location(location).body(user);
     }
 
     @GetMapping("/email/{email}")
@@ -36,7 +36,7 @@ public class UserController {
 
         URI location = URI.create("/users/" + user.email());
 
-        return ResponseEntity.created(location).body(user);
+        return ResponseEntity.ok().location(location).body(user);
     }
 
 }
