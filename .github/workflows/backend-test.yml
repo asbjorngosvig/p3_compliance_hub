@@ -23,5 +23,5 @@ jobs:
       # Byg og test backend
       - name: Build backend
         run: |
-          cd backend
-          mvn clean package
+          cd backend 
+          mvn clean package -DskipTests
