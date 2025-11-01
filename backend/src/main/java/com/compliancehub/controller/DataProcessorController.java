@@ -1,7 +1,5 @@
 package com.compliancehub.controller;
 
-
-
 import com.compliancehub.dto.dataprocessor.DataProcessorCreateRequest;
 import com.compliancehub.dto.dataprocessor.DataProcessorCreateResponse;
 import com.compliancehub.dto.dataprocessor.DataProcessorGetByIdResponse;
@@ -24,7 +22,7 @@ public class DataProcessorController {
     ResponseEntity<DataProcessorGetByIdResponse> getById(@PathVariable long id) {
         DataProcessorGetByIdResponse dp = service.getById(id);
 
-        URI location = URI.create("/dataprocessor/" + dp.id());
+        URI location = URI.create("/dataprocessors/" + dp.id());
 
         return ResponseEntity.created(location).body(dp);
     }
@@ -33,7 +31,7 @@ public class DataProcessorController {
     ResponseEntity<DataProcessorCreateResponse> create(@RequestBody DataProcessorCreateRequest req) {
         DataProcessorCreateResponse newDataProcessor = service.create(req);
 
-        URI location = URI.create("/dataprocessor/" + newDataProcessor.id());
+        URI location = URI.create("/dataprocessors/" + newDataProcessor.id());
 
         return ResponseEntity.created(location).body(newDataProcessor);
     }
