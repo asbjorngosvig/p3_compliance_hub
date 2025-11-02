@@ -5,24 +5,34 @@ import com.compliancehub.model.DataProcessor;
 import com.compliancehub.repository.DataProcessorRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
+
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
+@SpringBootTest
+@AutoConfigureMockMvc
 class DataProcessorServiceTest {
 
-    private DataProcessorService dataProcessorService;
+    @Mock
     private DataProcessorRepository dataProcessorRepository;
+    @Autowired
+    private DataProcessorService dataProcessorService;
+    @Autowired
+    private MockMvc mockMvc;
+
     private DataProcessor dataProcessor;
 
     @BeforeEach
     void setUp() {
+        dataProcessorRepository.deleteAll();
 
         dataProcessor = new DataProcessor();
         dataProcessor.setId(1L);
@@ -33,13 +43,12 @@ class DataProcessorServiceTest {
         dataProcessor.setNote("testNote");
         dataProcessor.setWebsite("https://example.com");
 
-        dataProcessorRepository.deleteAll();
+        dataProcessorRepository.save(dataProcessor);
         when(dataProcessorRepository.findById(1L)).thenReturn(Optional.of(dataProcessor));
     }
 
     @Test
     void testGetById(){
-
         DataProcessorGetByIdResponse response = dataProcessorService.getById(1L);
 
         assertEquals(1L, response.id());
