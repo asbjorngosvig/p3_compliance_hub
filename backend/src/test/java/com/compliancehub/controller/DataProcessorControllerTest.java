@@ -1,7 +1,5 @@
 package com.compliancehub.controller;
 
-
-
 import com.compliancehub.repository.DataProcessorRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +20,10 @@ class DataProcessorControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+    /*
     @Autowired
     private DataProcessorRepository dataProcessorRepository;
-    /*
+
     @BeforeEach
     void setUp() {
         DataProcessor dataProcessor = new DataProcessor();
