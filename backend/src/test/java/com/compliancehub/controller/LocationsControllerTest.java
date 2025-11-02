@@ -29,4 +29,4 @@ class LocationsControllerTest {
         mockMvc.perform(get("/locations/den"))
                 .andExpect(status().isOk());
     }
-} 
+}
