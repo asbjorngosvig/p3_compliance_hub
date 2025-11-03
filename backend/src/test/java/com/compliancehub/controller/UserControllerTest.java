@@ -1,11 +1,10 @@
 /*package com.compliancehub.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import com.compliancehub.dto.user.UserGetUserResponse;
 import com.compliancehub.model.Admin;
 import com.compliancehub.model.User;
 import com.compliancehub.repository.UserRepository;
-import com.compliancehub.service.UserService;
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
 
 import org.springframework.test.web.servlet.MockMvc;
 
