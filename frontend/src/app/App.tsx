@@ -1,7 +1,7 @@
 //import { useState } from 'react'
 import '../shared/styles/App.css'
 import { Button } from '../shared/components/Buttons';
-import { Logo } from '../shared/components/Logo';
+import Navbar from '../shared/components/Navbar';
 
 // test
 function App() {
@@ -9,9 +9,7 @@ function App() {
 
   return (
     <>
-      <div style={{ textAlign: 'center', padding: '20px' }}>
-        <Logo width={150} height={150} />
-      </div>
+      <Navbar />
 
       <div>
         <Button variant="black">Test button black</Button>
