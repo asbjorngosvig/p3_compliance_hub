@@ -18,24 +18,27 @@ public class DataProcessor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "")
+    @Column(nullable = false)
     private List<ProcessingLocation> processingLocations = new ArrayList<>();
 
-    @Column(length = 500)
+    @Column(length = 500, nullable = false)
     private String service;
 
-    @Column(length = 500)
+    @Column(length = 500, nullable = false)
     private String purpose;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String note;
 
-    @Column(length = 500)
+    @Column(length = 500, nullable = false)
     private String website;
 
     @OneToMany(mappedBy = "dataProcessor")
+    @Column(nullable = false)
     private List<Violation> violations;
 
 }
