@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "action")
 @Data
@@ -13,6 +15,17 @@ import lombok.NoArgsConstructor;
 public class Action {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Action_id")
     private Long actionId;
+
+    @Column(nullable = false)
+    @ManyToOne
+    private Violation violation;
+
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String description;
+
+    private LocalDateTime dueDate;
+
+    @Column(nullable = false)
+    private boolean isResolved = false;
 }

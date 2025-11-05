@@ -42,6 +42,7 @@ public class DPA {
     @Column(nullable = false)
     private LocalDateTime lastChangedDate;
 
+    @Column(length = 500)
     private String fileUrl;
 
     @OneToMany(mappedBy = "")
