@@ -13,6 +13,7 @@ import java.io.File;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,8 +28,8 @@ public class DPA {
     private Long DPAId;
 
 
-    @OneToMany(mappedBy = "", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Violation> violations;
+    @OneToMany(mappedBy = "dpa", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Violation> violations = new ArrayList<>();
 
     private String customerName;
 
@@ -42,9 +43,10 @@ public class DPA {
     @Column(nullable = false) 
     private LocalDateTime lastChangedDate;
 
-    private URL fileUrl;
+    private String fileUrl;
 
+    @OneToMany(mappedBy = "")
+    private List<ProcessingLocation> allowedProcessinglocations = new ArrayList<>();
 
-
-
+    private boolean isStandard;
 }

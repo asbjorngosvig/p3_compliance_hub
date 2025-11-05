@@ -13,6 +13,15 @@ import lombok.NoArgsConstructor;
 public class Violation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "violation_id")
     private Long violationId;
+
+    @ManyToOne
+    private DPA dpa;
+
+    @ManyToOne
+    private DataProcessor dataProcessor;
+
+    private String description;
+
+    private boolean isResolved = false;
 }
