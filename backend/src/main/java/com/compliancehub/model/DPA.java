@@ -27,7 +27,6 @@ public class DPA {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long DPAId;
 
-
     @OneToMany(mappedBy = "dpa", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Violation> violations = new ArrayList<>();
 
@@ -35,12 +34,12 @@ public class DPA {
 
     private String productName;
 
-    @Column(nullable = false, updatable = false)
     @CreationTimestamp
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate; 
     
     @UpdateTimestamp
-    @Column(nullable = false) 
+    @Column(nullable = false)
     private LocalDateTime lastChangedDate;
 
     private String fileUrl;

@@ -16,13 +16,12 @@ import java.util.List;
 public class DataProcessor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "data_processor_id")
     private Long id;
 
     private String name;
 
     @OneToMany(mappedBy = "")
-    private List<ProcessingLocation> processinglocations = new ArrayList<>();
+    private List<ProcessingLocation> processingLocations = new ArrayList<>();
 
     private String service;
 
@@ -32,7 +31,7 @@ public class DataProcessor {
 
     private String website;
 
-    @OneToMany(mappedBy = "dpa")
+    @OneToMany(mappedBy = "dataProcessor")
     private List<Violation> violations;
 
 }
