@@ -1,16 +1,15 @@
 package com.compliancehub.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "data_processor")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class DataProcessor {
@@ -21,8 +20,7 @@ public class DataProcessor {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "")
-    @Column(nullable = false)
+    @OneToMany(mappedBy = "") //tilføjes senere
     private List<ProcessingLocation> processingLocations = new ArrayList<>();
 
     @Column(length = 500, nullable = false)
@@ -38,7 +36,6 @@ public class DataProcessor {
     private String website;
 
     @OneToMany(mappedBy = "dataProcessor")
-    @Column(nullable = false)
     private List<Violation> violations;
 
 }

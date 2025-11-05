@@ -2,9 +2,7 @@ package com.compliancehub.model;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.cglib.core.Local;
@@ -19,7 +17,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "DPA")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class DPA {
@@ -27,11 +26,17 @@ public class DPA {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long DPAId;
 
-    @OneToMany(mappedBy = "dpa", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+            mappedBy = "dpa",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<Violation> violations = new ArrayList<>();
 
+    @Column(nullable = false)
     private String customerName;
 
+    @Column(nullable = false)
     private String productName;
 
     @CreationTimestamp
@@ -42,11 +47,12 @@ public class DPA {
     @Column(nullable = false)
     private LocalDateTime lastChangedDate;
 
-    @Column(length = 500)
+    @Column(length = 500, nullable = false)
     private String fileUrl;
 
-    @OneToMany(mappedBy = "")
+    @OneToMany(mappedBy = "") //tilføj mere når location er oprettet
     private List<ProcessingLocation> allowedProcessinglocations = new ArrayList<>();
 
+    @Column(nullable = false)
     private boolean isStandard;
 }

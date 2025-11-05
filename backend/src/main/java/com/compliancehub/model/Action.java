@@ -1,15 +1,14 @@
 package com.compliancehub.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "action")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Action {
@@ -17,8 +16,8 @@ public class Action {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long actionId;
 
-    @Column(nullable = false)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "violation_id", nullable = false)
     private Violation violation;
 
     @Column(columnDefinition = "TEXT", nullable = false)
