@@ -6,7 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.cglib.core.Local;
 
+import java.io.File;
+import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +36,15 @@ public class DPA {
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
-    private Date creationDate;
+    private LocalDateTime createdDate; 
+    
+    @UpdateTimestamp
+    @Column(nullable = false) 
+    private LocalDateTime lastChangedDate;
+
+    private URL fileUrl;
+
+
 
 
 }
