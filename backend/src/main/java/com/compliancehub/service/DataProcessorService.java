@@ -23,7 +23,7 @@ public class DataProcessorService {
         // make sure that data processor exists before returning
         if (optionalDataProcessor.isPresent()) {
             DataProcessor dp = optionalDataProcessor.get();
-            return new DataProcessorGetByIdResponse(dp.getId(),dp.getName(),dp.getHosting_location(),dp.getService(), dp.getPurpose(), dp.getNote(),dp.getWebsite());
+            return new DataProcessorGetByIdResponse(dp.getId(),dp.getName(),dp.getProcessingLocations(),dp.getService(), dp.getPurpose(), dp.getNote(),dp.getWebsite());
         } else {
             throw new InputMismatchException("Could not find data processor with id: " +  id);
         }
@@ -38,12 +38,12 @@ public class DataProcessorService {
         newDP.setPurpose(req.purpose());
         newDP.setNote(req.note());
         newDP.setWebsite(req.website());
-        newDP.setHosting_location(req.hosting_location());
+        newDP.setProcessingLocations(req.processingLocation());
 
         DataProcessor savedDP = dataProcessorRepository.save(newDP);
 
         // convert the entity back to DTO
-        return new DataProcessorCreateResponse(newDP.getId(), savedDP.getName(), savedDP.getHosting_location(), savedDP.getService(), savedDP.getPurpose(), savedDP.getNote(), savedDP.getWebsite());
+        return new DataProcessorCreateResponse(newDP.getId(), savedDP.getName(), savedDP.getProcessingLocations(), savedDP.getService(), savedDP.getPurpose(), savedDP.getNote(), savedDP.getWebsite());
 
     }
 
