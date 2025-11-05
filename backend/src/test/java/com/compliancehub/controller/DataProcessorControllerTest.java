@@ -29,7 +29,7 @@ class DataProcessorControllerTest {
         dataProcessorRepository.deleteAll();
         DataProcessor dataProcessor = new DataProcessor();
         dataProcessor.setName("testProcessor");
-        dataProcessor.setHosting_location("testLocation");
+        // dataProcessor.setProcessingLocations();
         dataProcessor.setService("testService");
         dataProcessor.setPurpose("testPurpose");
         dataProcessor.setNote("testNote");
