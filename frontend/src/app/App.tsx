@@ -1,15 +1,13 @@
-//import { useState } from 'react'
+
 import '../shared/styles/App.css'
 import { Button } from '../shared/components/Buttons';
-import Navbar from '../shared/components/Navbar';
+import Sidebar from '../shared/components/Sidebar';
 
-// test
 function App() {
- // const [count, setCount] = useState(0);
 
   return (
     <>
-      <Navbar />
+      <Sidebar />
 
       <div>
         <Button variant="black">Test button black</Button>
