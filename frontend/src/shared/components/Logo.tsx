@@ -28,8 +28,8 @@ export function Logo({
 }: LogoProps) {
   const textSizeMap: Record<TitleSize, string> = {
     small: 'text-[min(6cqw,12px)]',
-    medium: 'text-[min(8cqw,18px)]',
-    large: 'text-[min(10cqw,24px)]',
+    medium: 'text-[min(9cqw,20px)]',
+    large: 'text-[min(11cqw,24px)]',
   }
 
   const imageSizeMap: Record<LogoSize, string> = {
