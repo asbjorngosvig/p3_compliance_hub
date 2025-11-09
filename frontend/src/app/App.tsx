@@ -1,3 +1,6 @@
+import '../shared/styles/App.css'
+import {OverviewHeaderComponent} from '../shared/components/OverviewHeaderComponent.tsx';
+
 
 import '../shared/styles/App.css'
 import { Button } from '../shared/components/Buttons';
@@ -5,6 +8,10 @@ import Sidebar from '../shared/components/Sidebar';
 import { useState } from 'react'
 
 function App() {
+    // const [count, setCount] = useState(0);
+
+
+    return (
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
 
   return (
@@ -14,12 +21,10 @@ function App() {
         toggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
       />
 
-      <div>
-        <Button variant="black">Test button black</Button>
-        <Button variant="blue">Test button blue</Button>
-      </div>
-    </>
-  )
+        <>
+            <OverviewHeaderComponent></OverviewHeaderComponent>
+        </>
+    )
 }
 
 export default App
