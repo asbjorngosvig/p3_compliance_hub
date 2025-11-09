@@ -1,37 +1,41 @@
 package com.compliancehub.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "data_processor")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class DataProcessor {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "data_processor_id")
     private Long id;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String hosting_location;
+    @OneToMany(mappedBy = "") //tilføjes senere
+    private List<ProcessingLocation> processingLocations = new ArrayList<>();
 
-    @Column(nullable = false)
+    @Column(length = 500, nullable = false)
     private String service;
 
-    @Column(nullable = false)
+    @Column(length = 500, nullable = false)
     private String purpose;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String note;
 
-    @Column(nullable = false)
+    @Column(length = 500, nullable = false)
     private String website;
+
+    @OneToMany(mappedBy = "dataProcessor")
+    private List<Violation> violations;
+
 }
