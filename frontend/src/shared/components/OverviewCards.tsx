@@ -6,7 +6,7 @@ export function OverviewCards() {
     return (
         <>
             {/*<div className="flex wrap-normal whitespace-normal p-1">*/}
-                <div className="flex flex-wrap gap-4 justify-center">
+                <div className="flex flex-wrap gap-4 justify-center text-left">
                 <OverviewCardComponent title={"Violations"} description={"Detected:"}
                                        numberCount={5} violationStatus={true} priority={"Priority: Urgent"}
                 ></OverviewCardComponent>
