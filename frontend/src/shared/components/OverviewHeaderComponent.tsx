@@ -4,8 +4,8 @@ export function OverviewHeaderComponent() {
 
     return (
         <>
-            <div className={"justify-items-start bg-slate-50 p-5 border rounded-2xl"}>
-                <p className={" text-black text-2xl font-semibold pb-4"}>Overview</p>
+            <div className={"justify-items-start bg-slate-50 p-5 border rounded-2xl text-left"}>
+                <p className={" text-black text-2xl font-semibold pb-4 pl-10"}>Overview</p>
 
                 <OverviewCards></OverviewCards>
             </div>
