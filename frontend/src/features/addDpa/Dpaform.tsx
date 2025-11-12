@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function Dpaform() {
+export function Dpaform() {
     // form state
     const [website, setWebsite] = useState("");
     const [contractualSafeguard, setContractualSafeguard] = useState("");
@@ -230,3 +230,5 @@ export default function Dpaform() {
         </div>
     );
 }
+
+export default Dpaform;

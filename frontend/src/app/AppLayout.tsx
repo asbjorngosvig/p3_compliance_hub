@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Sidebar from "../shared/components/Sidebar";
 
 export default function AppLayout() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const matches = useMatches();
 
   useEffect(() => {
@@ -12,11 +12,18 @@ export default function AppLayout() {
   }, [matches]);
 
   return (
-    <div className="flex">
-      <Sidebar isCollapsed={collapsed} toggle={() => setCollapsed(v => !v)} />
-      <main className={`min-h-screen flex-1 transition-all ${collapsed ? "ml-16" : "ml-64"}`}>
+
+
+      <main className={`min-h-screen flex-1 transition-all ${isSidebarCollapsed ? "ml-16" : "ml-64"}`}>
+        <div className={`flex-1 transition-all duration-300 ${
+                        isSidebarCollapsed ? 'pl-16' : 'pl-64'} xl:-mx-20 md:-mx-0`}>
+
+      <Sidebar 
+      isCollapsed={isSidebarCollapsed} 
+      toggle={() => setIsSidebarCollapsed(v => !v)} />
+      </div>
         <Outlet />
       </main>
-    </div>
+      
   );
 }
