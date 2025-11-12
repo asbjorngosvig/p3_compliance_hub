@@ -1,5 +1,5 @@
 import {OverviewCard} from './OverviewCard.tsx';
-import {priorityStatus} from "./OverviewCard.tsx";
+import type {priorityStatus} from "./OverviewCard.tsx";
 
 interface OverviewCardsProps {
     cards: {
@@ -11,7 +11,7 @@ interface OverviewCardsProps {
     }[];
 }
 
-export function OverviewCards({cards}: { OverviewCardsProps }) {
+export function OverviewCards({cards}: OverviewCardsProps ) {
 
     return (
         <>
@@ -27,4 +27,4 @@ export function OverviewCards({cards}: { OverviewCardsProps }) {
 }
 
 
-export default OverviewCard;
+export default OverviewCards;

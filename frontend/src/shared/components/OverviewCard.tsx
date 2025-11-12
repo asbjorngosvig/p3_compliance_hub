@@ -6,11 +6,7 @@ export interface OverviewCardProps {
     priority?: priorityStatus;
     icon?: React.ElementType
 }
-export enum priorityStatus{
-    Urgent = "Urgent",
-    Important=" Important",
-    Normal ="Normal"
-}
+export type priorityStatus = "Urgent" | "Important" | "Normal";
 
 export function OverviewCard({
                                       title,
@@ -32,7 +28,8 @@ export function OverviewCard({
                     {violationStatus && (
                         /*<div className={" justify-items-start bg-[#D32F2F] text-white py-3 text-sm rounded-b-xl p-4 w-64"}>*/
                         <div className=" justify-items-start bg-[#D32F2F] text-white py-1.75 text-sm rounded-b-xl pt-1 px-4 -mx-4 -mb-10">
-                            <p>{priority}</p>
+                            <p>{priority && <p>Priority: {priority}</p>}
+                            </p>
                         </div>
                     )}
 
