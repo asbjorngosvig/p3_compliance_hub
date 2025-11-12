@@ -15,7 +15,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserGetUserResponse getById(long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
+        Optional<User> optionalUser = userRepository.findById((int) id);
 
         // make sure that user exists before returning
         if (optionalUser.isPresent()) {
@@ -27,11 +27,10 @@ public class UserService {
     }
 
     public UserGetUserResponse getByEmail(String email) {
-        User User = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email);
 
         // make sure that user exists before returning
-        if (User.isPresent()) {
-            User user = User.get();
+        if (user != null) {
             return new UserGetUserResponse(user.getId(), user.getEmail(), user.getName(), user.getRole());
         } else {
             throw new InputMismatchException("Could not find user with email: " +  email);
