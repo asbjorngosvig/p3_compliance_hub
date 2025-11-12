@@ -1,37 +1,30 @@
-import {OverviewCardComponent} from './OverviewCardComponent.tsx';
+import {OverviewCard} from './OverviewCard.tsx';
+import {priorityStatus} from "./OverviewCard.tsx";
 
+interface OverviewCardsProps {
+    cards: {
+        title: string;
+        description: string;
+        numberCount: number;
+        violationStatus: boolean;
+        priority?: priorityStatus;
+    }[];
+}
 
-export function OverviewCards() {
+export function OverviewCards({cards}: { OverviewCardsProps }) {
 
     return (
         <>
-            {/*<div className="flex wrap-normal whitespace-normal p-1">*/}
-                <div className="flex flex-wrap gap-4 justify-center text-left">
-                <OverviewCardComponent title={"Violations"} description={"Detected:"}
-                                       numberCount={5} violationStatus={true} priority={"Priority: Urgent"}
-                ></OverviewCardComponent>
-
-
-                <OverviewCardComponent title={"Compliant"} description={"Compliant DPAs: "}
-                                       numberCount={27} violationStatus={false}
-                ></OverviewCardComponent>
-
-
-                <OverviewCardComponent title={"Pending"} description={"Awaited response: "}
-                                       numberCount={2} violationStatus={false }
-                ></OverviewCardComponent>
-
-
-                <OverviewCardComponent title={"To be contacted"} description={"30 days to contact: "}
-                                       numberCount={5} violationStatus={false}
-                ></OverviewCardComponent>
-
-
-
+            {/*<div className="truncate flex wrap-normal whitespace-normal p-1">*/}
+            <div className=" grid gap-4 sm:grid-cols-2 lg:grid-cols-4  justify-center text-left ">
+                {cards.map((card, index) => (
+                        <OverviewCard key={index} {...card}></OverviewCard>
+                    )
+                )}
             </div>
         </>
     );
 }
 
 
-export default OverviewCardComponent;
+export default OverviewCard;
