@@ -1,13 +1,12 @@
 package com.compliancehub.controller;
 
 import com.compliancehub.dto.user.UserGetUserResponse;
+import com.compliancehub.model.User;
 import com.compliancehub.service.UserService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
@@ -15,7 +14,9 @@ import java.net.URI;
 @RequestMapping("/users")
 
 public class UserController {
-    UserService service;
+
+    @Autowired
+    private UserService service;
 
     public UserController(UserService service) {
         this.service = service;
@@ -39,4 +40,13 @@ public class UserController {
         return ResponseEntity.created(location).body(user);
     }
 
+    @PostMapping("/register")
+    public User register(@RequestBody User user){
+        return service.register(user);
+    }
+
+    @PostMapping("/login"")
+    public String login(@RequestBody User user){
+        return service.verify(user);
+    }
 }
