@@ -13,15 +13,15 @@ export default function AppLayout() {
 
     return (
         // Parent flex container: Sidebar is a sibling (left column), main fills remaining space
-        <div className="min-h-screen flex bg-gray-100">
+        <div className="flex min-h-screen w-screen overflow-hidden bg-gray-100">
             <Sidebar
                 isCollapsed={isSidebarCollapsed}
                 toggle={() => setIsSidebarCollapsed((v) => !v)}
             />
 
-            <main className="flex-1 transition-all p-6">
+            <main className="flex-1 min-w-0 overflow-hidden p-6 transition-all">
                 {/* Use the available width — don't center-limit this wrapper unless you intend to */}
-                <div className="w-full">
+                <div className="">
                     <Outlet />
                 </div>
             </main>

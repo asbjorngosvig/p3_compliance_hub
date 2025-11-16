@@ -1,5 +1,7 @@
 import {OverviewCards} from './OverviewCards.tsx';
 import type {priorityStatus} from './OverviewCard.tsx';
+import {Button} from './Buttons.tsx'
+
 
 export function OverviewHeader() {
     const cardsData: {
@@ -16,8 +18,12 @@ export function OverviewHeader() {
     ];
 
     return (
-        <div className="bg-slate-50 p-5 border rounded-2xl w-full">
-            <p className="text-black text-2xl font-semibold pb-4">Overview</p>
+        <div className="bg-slate-50 p-5 border rounded-2xl w-full ">
+            <div className="flex items-center justify-between pb-4">
+                <p className="text-black text-2xl font-semibold">Overview</p>
+                <Button to="/adddpa" variant="green">Add DPA</Button>
+            </div>
+
             <OverviewCards cards={cardsData} />
         </div>
     );
