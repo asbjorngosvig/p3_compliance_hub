@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {Button} from '../../shared/components/Buttons.tsx'
 
-const LoginCard = () => {
+export function LoginCard(){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
