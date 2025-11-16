@@ -11,9 +11,14 @@ const DataProcessors = lazy(() => import("../../features/dataProcessors/SeeDataP
 const Employees      = lazy(() => import("../../features/employees/Employees"));
 const AddDpa         = lazy(() => import("../../features/addDpa/AddDpa"));
 const Settings       = lazy(() => import("../../features/settings/Settings"));
+const Login       = lazy(() => import("../../features/login/LoginCard"));
 
 export const router = createBrowserRouter(
-  [
+  [{
+      path: "login",
+      element: S(<Login />),
+      handle: { title: "Login" }
+  },
     {
       element: <AppLayout />,
       children: [
