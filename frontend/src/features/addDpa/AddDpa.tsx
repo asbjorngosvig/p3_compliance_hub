@@ -1,11 +1,11 @@
-import {Dpaform} from "./Dpaform.tsx";
-import {AddDpaPreview} from "./AddDpaPreview.tsx";
+import { Dpaform } from "./Dpaform";
+import { AddDpaPreview } from "./AddDpaPreview";
 
-export function AddDpa () {
+export function AddDpa() {
     return (
-        <div>
-            <Dpaform></Dpaform>
-            <AddDpaPreview></AddDpaPreview>
+        <div className="flex items-start gap-10">
+            <Dpaform />
+            <AddDpaPreview />
         </div>
     );
 }

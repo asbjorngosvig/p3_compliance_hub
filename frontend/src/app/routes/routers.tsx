@@ -9,7 +9,7 @@ const S = (el: ReactElement) => (
 const Dashboard      = lazy(() => import("../../features/dashboard/Dashboard"));
 const DataProcessors = lazy(() => import("../../features/dataProcessors/SeeDataProcessors"));
 const Employees      = lazy(() => import("../../features/employees/Employees"));
-const AddDpa         = lazy(() => import("../../features/addDpa/Dpaform"));
+const AddDpa         = lazy(() => import("../../features/addDpa/AddDpa"));
 const Settings       = lazy(() => import("../../features/settings/Settings"));
 
 export const router = createBrowserRouter(
