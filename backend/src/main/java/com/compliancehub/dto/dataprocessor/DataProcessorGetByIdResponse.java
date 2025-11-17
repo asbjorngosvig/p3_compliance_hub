@@ -8,7 +8,7 @@ import java.util.UUID;
 public record DataProcessorGetByIdResponse(
         UUID id,
         String name,
-        List<ProcessingLocation> processingLocation,
+        List<String> processingLocation,
         String service,
         String purpose,
         String note,
