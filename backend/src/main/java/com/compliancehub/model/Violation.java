@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static jakarta.persistence.CascadeType.ALL;
 
@@ -16,8 +17,8 @@ import static jakarta.persistence.CascadeType.ALL;
 @AllArgsConstructor
 public class Violation {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long violationId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID violationId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "dpa_id", nullable = false)
@@ -39,4 +40,8 @@ public class Violation {
 
     @Column(nullable = false)
     private boolean isResolved = false;
+
+    public void resolve() {
+        this.isResolved = true;
+    }
 }
