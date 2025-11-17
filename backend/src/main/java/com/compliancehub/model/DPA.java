@@ -3,14 +3,10 @@ package com.compliancehub.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Entity
@@ -38,9 +34,13 @@ public class DPA {
     )
     private List<Requirement> requirements = new ArrayList<>();
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb")
-    private Map<String, Object> communicationStrats;
+
+    @OneToMany(
+            mappedBy = "dpa",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<CommunicationStrategy> communicationStrats;
 
     @Column(nullable = false)
     private String customerName;
