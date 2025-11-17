@@ -11,18 +11,18 @@ const DataProcessors = lazy(() => import("../../features/dataProcessors/SeeDataP
 const Employees      = lazy(() => import("../../features/employees/Employees"));
 const AddDpa         = lazy(() => import("../../features/addDpa/AddDpa"));
 const Settings       = lazy(() => import("../../features/settings/Settings"));
-const Login       = lazy(() => import("../../features/login/LoginCard"));
+const Login       = lazy(() => import("../../features/login/Login"));
 
 export const router = createBrowserRouter(
   [{
-      path: "login",
+      index: true,
       element: S(<Login />),
       handle: { title: "Login" }
   },
     {
       element: <AppLayout />,
       children: [
-        { index: true, element: S(<Dashboard />), handle: { title: "Home" } },
+        {  path: "dashboard",element: S(<Dashboard />), handle: { title: "Home" } },
         { path: "dataprocessors", element: S(<DataProcessors />), handle: { title: "Data Processors" } },
         { path: "employees", element: S(<Employees />), handle: { title: "Employees" } },
         { path: "adddpa", element: S(<AddDpa />), handle: { title: "Add DPA" } },
