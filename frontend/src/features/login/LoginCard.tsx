@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // import navigate
 import { Button } from '../../shared/components/Buttons.tsx'
 
-const LoginCard = () => {
+export default function LoginCard(){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate(); // initialize navigate
 
     const handleLogin = () => {
-        navigate("/");
+        navigate("/dashboard");
     };
 
     return (
@@ -59,4 +59,4 @@ const LoginCard = () => {
     );
 };
 
-export default LoginCard;
+
