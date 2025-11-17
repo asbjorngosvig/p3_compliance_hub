@@ -9,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.UUID;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -36,11 +38,11 @@ class DataProcessorControllerTest {
         dataProcessor.setWebsite("testWebsite");
 
         dataProcessorRepository.save(dataProcessor);
+        UUID id = dataProcessor.getId();
 
-        mockMvc.perform(get("/dataprocessors/1"))
-
+        mockMvc.perform(get("/dataprocessors/"+id))
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.id").value(1L))
+        .andExpect(jsonPath("$.id").value(id.toString()))
         // .andExpect(jsonPath("$.hosting_location").value("testLocation"))
         .andExpect(jsonPath("$.service").value("testService"))
         .andExpect(jsonPath("$.purpose").value("testPurpose"))
