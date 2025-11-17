@@ -20,7 +20,7 @@ export function Button({
 
   const variantStyles = {
     green:
-      "bg-[#88AA30] text-white hover:bg-gray-700 focus:ring-gray-700 disabled:bg-gray-400",
+      "bg-[#88AA30] text-white hover:bg-[#BAD377] focus:ring-gray-700 disabled:bg-gray-400",
     blue:
       "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-700 disabled:bg-blue-300",
   }[variant];
