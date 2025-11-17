@@ -1,15 +1,11 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // import navigate
 import { Button } from '../../shared/components/Buttons.tsx'
 
 export default function LoginCard(){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate(); // initialize navigate
 
-    const handleLogin = () => {
-        navigate("/dashboard");
-    };
+
 
     return (
         <div className="w-full max-w-md mx-auto border rounded-2xl p-6 bg-slate-50 shadow-sm border-gray-200">
@@ -51,9 +47,8 @@ export default function LoginCard(){
                     />
                 </div>
 
-                <Button className="w-full" onClick={handleLogin}>
-                    Login
-                </Button>
+                <Button to="/dashboard" variant="primary">Login</Button>
+
             </div>
         </div>
     );
