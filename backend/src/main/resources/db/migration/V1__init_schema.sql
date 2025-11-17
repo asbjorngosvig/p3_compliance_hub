@@ -1,3 +1,4 @@
+/*
 -- CUSTOMER
 CREATE TABLE CUSTOMER (
     customer_id SERIAL PRIMARY KEY,
@@ -80,3 +81,5 @@ CREATE TABLE CONTRACTUAL_SAFEGUARD (
     details TEXT,
     FOREIGN KEY (data_processor_id) REFERENCES DATA_PROCESSOR(data_processor_id) ON DELETE CASCADE
 );
+
+ */
