@@ -1,19 +1,13 @@
 package com.compliancehub.model;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.cglib.core.Local;
-
-import java.io.File;
-import java.net.URL;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "DPA")
@@ -23,8 +17,8 @@ import java.util.List;
 @AllArgsConstructor
 public class DPA {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long DPAId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID DPAId;
 
     @OneToMany(
             mappedBy = "dpa",
@@ -32,6 +26,13 @@ public class DPA {
             orphanRemoval = true
     )
     private List<Violation> violations = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "dpa",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Requirement> requirements = new ArrayList<>();
 
     @Column(nullable = false)
     private String customerName;
@@ -41,18 +42,12 @@ public class DPA {
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdDate; 
-    
-    @UpdateTimestamp
-    @Column(nullable = false)
-    private LocalDateTime lastChangedDate;
+    private LocalDateTime createdDate;
+
+//    @UpdateTimestamp
+//    @Column(nullable = false)
+//    private LocalDateTime lastChangedDate;
 
     @Column(length = 500, nullable = false)
     private String fileUrl;
-
-    @OneToMany(mappedBy = "") //tilføj mere når location er oprettet
-    private List<ProcessingLocation> allowedProcessinglocations = new ArrayList<>();
-
-    @Column(nullable = false)
-    private boolean isStandard;
 }
