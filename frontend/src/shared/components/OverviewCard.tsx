@@ -21,15 +21,16 @@ export function OverviewCard({
                 <div className="border rounded-xl p-4 w-full h-28 bg-slate-50 text-neutral-300">
 
             */}
-            <div className="border rounded-xl p-4 w-full h-28 bg-slate-50 text-neutral-300">
-                <div className="text-black">
-                    <div className={"justify-items-start font-semibold"}><h3>{title} </h3> </div>
+            <div className="border rounded-xl p-4 w-full bg-slate-50 text-neutral-300">
+
+            <div className="text-black">
+                    <div className={"justify-items-start font-semibold "}><p>{title} </p> </div>
                     <div className={"justify-items-start row pb-0 pt-4 "}><p>{description}<span>{numberCount}</span></p></div>
                     {violationStatus && (
                         /*<div className={" justify-items-start bg-[#D32F2F] text-white py-3 text-sm rounded-b-xl p-4 w-64"}>*/
                         <div className=" justify-items-start bg-[#D32F2F] text-white py-1.75 text-sm rounded-b-xl pt-1 px-4 -mx-4 -mb-10">
-                            <p>{priority && <p>Priority: {priority}</p>}
-                            </p>
+                            {priority && <p>Priority: {priority}</p>}
+
                         </div>
                     )}
 

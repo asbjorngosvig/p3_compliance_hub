@@ -12,19 +12,13 @@ interface OverviewCardsProps {
 }
 
 export function OverviewCards({cards}: OverviewCardsProps ) {
-
     return (
-        <>
-            {/*<div className="truncate flex wrap-normal whitespace-normal p-1">*/}
-            <div className=" grid gap-4 sm:grid-cols-2 lg:grid-cols-4  justify-center text-left ">
-                {cards.map((card, index) => (
-                        <OverviewCard key={index} {...card}></OverviewCard>
-                    )
-                )}
-            </div>
-        </>
+        <div className="w-full grid gap-4 sm:grid-cols-2 lg:grid-cols-4 text-left">
+            {cards.map((card, index) => (
+                <OverviewCard key={index} {...card} />
+            ))}
+        </div>
     );
 }
-
 
 export default OverviewCards;
