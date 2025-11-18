@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/dataprocessors")
@@ -19,7 +20,7 @@ public class DataProcessorController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<DataProcessorGetByIdResponse> getById(@PathVariable long id) {
+    ResponseEntity<DataProcessorGetByIdResponse> getById(@PathVariable UUID id) {
         DataProcessorGetByIdResponse dp = service.getById(id);
 
         URI location = URI.create("/dataprocessors/" + dp.id());

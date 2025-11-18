@@ -11,13 +11,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.InputMismatchException;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class DataProcessorService {
     private final DataProcessorRepository dataProcessorRepository;
 
-    public DataProcessorGetByIdResponse getById(long id) {
+    public DataProcessorGetByIdResponse getById(UUID id) {
         Optional<DataProcessor> optionalDataProcessor = dataProcessorRepository.findById(id);
 
         // make sure that data processor exists before returning
