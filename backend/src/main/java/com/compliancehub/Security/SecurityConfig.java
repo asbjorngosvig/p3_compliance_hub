@@ -55,18 +55,4 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
-    /*
-    @Bean
-    public UserDetailsService userDetailService() {
-
-        UserDetails user1 = User
-                .withDefaultPasswordEncoder()
-                .username("Kiran")
-                .password("k@123")
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(user1);
-    }
-*/
 }
