@@ -1,6 +1,5 @@
 package com.compliancehub.controller;
 
-import com.compliancehub.service.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
