@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 /*
  Metoder (dækket automatisk):
@@ -26,8 +27,7 @@ import java.util.Optional;
  * - Custom queries: fx userRepository.findByEmail(email), userRepository.findByRole(role)
  */
 
-
 @Repository
-public interface UserRepository extends JpaRepository <User, Long> {
+public interface UserRepository extends JpaRepository <User, UUID> {
     Optional<User> findByEmail(String email);
 }
