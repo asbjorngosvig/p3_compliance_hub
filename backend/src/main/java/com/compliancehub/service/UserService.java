@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +26,7 @@ public class UserService {
     @Autowired
     AuthenticationManager authenticationManager;
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(12);
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(12);
 
     public User register(User user){
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -59,12 +58,14 @@ public class UserService {
 
 
     public String verify(User user) {
-        Authentication authentication =
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+        User UserName = userRepository.findByName(user.getName());
 
-        if(authentication.isAuthenticated()) {
-            return jwtService.generateToken(user.getEmail());
-        }
-        return "fail";
+        String userId = String.valueOf(UserName.getId());
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userId, user.getPassword())
+        );
+
+        return jwtService.generateToken(userId);
     }
 }

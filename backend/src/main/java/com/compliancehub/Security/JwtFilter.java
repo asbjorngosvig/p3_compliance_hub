@@ -11,12 +11,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@Component
 public class JwtFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -27,19 +28,18 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        //
         String authHeader = request.getHeader("Authorization");
         String token = null;
-        String email = null;
+        String userId = null;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7); //Removes Bearer to isolate for the token only
-            email = jwtService.extractUserName(token);
+            userId = jwtService.extractUserName(token);
         }
 
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = applicationContext.getBean(MyUserDetailsService.class).loadUserByUsername(email);
+            UserDetails userDetails = applicationContext.getBean(MyUserDetailsService.class).loadUserByUsername(userId);
 
             if(jwtService.validateToken(token, userDetails)){
                 UsernamePasswordAuthenticationToken authToken =

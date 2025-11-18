@@ -1,4 +1,4 @@
-package com.telusko.part29springsecex.service;
+package com.compliancehub.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -19,7 +19,6 @@ import java.util.function.Function;
 @Service
 public class JWTService {
 
-
     private String secretkey = "";
 
     public JWTService() {
@@ -33,12 +32,12 @@ public class JWTService {
         }
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String userId) {
         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
                 .claims()
                 .add(claims)
-                .subject(username)
+                .subject(userId)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 30))
                 .and()
@@ -54,7 +53,7 @@ public class JWTService {
 
     public String extractUserName(String token) {
         // extract the username from jwt token
-        return extractClaim(token, Claims::getSubject);
+        return extractClaim(token, Claims::getSubject); //gets id
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimResolver) {

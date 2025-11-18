@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.compliancehub.model.User;
 
+
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
@@ -17,14 +18,10 @@ public class MyUserDetailsService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
 
-        User user = userRepository.findByEmail(email);
-
-        if (user == null) {
-            System.out.println("User not found");
-            throw new UsernameNotFoundException("User not found");
-        }
+        User user = userRepository.findById(Integer.parseInt(userId))
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         return new UserPrincipal(user);
     }
