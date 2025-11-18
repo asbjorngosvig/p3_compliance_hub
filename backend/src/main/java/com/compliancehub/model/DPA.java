@@ -58,4 +58,9 @@ public class DPA {
 
     @Column(length = 500, nullable = false)
     private String fileUrl;
+
+    public void addViolation(Violation violation) {
+        this.violations.add(violation);
+    }
+
 }
