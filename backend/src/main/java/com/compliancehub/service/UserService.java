@@ -4,6 +4,10 @@ import com.compliancehub.dto.user.UserGetUserResponse;
 import com.compliancehub.model.User;
 import com.compliancehub.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.InputMismatchException;
@@ -12,10 +16,25 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserRepository userRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private JWTService jwtService;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(12);
+
+    public User register(User user){
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
 
     public UserGetUserResponse getById(long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
+        Optional<User> optionalUser = userRepository.findById((int) id);
 
         // make sure that user exists before returning
         if (optionalUser.isPresent()) {
@@ -27,11 +46,10 @@ public class UserService {
     }
 
     public UserGetUserResponse getByEmail(String email) {
-        Optional<User> optionalUser = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email);
 
         // make sure that user exists before returning
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
+        if (user != null) {
             return new UserGetUserResponse(user.getId(), user.getEmail(), user.getName(), user.getRole());
         } else {
             throw new InputMismatchException("Could not find user with email: " +  email);
@@ -39,5 +57,15 @@ public class UserService {
     }
 
 
+    public String verify(User user) {
+        User UserName = userRepository.findByName(user.getName());
 
+        String userId = String.valueOf(UserName.getId());
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userId, user.getPassword())
+        );
+
+        return jwtService.generateToken(userId);
+    }
 }

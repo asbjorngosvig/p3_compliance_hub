@@ -1,3 +1,4 @@
+/*
 -- USERS
 INSERT INTO users (name, email, password, role)
 VALUES
@@ -31,3 +32,5 @@ VALUES
 INSERT INTO data_processing_agreement (customer_id, product_id, file, type, is_standard)
 VALUES
 (1, 1, NULL, 'Standard Agreement', True);
+
+ */
