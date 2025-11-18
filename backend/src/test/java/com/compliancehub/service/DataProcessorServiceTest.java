@@ -1,4 +1,4 @@
-/*package com.compliancehub.service;
+package com.compliancehub.service;
 
 import com.compliancehub.dto.dataprocessor.DataProcessorGetByIdResponse;
 import com.compliancehub.model.DataProcessor;
@@ -27,7 +27,7 @@ class DataProcessorServiceTest {
     private DataProcessorService dataProcessorService;
     @Autowired
     private MockMvc mockMvc;
-
+/*
     private DataProcessor dataProcessor;
 
     @BeforeEach
@@ -35,29 +35,28 @@ class DataProcessorServiceTest {
         dataProcessorRepository.deleteAll();
 
         dataProcessor = new DataProcessor();
-        dataProcessor.setId(1L);
         dataProcessor.setName("testDataProcessor");
-        dataProcessor.setHosting_location("testHostingLocation");
         dataProcessor.setService("CloudStorage");
         dataProcessor.setPurpose("dataBackup");
         dataProcessor.setNote("testNote");
         dataProcessor.setWebsite("https://example.com");
 
         dataProcessorRepository.save(dataProcessor);
-        when(dataProcessorRepository.findById(1L)).thenReturn(Optional.of(dataProcessor));
+        when(dataProcessorRepository.findById(dataProcessor.getId())).thenReturn(Optional.of(dataProcessor));
     }
 
     @Test
     void testGetById(){
-        DataProcessorGetByIdResponse response = dataProcessorService.getById(1L);
+        DataProcessorGetByIdResponse response = dataProcessorService.getById(dataProcessor.getId());
 
-        assertEquals(1L, response.id());
+        assertEquals(dataProcessor.getId(), response.id());
         assertEquals("testDataProcessor", response.name());
-        assertEquals("testHostingLocation", response.hosting_location());
+        assertEquals("testHostingLocation", response.processingLocation());
         assertEquals("CloudStorage", response.service());
         assertEquals("dataBackup", response.purpose());
         assertEquals("testNote", response.note());
         assertEquals("https://example.com", response.website());
     }
+
+ */
 }
-*/
