@@ -1,6 +1,8 @@
 package com.compliancehub.controller;
 
 import com.compliancehub.dto.user.UserGetUserResponse;
+import com.compliancehub.dto.user.UserLoginDTO;
+import com.compliancehub.model.Admin;
 import com.compliancehub.model.User;
 import com.compliancehub.service.UserService;
 
@@ -41,12 +43,14 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody User user){
-        return service.register(user);
+    public User register(@RequestBody UserLoginDTO userDTO){
+        return service.register(userDTO);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody User user){
-        return service.verify(user);
+    public String login(@RequestBody UserLoginDTO userDTO){
+        System.out.println((service.verify(userDTO)));
+        return "Hello";
     }
+
 }

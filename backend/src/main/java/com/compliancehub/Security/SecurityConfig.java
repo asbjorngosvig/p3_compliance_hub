@@ -32,7 +32,7 @@ public class SecurityConfig {
         return http
             .csrf(customizer -> customizer.disable())
             .authorizeHttpRequests(reqeust -> reqeust
-                    .requestMatchers("register","login").permitAll() //Does not req auth for these 2 endpoints register should be removed later
+                    .requestMatchers("api/users/login","api/users/register").permitAll() //Does not req auth for these 2 endpoints register should be removed later
                     .anyRequest().authenticated())
             .formLogin(Customizer.withDefaults())
             .httpBasic(Customizer.withDefaults()) //rest api access

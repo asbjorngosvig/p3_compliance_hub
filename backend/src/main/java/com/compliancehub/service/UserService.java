@@ -1,10 +1,13 @@
 package com.compliancehub.service;
 
 import com.compliancehub.dto.user.UserGetUserResponse;
+import com.compliancehub.dto.user.UserLoginDTO;
+import com.compliancehub.model.Admin;
 import com.compliancehub.model.User;
 import com.compliancehub.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,8 +31,12 @@ public class UserService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(12);
 
-    public User register(User user){
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+    public User register(UserLoginDTO userDTO){
+        User user = new Admin();
+        user.setPassword(bCryptPasswordEncoder.encode(userDTO.Password()));
+        user.setEmail(userDTO.Username());
+        user.setName("name");
+
         return userRepository.save(user);
     }
 
@@ -57,10 +64,10 @@ public class UserService {
     }
 
 
-    public String verify(User user) {
-        User UserName = userRepository.findByName(user.getName());
+    public String verify(UserLoginDTO userLoginDTO) {
+        User user = userRepository.findByEmail(userLoginDTO.Username());
 
-        String userId = String.valueOf(UserName.getId());
+        String userId = String.valueOf(user.getId());
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userId, user.getPassword())
