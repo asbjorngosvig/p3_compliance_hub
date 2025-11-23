@@ -13,6 +13,10 @@ import java.util.jar.Attributes;
 public class ProcessingLocationEvaluator implements RequirementsEvaluator {
     private List<String> allowedLocations;
 
+    public ProcessingLocationEvaluator(Map<String, Object> attributes) {
+        parseAttributes(attributes);
+    }
+
     @Override
     public void evaluate(DPA dpa, DataProcessor dataProcessor, Requirement requirement) {
         parseAttributes(requirement.getAttributes());
@@ -25,6 +29,10 @@ public class ProcessingLocationEvaluator implements RequirementsEvaluator {
                 dpa.addViolation(newViolation);
             }
         }
+    }
+
+    public List<String> getAllowedLocations() {
+        return allowedLocations;
     }
 
     @Override
