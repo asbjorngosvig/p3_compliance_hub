@@ -29,6 +29,10 @@ class ProcessingLocationEvaluatorTest {
     public DPA dpa = new DPA();
     public DataProcessor dataProcessor = new DataProcessor();
 
+
+    /**
+     * Sætter en Dataprocessor og DPA op med nogle locations.
+     */
     @BeforeEach
     void setup() {
         allowedLocation.add("United States");
@@ -48,17 +52,26 @@ class ProcessingLocationEvaluatorTest {
         evaluator = new ProcessingLocationEvaluator(attributes);
     }
 
+    /**
+     * Tester om attributes bliver mappet korrekt
+     */
     @Test
     void createAttributesTest() {
         assertEquals(attributes, evaluator.createAttributesMap());
     }
 
+    /**
+     * Tester om variablerne får de rigtige værdier efter parsing
+     */
     @Test
     void parseAttributesTest() {
         evaluator.parseAttributes(attributes);
         assertEquals(this.allowedLocation, evaluator.getAllowedLocations());
     }
 
+    /**
+     * Tester om der bliver oprettet en violation når DP indeholder canada, og dpa ikke gør
+     */
     @Test
     void evaluateWithInvalidProcessingLocations() {
         evaluator.evaluate(dpa, dataProcessor, dpa.getRequirements().get(0));
@@ -66,6 +79,9 @@ class ProcessingLocationEvaluatorTest {
         assertTrue(!dpa.getViolations().isEmpty());
     }
 
+    /**
+     * Tester om der ikke bliver oprettet en violation når de begge har samme locations
+     */
     @Test
     void evaluateWithValidProcessingLocations() {
         Requirement requirement = new Requirement();
