@@ -133,15 +133,6 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>11.7.2</version>
-
-                <configuration>
-                    <url>jdbc:postgresql://localhost:5432/db</url>
-                    <user>dev</user>
-                    <password>kage</password>
-                    <schemas>
-                        <schema>public</schema>
-                    </schemas>
-                </configuration>
             </plugin>
         </plugins>
     </build>

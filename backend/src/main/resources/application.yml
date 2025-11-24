@@ -13,9 +13,9 @@ spring:
 #      password: ${SPRING_SECURITY_USER_PASSWORD}
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/db # NAME MUST NOT CHANGE
-    username: dev
-    password: kage
+    url: jdbc:${DATABASE_URL} # NAME MUST NOT CHANGE
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
 
   jpa:
     hibernate:
