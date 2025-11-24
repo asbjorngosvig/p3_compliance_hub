@@ -52,6 +52,7 @@ class ProcessingLocationEvaluatorTest {
     void createAttributesTest() {
         assertEquals(attributes, evaluator.createAttributesMap());
     }
+
     @Test
     void parseAttributesTest() {
         evaluator.parseAttributes(attributes);
@@ -61,7 +62,6 @@ class ProcessingLocationEvaluatorTest {
     @Test
     void evaluateWithInvalidProcessingLocations() {
         evaluator.evaluate(dpa, dataProcessor, dpa.getRequirements().get(0));
-
 
         assertTrue(!dpa.getViolations().isEmpty());
     }

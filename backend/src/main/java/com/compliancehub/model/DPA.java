@@ -62,5 +62,4 @@ public class DPA {
     public void addViolation(Violation violation) {
         this.violations.add(violation);
     }
-
 }
