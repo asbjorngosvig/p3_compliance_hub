@@ -2,7 +2,6 @@ package com.compliancehub.controller;
 
 import com.compliancehub.dto.user.UserGetUserResponse;
 import com.compliancehub.dto.user.UserLoginDTO;
-import com.compliancehub.model.Admin;
 import com.compliancehub.model.User;
 import com.compliancehub.service.UserService;
 
@@ -11,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -48,9 +49,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserLoginDTO userDTO){
-        System.out.println((service.verify(userDTO)));
-        return "Hello";
+    public ResponseEntity<Map<String, String>> login(@RequestBody UserLoginDTO userDTO){
+        String token = service.verify(userDTO);
+
+        Map<String, String> resp = new HashMap<>(); // CHANGED - build simple JSON response
+        resp.put("token", token);
+
+        return ResponseEntity.ok(resp);
     }
 
 }

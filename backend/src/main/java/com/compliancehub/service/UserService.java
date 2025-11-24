@@ -33,15 +33,15 @@ public class UserService {
 
     public User register(UserLoginDTO userDTO){
         User user = new Admin();
-        user.setPassword(bCryptPasswordEncoder.encode(userDTO.Password()));
-        user.setEmail(userDTO.Username());
+        user.setPassword(bCryptPasswordEncoder.encode(userDTO.password()));
+        user.setEmail(userDTO.username());
         user.setName("name");
 
         return userRepository.save(user);
     }
 
     public UserGetUserResponse getById(long id) {
-        Optional<User> optionalUser = userRepository.findById((int) id);
+        Optional<User> optionalUser = userRepository.findById(id);
 
         // make sure that user exists before returning
         if (optionalUser.isPresent()) {
@@ -65,14 +65,20 @@ public class UserService {
 
 
     public String verify(UserLoginDTO userLoginDTO) {
-        User user = userRepository.findByEmail(userLoginDTO.Username());
-
-        String userId = String.valueOf(user.getId());
-
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userId, user.getPassword())
+                new UsernamePasswordAuthenticationToken(
+                        userLoginDTO.username(),
+                        userLoginDTO.password()
+                )
         );
 
-        return jwtService.generateToken(userId);
+        User user = userRepository.findByEmail(userLoginDTO.username());
+        if (user == null) {
+            throw new InputMismatchException("Invalid credentials");
+        }
+
+        String token = jwtService.generateToken(user.getEmail(), user.getId(), user.getRole());
+
+        return token;
     }
 }
