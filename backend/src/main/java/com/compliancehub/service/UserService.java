@@ -67,6 +67,8 @@ public class UserService {
 
 
     public String verify(UserLoginDTO userLoginDTO) {
+
+        String token;
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         userLoginDTO.username(),
@@ -74,16 +76,17 @@ public class UserService {
                 )
         );
 
-        Optional<User> optionalUser = userRepository.findByEmail(email);
+        Optional<User> optionalUser = userRepository.findByEmail(userLoginDTO.username());
 
         // make sure that user exists before returning
+
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
+
+            token = jwtService.generateToken(user.getEmail(), user.getId(), user.getRole());
+            return token;
+        } else {
             throw new InputMismatchException("Invalid credentials");
         }
-
-        String token = jwtService.generateToken(user.getEmail(), user.getId(), user.getRole());
-
-        return token;
     }
 }
