@@ -6,6 +6,8 @@ import com.compliancehub.model.User;
 import com.compliancehub.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,13 +52,20 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody UserLoginDTO userDTO){
+    public ResponseEntity<?> login(@RequestBody UserLoginDTO userDTO){
         String token = service.verify(userDTO);
 
-        Map<String, String> resp = new HashMap<>(); // CHANGED - build simple JSON response
-        resp.put("token", token);
+        ResponseCookie cookie = ResponseCookie.from("jwt", token)
+                .httpOnly(true)
+                .secure(false) // true in prod
+                .path("/")
+                .maxAge(24 * 60 * 60)
+                .sameSite("Strict")
+                .build();
 
-        return ResponseEntity.ok(resp);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body("Login successful");
     }
 
 }
