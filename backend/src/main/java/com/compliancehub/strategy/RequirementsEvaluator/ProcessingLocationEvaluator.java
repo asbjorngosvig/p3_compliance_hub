@@ -13,13 +13,16 @@ import java.util.jar.Attributes;
 public class ProcessingLocationEvaluator implements RequirementsEvaluator {
     private List<String> allowedLocations;
 
+    /**
+     *
+     * @param attributes
+     */
     public ProcessingLocationEvaluator(Map<String, Object> attributes) {
         parseAttributes(attributes);
     }
 
     @Override
-    public void evaluate(DPA dpa, DataProcessor dataProcessor, Requirement requirement) {
-        parseAttributes(requirement.getAttributes());
+    public void evaluate(DPA dpa, DataProcessor dataProcessor) {
         for (String location : dataProcessor.getProcessingLocations()) {
             if (!allowedLocations.contains(location)) {
                 Violation newViolation = new Violation();

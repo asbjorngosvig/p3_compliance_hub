@@ -74,7 +74,7 @@ class ProcessingLocationEvaluatorTest {
      */
     @Test
     void evaluateWithInvalidProcessingLocations() {
-        evaluator.evaluate(dpa, dataProcessor, dpa.getRequirements().get(0));
+        evaluator.evaluate(dpa, dataProcessor);
 
         assertTrue(!dpa.getViolations().isEmpty());
     }
@@ -93,7 +93,7 @@ class ProcessingLocationEvaluatorTest {
         requirement.setAttributes(attributes);
         dpa.setRequirements(List.of(requirement));
 
-        evaluator.evaluate(dpa, dataProcessor, dpa.getRequirements().get(0));
+        evaluator.evaluate(dpa, dataProcessor);
 
         assertTrue(dpa.getViolations().isEmpty());
     }
