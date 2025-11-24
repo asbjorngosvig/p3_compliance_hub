@@ -23,21 +23,21 @@ public class DataProcessorController {
     public ResponseEntity<DataProcessorDTO.CreateResponse> create(
         @Valid @RequestBody DataProcessorDTO.CreateRequest req) {
 
-        DataProcessorDTO.CreateResponse newDataProcessor = service.create(req);
+        DataProcessorDTO.CreateResponse createResponse = service.create(req);
 
         // Good practice: Return the location header
-        URI location = URI.create("/dataprocessors/" + newDataProcessor.id());
+        URI location = URI.create("/dataprocessors/" + createResponse.createdDataProcessor().id());
 
-        return ResponseEntity.created(location).body(newDataProcessor);
+        return ResponseEntity.created(location).body(createResponse);
     }
 
 
-//    @GetMapping
+    @GetMapping
+    public ResponseEntity<DataProcessorDTO.GetAllResponse> getAll(){
+        return ResponseEntity.ok(service.getAll());
+    }
 //    getAll
 //
 //    @DeleteMapping
 //    delete
-//
-//    @PostMapping
-//    create
 }

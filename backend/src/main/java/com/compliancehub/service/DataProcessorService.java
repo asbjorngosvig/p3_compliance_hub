@@ -4,10 +4,10 @@ import com.compliancehub.dto.DataProcessorDTO;
 import com.compliancehub.model.DataProcessor;
 import com.compliancehub.repository.DataProcessorRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import java.util.InputMismatchException;
-import java.util.Optional;
-import java.util.UUID;
+
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -15,7 +15,6 @@ public class DataProcessorService {
     private final DataProcessorRepository dataProcessorRepository;
 
     public DataProcessorDTO.CreateResponse create(DataProcessorDTO.CreateRequest req) {
-        // Convert DTO to DP entity
         DataProcessor newDP = new DataProcessor();
         newDP.setName(req.name());
         newDP.setService(req.service());
@@ -27,13 +26,45 @@ public class DataProcessorService {
         DataProcessor savedDP = dataProcessorRepository.save(newDP);
 
         return new DataProcessorDTO.CreateResponse(
-            savedDP.getId(),
-            savedDP.getName(),
-            savedDP.getProcessingLocations(),
-            savedDP.getService(),
-            savedDP.getPurpose(),
-            savedDP.getNote(),
-            savedDP.getWebsite()
+            new DataProcessorDTO.DataProcessorResponse(
+                savedDP.getId(),
+                savedDP.getName(),
+                savedDP.getProcessingLocations(),
+                savedDP.getService(),
+                savedDP.getPurpose(),
+                savedDP.getNote(),
+                savedDP.getWebsite()
+            )
+        );
+    }
+
+    public DataProcessorDTO.GetAllResponse getAll(){
+        List<DataProcessorDTO.DataProcessorResponse> allDataProcessors = dataProcessorRepository
+            // Hent alle DataProcessors fra DB, sorteret alfabetisk
+                .findAll(Sort.by("name").ascending())
+                .stream()
+            // Konverter hver entitet til DTO:
+            // - Eksponerer kun de felter frontend har brug for
+            // - Undgår at sende interne felter og relationer (fx violations)
+            // - Afkobler API fra database-entity, så ændringer i entiteten ikke bryder frontend
+            // - Giver mulighed for at tilføje metadata eller transformationer senere uden at ændre entiteten
+                .map(dp -> new DataProcessorDTO.DataProcessorResponse(
+                        dp.getId(),
+                        dp.getName(),
+                        dp.getProcessingLocations(),
+                        dp.getService(),
+                        dp.getPurpose(),
+                        dp.getNote(),
+                        dp.getWebsite()
+                ))
+                .toList();
+
+        // Returner DTO med listen + metadata til frontend
+        return new DataProcessorDTO.GetAllResponse(
+                allDataProcessors,
+                dataProcessorRepository.count(),
+                "Alphabetical",
+                "Ascending"
         );
     }
 }
