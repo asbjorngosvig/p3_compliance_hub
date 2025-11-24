@@ -54,10 +54,11 @@ public class UserService {
     }
 
     public UserGetUserResponse getByEmail(String email) {
-        User user = userRepository.findByEmail(email);
+        Optional<User> optionalUser = userRepository.findByEmail(email);
 
         // make sure that user exists before returning
-        if (user != null) {
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
             return new UserGetUserResponse(user.getId(), user.getEmail(), user.getName(), user.getRole());
         } else {
             throw new InputMismatchException("Could not find user with email: " +  email);
@@ -73,8 +74,11 @@ public class UserService {
                 )
         );
 
-        User user = userRepository.findByEmail(userLoginDTO.username());
-        if (user == null) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
+        // make sure that user exists before returning
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
             throw new InputMismatchException("Invalid credentials");
         }
 
