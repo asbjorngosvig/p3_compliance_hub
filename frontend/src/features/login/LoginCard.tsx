@@ -24,22 +24,22 @@ export default function LoginCard() {
     return (
         <div className="w-full max-w-md mx-auto border rounded-2xl p-6 bg-slate-50 shadow-sm border-gray-200">
             <div className="mb-4">
-                <h2 className="text-xl font-semibold text-black">Login</h2>
+                <h2 className="text-2xl font-semibold text-slate-700">Login</h2>
                 <p className="text-gray-600 text-sm">
                     Enter your email below to login to your account
                 </p>
             </div>
 
             <div className="space-y-4">
-                <div className="flex flex-col space-y-1">
-                    <label htmlFor="email" className="text-sm font-medium text-black text-left">
+                <div className="flex flex-col space-y-1 ">
+                    <label htmlFor="email" className="text-md font-medium text-slate-700 text-left">
                         Email
                     </label>
                     <input
                         id="email"
                         type="email"
                         placeholder="firstname.lastname@uniwise.dk"
-                        className="border border-gray-500 rounded-lg p-2 text-black placeholder-gray-400 focus:outline-blue-500"
+                        className="border border-slate-400 rounded-lg p-2 text-black placeholder-gray-400 focus:outline-blue-500"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
@@ -47,7 +47,7 @@ export default function LoginCard() {
 
                 <div className="flex flex-col space-y-1">
                     <div className="flex items-center justify-between">
-                        <label htmlFor="password" className="text-sm font-medium text-black">
+                        <label htmlFor="password" className="text-md font-medium text-slate-700">
                             Password
                         </label>
                     </div>
@@ -55,7 +55,7 @@ export default function LoginCard() {
                         id="password"
                         type="password"
                         placeholder="Enter password"
-                        className="border border-gray-500 placeholder-gray-400 rounded-lg p-2 text-black focus:outline-blue-500"
+                        className="border border-slate-400 placeholder-gray-400 rounded-lg p-2 text-black focus:outline-blue-500"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />

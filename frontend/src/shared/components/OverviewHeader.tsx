@@ -11,16 +11,16 @@ export function OverviewHeader() {
         violationStatus: boolean;
         priority?: priorityStatus;
     }[] = [
-        { title: "Violations", description: "Detected:", numberCount: 5, violationStatus: true, priority: "Urgent" },
+        { title: "Violations", description: "Detected:", numberCount: 5, violationStatus: false, priority: "Urgent" },
         { title: "Compliant", description: "Compliant DPAs:", numberCount: 27, violationStatus: false },
         { title: "Pending", description: "Awaited response:", numberCount: 2, violationStatus: false },
         { title: "To be contacted", description: "30 days to contact:", numberCount: 5, violationStatus: false },
     ];
 
     return (
-        <div className="bg-white p-5 border rounded-2xl w-full shadow-sm">
+        <div className="  rounded-2xl w-full">
             <div className="flex items-center justify-between pb-4">
-                <p className="text-black text-2xl font-semibold">Overview</p>
+                <p className="text-slate-700 text-4xl font-semibold">Overview</p>
                 <Button to="/adddpa" variant="primary">Add DPA</Button>
             </div>
 
