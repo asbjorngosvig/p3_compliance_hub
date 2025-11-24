@@ -4,6 +4,9 @@ import com.compliancehub.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+import java.util.UUID;
+
 /*
  Metoder (dækket automatisk):
  * userRepository.save(user)             - gemmer nyt User/Admin/Employee eller opdaterer eksisterende
@@ -24,9 +27,7 @@ import org.springframework.stereotype.Repository;
  * - Custom queries: fx userRepository.findByEmail(email), userRepository.findByRole(role)
  */
 
-
 @Repository
-public interface UserRepository extends JpaRepository <User, Long> {
-    User findByEmail(String email);
-    User findByName(String name);
+public interface UserRepository extends JpaRepository <User, UUID> {
+    Optional<User> findByEmail(String email);
 }

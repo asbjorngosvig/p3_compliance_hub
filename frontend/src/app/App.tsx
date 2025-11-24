@@ -1,22 +1,8 @@
-//import { useState } from 'react'
-import '../shared/styles/App.css'
-import { Button } from '../shared/components/Buttons';
-import Navbar from '../shared/components/Navbar';
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routes/routers";
 
-// test
-function App() {
- // const [count, setCount] = useState(0);
-
-  return (
-    <>
-      <Navbar />
-
-      <div>
-        <Button variant="black">Test button black</Button>
-        <Button variant="blue">Test button blue</Button>
-      </div>
-    </>
-  )
+export default function App() {
+  return <RouterProvider router={router} />;
 }
 
-export default App
+

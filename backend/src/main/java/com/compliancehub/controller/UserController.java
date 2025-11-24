@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
@@ -26,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<UserGetUserResponse> getUserById(@PathVariable long id) {
+    private ResponseEntity<UserGetUserResponse> getUserById(@PathVariable UUID id) {
         UserGetUserResponse user = service.getById(id);
 
         URI location = URI.create("/users/" + user.id());

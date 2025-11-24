@@ -6,7 +6,7 @@ import java.util.List;
 
 public record DataProcessorCreateRequest (
         String name,
-        List<ProcessingLocation> processingLocation,
+        List<String> processingLocation,
         String service,
         String purpose,
         String note,

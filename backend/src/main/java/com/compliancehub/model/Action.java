@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "action")
@@ -13,8 +14,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Action {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long actionId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID actionId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "violation_id", nullable = false)
@@ -23,8 +24,10 @@ public class Action {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String description;
 
-    private LocalDateTime dueDate;
-
     @Column(nullable = false)
     private boolean isResolved = false;
+
+    public void resolve() {
+        this.isResolved = true;
+    }
 }

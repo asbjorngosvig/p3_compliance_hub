@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.InputMismatchException;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +41,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public UserGetUserResponse getById(long id) {
+    public UserGetUserResponse getById(UUID id) {
         Optional<User> optionalUser = userRepository.findById(id);
 
         // make sure that user exists before returning
