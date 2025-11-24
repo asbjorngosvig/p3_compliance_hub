@@ -1,15 +1,25 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // import navigate
-import { Button } from '../../shared/components/Buttons.tsx'
+import {useState} from "react";
+import {Button} from '../../shared/components/Buttons.tsx'
+import {authService} from "../../shared/services/AuthService.ts";
+import {useNavigate} from "react-router-dom";
 
-export default function LoginCard(){
+export default function LoginCard() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate(); // initialize navigate
+    const navigate = useNavigate();
 
-    const handleLogin = () => {
-        navigate("/dashboard");
+
+
+    const handleLogin = async () => {
+        try {
+            await authService.login({email, password});
+            navigate("/dashboard");
+        } catch (err) {
+            alert("Invalid email or password");
+            console.error(err);
+        }
     };
+
 
     return (
         <div className="w-full max-w-md mx-auto border rounded-2xl p-6 bg-slate-50 shadow-sm border-gray-200">
@@ -44,14 +54,14 @@ export default function LoginCard(){
                     <input
                         id="password"
                         type="password"
-                        placeholder="Enter password here"
+                        placeholder="Enter password"
                         className="border border-gray-500 placeholder-gray-400 rounded-lg p-2 text-black focus:outline-blue-500"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
 
-                <Button className="w-full" onClick={handleLogin}>
+                <Button variant={"primary"} onClick={handleLogin} >
                     Login
                 </Button>
             </div>

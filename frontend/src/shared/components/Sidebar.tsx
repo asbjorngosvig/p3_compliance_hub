@@ -16,7 +16,7 @@ type SidebarItem = {
 };
 
 const navigation: SidebarItem[] = [
-    { name: "Home", to: "/", icon: HomeIcon },
+    { name: "Home", to: "/dashboard", icon: HomeIcon },
     { name: "Data Processors", to: "/dataprocessors", icon: DocumentTextIcon },
     { name: "Employees", to: "/employees", icon: UserIcon },
 ];
@@ -111,7 +111,7 @@ export function Sidebar({
                     {!isCollapsed && <span>Settings</span>}
                 </NavLink>
 
-                <NavLink to="/login" className="flex items-center justify-center">
+                <NavLink to="/" className="flex items-center justify-center">
                     <ArrowRightEndOnRectangleIcon
                         className="text-black h-5 w-5 flex-shrink-0 hover:text-[#6A42AB] transition"
                         aria-hidden="true"
