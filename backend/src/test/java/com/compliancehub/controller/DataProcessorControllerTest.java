@@ -5,9 +5,10 @@ import com.compliancehub.service.DataProcessorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -21,29 +22,22 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class DataProcessorControllerUnitTest {
+//fra jUnit5. init mocks så det ik skal gøres længere nede
+@ExtendWith(MockitoExtension.class)
+class DataProcessorControllerTest {
 
     private MockMvc mockMvc;
 
-    // Service er mock’et, så controlleren ikke bruger den rigtige service-implementation.
     @Mock
     private DataProcessorService service;
 
-    // InjectMocks laver en controller-instans og injicerer alle @Mock-felter ind i den
-    // Dvs. controllerens service = vores mock service.
     @InjectMocks
     private DataProcessorController controller;
 
-    // Bruges til at konvertere DTO-objekter til JSON, så MockMvc kan sende dem som request body
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     void setUp() {
-        //Initialiserer alle @Mock og @InjectMocks-annoterede felter
-        //Uden ville mock-objekterne være null
-        MockitoAnnotations.openMocks(this);
-
-        // Opretter en "mini" Spring MVC server kun med controlleren, uden kontekst, db etc
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
@@ -54,7 +48,7 @@ class DataProcessorControllerUnitTest {
         //init af fake DP
         //herefter wrappe dp'en i create DTO (så entity ik exposes til api. se mainkoden for mere info)
         DataProcessorDTO.DataProcessorResponse dp = new DataProcessorDTO.DataProcessorResponse(
-            id, "Test DP", List.of("Loc1"), "Service", "Purpose", "Note", "http://example.com"
+            id, "Test DP", List.of("Loc1"), "Service", "Purpose", "Note", "https://example.com"
         );
         DataProcessorDTO.CreateResponse createResponse = new DataProcessorDTO.CreateResponse(dp);
 
@@ -65,12 +59,12 @@ class DataProcessorControllerUnitTest {
         //det info mock requesten fra frontenden kommer med. det er et objekt som skal laves til json
         //hvilket sker lidt længere nede
         DataProcessorDTO.CreateRequest request = new DataProcessorDTO.CreateRequest(
-            "Test DP", List.of("Loc1"), "Service", "Purpose", "Note", "http://example.com"
+            "Test DP", List.of("Loc1"), "Service", "Purpose", "Note", "https://example.com"
         );
 
         mockMvc.perform(post("/dataprocessors")
                 .contentType(MediaType.APPLICATION_JSON)
-                //omdanner  request-objektet til json
+                //omdanner request-objektet til json
                 .content(objectMapper.writeValueAsString(request)))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.createdDataProcessor.id").value(id.toString()))
@@ -84,10 +78,10 @@ class DataProcessorControllerUnitTest {
 
         //init af fake DP'er til liste af DP'er
         DataProcessorDTO.DataProcessorResponse dp1 = new DataProcessorDTO.DataProcessorResponse(
-            id1, "A", List.of("Loc1"), "Service1", "Purpose1", "Note1", "http://site1.com"
+            id1, "A", List.of("Loc1"), "Service1", "Purpose1", "Note1", "https://site1.com"
         );
         DataProcessorDTO.DataProcessorResponse dp2 = new DataProcessorDTO.DataProcessorResponse(
-            id2, "B", List.of("Loc2"), "Service2", "Purpose2", "Note2", "http://site2.com"
+            id2, "B", List.of("Loc2"), "Service2", "Purpose2", "Note2", "https://site2.com"
         );
 
         //sætte dem i liste og wrappe dem i getAll DTO'en
