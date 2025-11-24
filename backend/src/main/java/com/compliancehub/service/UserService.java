@@ -83,7 +83,7 @@ public class UserService {
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
 
-            token = jwtService.generateToken(user.getEmail(), user.getId(), user.getRole());
+            token = jwtService.generateToken(user.getEmail(), user.getEmail(), user.getRole());
             return token;
         } else {
             throw new InputMismatchException("Invalid credentials");
