@@ -13,6 +13,13 @@ import lombok.NoArgsConstructor;
 @DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 @Data
 
+/********************
+ * @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+ * Har kigget lidt efter Jackson udfra json->java
+ * Noget om excluding og including af sensitive data
+ * værd at kigge på
+ * -RZ
+ ********************/
 @NoArgsConstructor
 public abstract class User {
 

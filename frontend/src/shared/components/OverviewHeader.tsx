@@ -18,7 +18,7 @@ export function OverviewHeader() {
     ];
 
     return (
-        <div className="bg-slate-50 p-5 border rounded-2xl w-full ">
+        <div className="bg-white p-5 border rounded-2xl w-full shadow-sm">
             <div className="flex items-center justify-between pb-4">
                 <p className="text-black text-2xl font-semibold">Overview</p>
                 <Button to="/adddpa" variant="primary">Add DPA</Button>
