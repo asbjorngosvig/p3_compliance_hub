@@ -17,9 +17,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 //fra jUnit5. init mocks så det ik skal gøres længere nede
@@ -97,5 +96,17 @@ class DataProcessorControllerTest {
             .andExpect(jsonPath("$.allDataProcessors[0].name").value("A"))
             .andExpect(jsonPath("$.allDataProcessors[1].name").value("B"))
             .andExpect(jsonPath("$.totalCount").value(2));
+    }
+
+    @Test
+    void delete_shouldReturnNoContent() throws Exception {
+        UUID id = UUID.randomUUID();
+
+        doNothing().when(service).delete(id);
+
+        mockMvc.perform(delete("/dataprocessors/" + id))
+            .andExpect(status().isNoContent());
+
+        verify(service, times(1)).delete(id);
     }
 }

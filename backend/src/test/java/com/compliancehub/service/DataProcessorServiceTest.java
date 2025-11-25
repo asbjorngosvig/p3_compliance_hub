@@ -11,9 +11,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 //fra jUnit5. init mocks så det ik skal gøres længere nede
@@ -72,4 +74,39 @@ class DataProcessorServiceTest {
         verify(dataProcessorRepository, times(1)).findAll(Sort.by("name").ascending());
         verify(dataProcessorRepository, times(1)).count();
     }
+
+    @Test
+    void delete_shouldDeleteWhenIdExists() {
+        UUID id = UUID.randomUUID();
+
+        // 1) Mock: vi fortæller repository at "ja, den findes"
+        when(dataProcessorRepository.existsById(id)).thenReturn(true);
+
+        // 2) Call: vi kalder servicen
+        dataProcessorService.delete(id);
+
+        // 3) Verify: servicen skal først tjekke om ID findes
+        verify(dataProcessorRepository, times(1)).existsById(id);
+
+        // 4) Verify: servicen skal derefter slette det rigtige ID
+        verify(dataProcessorRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    void delete_shouldThrowWhenIdDoesNotExist() {
+        UUID id = UUID.randomUUID();
+
+        // 1) Mock: repository siger "nej, den findes ikke"
+        when(dataProcessorRepository.existsById(id)).thenReturn(false);
+
+        // 2) Assert: delete skal kaste din valgte exception
+        assertThrows(
+            NoSuchElementException.class,
+            () -> dataProcessorService.delete(id)
+        );
+
+        // 3) Verify: deleteById må IKKE blive kaldt når ID ikke findes
+        verify(dataProcessorRepository, never()).deleteById(any());
+    }
+
 }

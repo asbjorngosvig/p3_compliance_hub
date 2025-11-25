@@ -14,6 +14,7 @@ import java.util.*;
 public class DataProcessorService {
     private final DataProcessorRepository dataProcessorRepository;
 
+    //Create new data processor
     public DataProcessorDTO.CreateResponse create(DataProcessorDTO.CreateRequest req) {
         DataProcessor newDP = new DataProcessor();
         newDP.setName(req.name());
@@ -38,6 +39,7 @@ public class DataProcessorService {
         );
     }
 
+    //Get All Data Processors
     public DataProcessorDTO.GetAllResponse getAll(){
         List<DataProcessorDTO.DataProcessorResponse> allDataProcessors = dataProcessorRepository
             // Hent alle DataProcessors fra DB, sorteret alfabetisk
@@ -66,5 +68,12 @@ public class DataProcessorService {
             "Alphabetical",
             "Ascending"
         );
+    }
+
+    public void delete(UUID id){
+        if(!dataProcessorRepository.existsById(id)){
+            throw new NoSuchElementException("DataProcessor with id " + id + " is not found");
+        }
+        dataProcessorRepository.deleteById(id);
     }
 }

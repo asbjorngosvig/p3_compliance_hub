@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/dataprocessors")
@@ -37,6 +38,9 @@ public class DataProcessorController {
         return ResponseEntity.ok(service.getAll());
     }
 
-    @DeleteMapping
-    public delete
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id){
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
