@@ -49,22 +49,22 @@ public class DataProcessorService {
             // - Afkobler API fra database-entity, så ændringer i entiteten ikke bryder frontend
             // - Giver mulighed for at tilføje metadata eller transformationer senere uden at ændre entiteten
                 .map(dp -> new DataProcessorDTO.DataProcessorResponse(
-                        dp.getId(),
-                        dp.getName(),
-                        dp.getProcessingLocations(),
-                        dp.getService(),
-                        dp.getPurpose(),
-                        dp.getNote(),
-                        dp.getWebsite()
+                    dp.getId(),
+                    dp.getName(),
+                    dp.getProcessingLocations(),
+                    dp.getService(),
+                    dp.getPurpose(),
+                    dp.getNote(),
+                    dp.getWebsite()
                 ))
                 .toList();
 
         // Returner DTO med listen + metadata til frontend
         return new DataProcessorDTO.GetAllResponse(
-                allDataProcessors,
-                dataProcessorRepository.count(),
-                "Alphabetical",
-                "Ascending"
+            allDataProcessors,
+            dataProcessorRepository.count(),
+            "Alphabetical",
+            "Ascending"
         );
     }
 }
