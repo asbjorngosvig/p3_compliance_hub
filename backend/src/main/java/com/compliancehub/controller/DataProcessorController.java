@@ -37,6 +37,5 @@ public class DataProcessorController {
         return ResponseEntity.ok(service.getAll());
     }
 
-    @DeleteMapping
-    public delete
+
 }
