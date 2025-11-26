@@ -6,7 +6,7 @@ import com.compliancehub.model.DPA;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NeedWrittenAprooval implements CommuncationStrategy{
+public class NeedWrittenAprooval implements CommunicationStrategy{
     public String email;
 
     @Override

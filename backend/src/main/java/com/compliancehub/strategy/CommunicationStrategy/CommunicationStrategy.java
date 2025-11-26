@@ -5,7 +5,7 @@ import com.compliancehub.model.DPA;
 
 import java.util.Map;
 
-public interface CommuncationStrategy {
+public interface CommunicationStrategy {
     Action createAction(DPA dpa);
 
     public Map<String, Object> createAttributeMap();
