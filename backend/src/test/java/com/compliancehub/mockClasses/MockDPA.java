@@ -1,4 +1,19 @@
 package com.compliancehub.mockClasses;
 
+import com.compliancehub.model.DPA;
+
 public class MockDPA {
+
+    public static DPA getMock() {
+        DPA mockDPA = new DPA();
+
+
+
+        mockDPA.setRequirements(MockRequirements.getMock(mockDPA));
+        mockDPA.setCustomerName("AAU Copenhagen");
+        mockDPA.setFileUrl("https://example.com");
+        mockDPA.setProductName("UniFlow");
+        // mockDPA.setCommunicationStrats(NeedWrittenAprooval, EmailNotice);
+        return mockDPA;
+    }
 }
