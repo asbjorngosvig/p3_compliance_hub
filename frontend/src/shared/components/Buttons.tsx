@@ -16,7 +16,7 @@ export function Button({
     const navigate = useNavigate();
 
     const baseStyles =
-        "px-4 py-2 rounded-md font-medium transition-transform duration-150 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 hover:-translate-y-0.5 active:translate-y-0";
+        "px-4 py-2 rounded-2xl font-medium transition-transform duration-150 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 hover:-translate-y-0.5 active:translate-y-0";
 
     const variantStyles = {
         primary:
