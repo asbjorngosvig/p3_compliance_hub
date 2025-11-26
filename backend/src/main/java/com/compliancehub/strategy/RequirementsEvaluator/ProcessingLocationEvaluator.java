@@ -4,12 +4,14 @@ import com.compliancehub.model.DPA;
 import com.compliancehub.model.DataProcessor;
 import com.compliancehub.model.Requirement;
 import com.compliancehub.model.Violation;
+import lombok.Data;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 
+@Data
 public class ProcessingLocationEvaluator implements RequirementsEvaluator {
     private List<String> allowedLocations;
 
@@ -38,9 +40,6 @@ public class ProcessingLocationEvaluator implements RequirementsEvaluator {
         }
     }
 
-    public List<String> getAllowedLocations() {
-        return allowedLocations;
-    }
 
     @Override
     public Map<String, Object> createAttributesMap() {

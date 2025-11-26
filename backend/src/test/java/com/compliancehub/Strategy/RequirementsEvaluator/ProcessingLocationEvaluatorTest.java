@@ -76,7 +76,7 @@ class ProcessingLocationEvaluatorTest {
     void evaluateWithInvalidProcessingLocations() {
         evaluator.evaluate(dpa, dataProcessor);
         List<Violation> violations = dpa.getViolations();
-        
+
         assertNotNull(violations.getFirst().getDescription());
         assertEquals(1, violations.size());
     }
