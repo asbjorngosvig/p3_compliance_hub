@@ -2,12 +2,18 @@ package com.compliancehub.strategy.CommunicationStrategy;
 
 import com.compliancehub.model.Action;
 import com.compliancehub.model.DPA;
+import lombok.Data;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Data
 public class NeedWrittenAprooval implements CommunicationStrategy{
     public String email;
+
+    public NeedWrittenAprooval(Map<String, Object> attributes) {
+        parseAttributes(attributes);
+    }
 
     @Override
     public Action createAction(DPA dpa) {
