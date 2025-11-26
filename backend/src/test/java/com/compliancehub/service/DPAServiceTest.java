@@ -35,7 +35,7 @@ class DPAServiceTest {
         requirement.setReqEvaluator("ProcessingLocationsEvaluator");
         requirement.setAttributes(new HashMap<>());
 
-        RequirementsEvaluator reqEvaluator = DPAService.getReqEvaluator(requirement);
+        RequirementsEvaluator reqEvaluator = dpaService.getReqEvaluator(requirement);
         assertTrue(reqEvaluator instanceof ProcessingLocationEvaluator);
 
     }
@@ -48,7 +48,7 @@ class DPAServiceTest {
 
         // tester at vi får en exception, hvis den er invalid
         RuntimeException exception = assertThrows(RuntimeException.class, ()-> {
-            DPAService.getReqEvaluator(requirement);
+            dpaService.getReqEvaluator(requirement);
         });
     }
 

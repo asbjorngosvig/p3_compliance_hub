@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class DPAService {
 
 
-    public static RequirementsEvaluator getReqEvaluator(Requirement requirement) {
+    public RequirementsEvaluator getReqEvaluator(Requirement requirement) {
         switch (requirement.getReqEvaluator()) {
             case "ProcessingLocationsEvaluator": return new ProcessingLocationEvaluator(requirement.getAttributes());
             // todo: Add more Evaluators
