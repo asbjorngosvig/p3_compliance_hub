@@ -46,11 +46,13 @@ public class UserController {
         return ResponseEntity.created(location).body(user);
     }
 
+    @CrossOrigin(origins = {"http://localhost:5173", "http://compliancehub-alpha.vercel.app/", "https://compliancehub-alpha.vercel.app/"})
     @PostMapping("/register")
     public User register(@RequestBody UserLoginDTO userDTO){
         return service.register(userDTO);
     }
 
+    @CrossOrigin(origins = {"http://localhost:5173", "http://compliancehub-alpha.vercel.app/", "https://compliancehub-alpha.vercel.app/"})
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginDTO userDTO){
         String token = service.verify(userDTO);
