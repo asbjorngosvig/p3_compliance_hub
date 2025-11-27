@@ -39,7 +39,7 @@ class UserServiceTest {
     private UserService userService;
 
     @Test
-    void testRegister(){
+    void registerTest(){
         UUID id = UUID.randomUUID();
         UserLoginDTO userDTO = new UserLoginDTO("Test@test.com", "SecretPassword");
 
@@ -59,7 +59,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testVerify(){
+    void verifyTest(){
         UUID id = UUID.randomUUID();
         UserLoginDTO loginDTO = new UserLoginDTO("Test@test.com", "SecretPassword");
 

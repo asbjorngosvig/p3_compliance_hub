@@ -20,7 +20,7 @@ public class JWTServiceTest {
     private JWTService jwtService;
 
     @Test
-    void testGenerateToken(){
+    void generateTokenTest(){
         String subject = "testUser";
         String email = "test@test.com";
         String role = "ADMIN";
