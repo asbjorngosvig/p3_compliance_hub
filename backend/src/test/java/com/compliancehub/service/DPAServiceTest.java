@@ -30,7 +30,7 @@ class DPAServiceTest {
 
 
     @Test
-    void getValidReqEvaluatorTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    void getValidReqEvaluatorTest()  {
         Requirement requirement= new Requirement();
         requirement.setReqEvaluator("ProcessingLocationsEvaluator");
         requirement.setAttributes(new HashMap<>());
@@ -41,7 +41,7 @@ class DPAServiceTest {
     }
 
     @Test
-    void getInvalidReqEvaluatorTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    void getInvalidReqEvaluatorTest()  {
         Requirement requirement= new Requirement();
         requirement.setReqEvaluator("INVALIDEVALUATOR");
         requirement.setAttributes(new HashMap<>());
