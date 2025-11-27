@@ -1,9 +1,10 @@
 package com.compliancehub.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -26,7 +27,7 @@ public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long id;
+    private UUID id;
 
     @Column(nullable = false)
     private String name;
@@ -40,7 +41,7 @@ public abstract class User {
     @Column(name = "role", insertable = false, updatable = false)
     private String role;
 
-    public User(Long id, String name, String email, String password) {
+    public User(UUID id, String name, String email, String password) {
         this.id = id;
         this.name = name;
         this.email = email;

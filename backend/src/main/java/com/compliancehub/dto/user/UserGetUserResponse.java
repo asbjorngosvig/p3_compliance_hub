@@ -1,7 +1,9 @@
 package com.compliancehub.dto.user;
 
+import java.util.UUID;
+
 public record UserGetUserResponse(
-        long id,
+        UUID id,
         String email,
         String name,
         String role
