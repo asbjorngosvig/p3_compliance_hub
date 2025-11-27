@@ -1,52 +1,79 @@
 package com.compliancehub.service;
 
-import com.compliancehub.dto.dataprocessor.DataProcessorCreateRequest;
-import com.compliancehub.dto.dataprocessor.DataProcessorCreateResponse;
-import com.compliancehub.dto.dataprocessor.DataProcessorGetByIdResponse;
-
+import com.compliancehub.dto.DataProcessorDTO;
 import com.compliancehub.model.DataProcessor;
 import com.compliancehub.repository.DataProcessorRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.InputMismatchException;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class DataProcessorService {
     private final DataProcessorRepository dataProcessorRepository;
 
-    public DataProcessorGetByIdResponse getById(UUID id) {
-        Optional<DataProcessor> optionalDataProcessor = dataProcessorRepository.findById(id);
-
-        // make sure that data processor exists before returning
-        if (optionalDataProcessor.isPresent()) {
-            DataProcessor dp = optionalDataProcessor.get();
-            return new DataProcessorGetByIdResponse(dp.getId(),dp.getName(),dp.getProcessingLocations(),dp.getService(), dp.getPurpose(), dp.getNote(),dp.getWebsite());
-        } else {
-            throw new InputMismatchException("Could not find data processor with id: " +  id);
-        }
-    }
-
-
-    public DataProcessorCreateResponse create(DataProcessorCreateRequest req) {
-        // convert DTO to DP entity here:
+    //Create new data processor
+    public DataProcessorDTO.CreateResponse create(DataProcessorDTO.CreateRequest req) {
         DataProcessor newDP = new DataProcessor();
         newDP.setName(req.name());
         newDP.setService(req.service());
         newDP.setPurpose(req.purpose());
         newDP.setNote(req.note());
         newDP.setWebsite(req.website());
-        newDP.setProcessingLocations(req.processingLocation());
+        newDP.setProcessingLocations(req.processingLocations());
 
         DataProcessor savedDP = dataProcessorRepository.save(newDP);
 
-        // convert the entity back to DTO
-        return new DataProcessorCreateResponse(newDP.getId(), savedDP.getName(), savedDP.getProcessingLocations(), savedDP.getService(), savedDP.getPurpose(), savedDP.getNote(), savedDP.getWebsite());
-
+        return new DataProcessorDTO.CreateResponse(
+            new DataProcessorDTO.DataProcessorResponse(
+                savedDP.getId(),
+                savedDP.getName(),
+                savedDP.getProcessingLocations(),
+                savedDP.getService(),
+                savedDP.getPurpose(),
+                savedDP.getNote(),
+                savedDP.getWebsite()
+            )
+        );
     }
 
+    //Get All Data Processors
+    public DataProcessorDTO.GetAllResponse getAll(){
+        List<DataProcessorDTO.DataProcessorResponse> allDataProcessors = dataProcessorRepository
+            // Hent alle DataProcessors fra DB, sorteret alfabetisk
+                .findAll(Sort.by("name").ascending())
+                .stream()
+            // Konverter hver entitet til DTO:
+            // - Eksponerer kun de felter frontend har brug for
+            // - Undgår at sende interne felter og relationer (fx violations)
+            // - Afkobler API fra database-entity, så ændringer i entiteten ikke bryder frontend
+            // - Giver mulighed for at tilføje metadata eller transformationer senere uden at ændre entiteten
+                .map(dp -> new DataProcessorDTO.DataProcessorResponse(
+                    dp.getId(),
+                    dp.getName(),
+                    dp.getProcessingLocations(),
+                    dp.getService(),
+                    dp.getPurpose(),
+                    dp.getNote(),
+                    dp.getWebsite()
+                ))
+                .toList();
 
+        // Returner DTO med listen + metadata til frontend
+        return new DataProcessorDTO.GetAllResponse(
+            allDataProcessors,
+            dataProcessorRepository.count(),
+            "Alphabetical",
+            "Ascending"
+        );
+    }
+
+    public void delete(UUID id){
+        if(!dataProcessorRepository.existsById(id)){
+            throw new NoSuchElementException("DataProcessor with id " + id + " is not found");
+        }
+        dataProcessorRepository.deleteById(id);
+    }
 }

@@ -1,9 +1,9 @@
 package com.compliancehub.controller;
 
-import com.compliancehub.dto.dataprocessor.DataProcessorCreateRequest;
-import com.compliancehub.dto.dataprocessor.DataProcessorCreateResponse;
-import com.compliancehub.dto.dataprocessor.DataProcessorGetByIdResponse;
+// 1. Make sure this import matches the package where you put the DataProcessorDTO class
+import com.compliancehub.dto.DataProcessorDTO;
 import com.compliancehub.service.DataProcessorService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,27 +13,34 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/dataprocessors")
 public class DataProcessorController {
-    DataProcessorService service;
+
+    private final DataProcessorService service;
 
     public DataProcessorController(DataProcessorService service) {
         this.service = service;
     }
 
-    @GetMapping("/{id}")
-    ResponseEntity<DataProcessorGetByIdResponse> getById(@PathVariable UUID id) {
-        DataProcessorGetByIdResponse dp = service.getById(id);
+    @PostMapping
+    public ResponseEntity<DataProcessorDTO.CreateResponse> create(
+        @Valid @RequestBody DataProcessorDTO.CreateRequest req) {
 
-        URI location = URI.create("/dataprocessors/" + dp.id());
+        DataProcessorDTO.CreateResponse createResponse = service.create(req);
 
-        return ResponseEntity.created(location).body(dp);
+        // Good practice: Return the location header
+        URI location = URI.create("/dataprocessors/" + createResponse.createdDataProcessor().id());
+
+        return ResponseEntity.created(location).body(createResponse);
     }
 
-    @PostMapping("/")
-    ResponseEntity<DataProcessorCreateResponse> create(@RequestBody DataProcessorCreateRequest req) {
-        DataProcessorCreateResponse newDataProcessor = service.create(req);
 
-        URI location = URI.create("/dataprocessors/" + newDataProcessor.id());
+    @GetMapping
+    public ResponseEntity<DataProcessorDTO.GetAllResponse> getAll(){
+        return ResponseEntity.ok(service.getAll());
+    }
 
-        return ResponseEntity.created(location).body(newDataProcessor);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id){
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

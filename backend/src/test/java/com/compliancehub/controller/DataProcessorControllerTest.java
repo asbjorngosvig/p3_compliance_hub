@@ -1,79 +1,112 @@
 package com.compliancehub.controller;
 
-import com.compliancehub.model.DataProcessor;
-import com.compliancehub.repository.DataProcessorRepository;
+import com.compliancehub.dto.DataProcessorDTO;
+import com.compliancehub.service.DataProcessorService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.List;
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc(addFilters = false)
+//fra jUnit5. init mocks så det ik skal gøres længere nede
+@ExtendWith(MockitoExtension.class)
 class DataProcessorControllerTest {
 
-    @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private DataProcessorRepository dataProcessorRepository;
 
+    @Mock
+    private DataProcessorService service;
 
-    @Test
-    void testGetDataProcessorByid() throws Exception {
-        dataProcessorRepository.deleteAll();
-        DataProcessor dataProcessor = new DataProcessor();
-        dataProcessor.setName("testProcessor");
-        // dataProcessor.setProcessingLocations();
-        dataProcessor.setService("testService");
-        dataProcessor.setPurpose("testPurpose");
-        dataProcessor.setNote("testNote");
-        dataProcessor.setWebsite("testWebsite");
+    @InjectMocks
+    private DataProcessorController controller;
 
-        dataProcessorRepository.save(dataProcessor);
-        UUID id = dataProcessor.getId();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-        mockMvc.perform(get("/dataprocessors/"+id))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.id").value(id.toString()))
-        // .andExpect(jsonPath("$.hosting_location").value("testLocation"))
-        .andExpect(jsonPath("$.service").value("testService"))
-        .andExpect(jsonPath("$.purpose").value("testPurpose"))
-        .andExpect(jsonPath("$.note").value("testNote"))
-        .andExpect(jsonPath("$.website").value("testWebsite"));
+    @BeforeEach
+    void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
-    /*
     @Test
-    void testCreateDataProcessor() throws Exception {
-        mockMvc.perform(post("/dataprocessors/")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content("{\"name\":\"testName\","+
-            "\"hosting_location\":\"testLocation\","+
-            "\"service\":\"testService\","+
-            "\"purpose\":\"testPurpose\","+
-            "\"note\":\"testNote\","+
-            "\"website\":\"testWebsite\"}"))
+    void create_shouldReturnCreatedResponse() throws Exception {
+        UUID id = UUID.randomUUID();
 
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.id").value(2L)) //Running 2l instead of 1 due to it already being created earlier in test of getById test
-        // .andExpect(jsonPath("$.hosting_location").value("testLocation"))
-        .andExpect(jsonPath("$.service").value("testService"))
-        .andExpect(jsonPath("$.purpose").value("testPurpose"))
-        .andExpect(jsonPath("$.note").value("testNote"))
-        .andExpect(jsonPath("$.website").value("testWebsite"));
+        //init af fake DP
+        //herefter wrappe dp'en i create DTO (så entity ik exposes til api. se mainkoden for mere info)
+        DataProcessorDTO.DataProcessorResponse dp = new DataProcessorDTO.DataProcessorResponse(
+            id, "Test DP", List.of("Loc1"), "Service", "Purpose", "Note", "https://example.com"
+        );
+        DataProcessorDTO.CreateResponse createResponse = new DataProcessorDTO.CreateResponse(dp);
+
+        //forklarer hvad mock-servicen skal gøre når .create kaldes.
+        //.any siger den accepterer ethvert objekt af DataProcessorDTO.CreateRequest klassen
+        when(service.create(any(DataProcessorDTO.CreateRequest.class))).thenReturn(createResponse);
+
+        //det info mock requesten fra frontenden kommer med. det er et objekt som skal laves til json
+        //hvilket sker lidt længere nede
+        DataProcessorDTO.CreateRequest request = new DataProcessorDTO.CreateRequest(
+            "Test DP", List.of("Loc1"), "Service", "Purpose", "Note", "https://example.com"
+        );
+
+        mockMvc.perform(post("/dataprocessors")
+                .contentType(MediaType.APPLICATION_JSON)
+                //omdanner request-objektet til json
+                .content(objectMapper.writeValueAsString(request)))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.createdDataProcessor.id").value(id.toString()))
+            .andExpect(jsonPath("$.createdDataProcessor.name").value("Test DP"));
     }
 
-     */
+    @Test
+    void getAll_shouldReturnListOfDataProcessors() throws Exception {
+        UUID id1 = UUID.randomUUID();
+        UUID id2 = UUID.randomUUID();
 
+        //init af fake DP'er til liste af DP'er
+        DataProcessorDTO.DataProcessorResponse dp1 = new DataProcessorDTO.DataProcessorResponse(
+            id1, "A", List.of("Loc1"), "Service1", "Purpose1", "Note1", "https://site1.com"
+        );
+        DataProcessorDTO.DataProcessorResponse dp2 = new DataProcessorDTO.DataProcessorResponse(
+            id2, "B", List.of("Loc2"), "Service2", "Purpose2", "Note2", "https://site2.com"
+        );
 
+        //sætte dem i liste og wrappe dem i getAll DTO'en
+        DataProcessorDTO.GetAllResponse getAllResponse = new DataProcessorDTO.GetAllResponse(
+            List.of(dp1, dp2), 2L, "Alphabetical", "Ascending"
+        );
+
+        when(service.getAll()).thenReturn(getAllResponse);
+
+        mockMvc.perform(get("/dataprocessors"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.allDataProcessors.length()").value(2))
+            .andExpect(jsonPath("$.allDataProcessors[0].name").value("A"))
+            .andExpect(jsonPath("$.allDataProcessors[1].name").value("B"))
+            .andExpect(jsonPath("$.totalCount").value(2));
+    }
+
+    @Test
+    void delete_shouldReturnNoContent() throws Exception {
+        UUID id = UUID.randomUUID();
+
+        doNothing().when(service).delete(id);
+
+        mockMvc.perform(delete("/dataprocessors/" + id))
+            .andExpect(status().isNoContent());
+
+        verify(service, times(1)).delete(id);
+    }
 }
