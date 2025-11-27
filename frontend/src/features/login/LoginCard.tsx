@@ -43,6 +43,7 @@ export default function LoginCard() {
                         className="border border-slate-400 rounded-lg p-2 text-black placeholder-gray-400 focus:outline-blue-500"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        autoComplete="email"
                     />
                 </div>
 
@@ -59,6 +60,7 @@ export default function LoginCard() {
                         className="border border-slate-400 placeholder-gray-400 rounded-lg p-2 text-black focus:outline-blue-500"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        autoComplete="current-password"
                     />
                 </div>
 
