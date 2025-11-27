@@ -4,12 +4,14 @@ import com.compliancehub.model.DPA;
 import com.compliancehub.model.DataProcessor;
 import com.compliancehub.model.Requirement;
 import com.compliancehub.model.Violation;
+import lombok.Data;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 
+@Data
 public class ProcessingLocationEvaluator implements RequirementsEvaluator {
     private List<String> allowedLocations;
 
@@ -23,20 +25,21 @@ public class ProcessingLocationEvaluator implements RequirementsEvaluator {
 
     @Override
     public void evaluate(DPA dpa, DataProcessor dataProcessor) {
+        String clashingLocations = "";
         for (String location : dataProcessor.getProcessingLocations()) {
             if (!allowedLocations.contains(location)) {
-                Violation newViolation = new Violation();
-                newViolation.setDpa(dpa);
-                newViolation.setDataProcessor(dataProcessor);
-                newViolation.setDescription(dataProcessor.getName() +" is processing in " + location);
-                dpa.addViolation(newViolation);
+                clashingLocations += location + ", ";
             }
+        }
+        if (!clashingLocations.equals("")) {
+            Violation newViolation = new Violation();
+            newViolation.setDpa(dpa);
+            newViolation.setDataProcessor(dataProcessor);
+            newViolation.setDescription(dataProcessor.getName() + " is processing in " + clashingLocations + " which is not allowed by " + dpa.getCustomerName());
+            dpa.addViolation(newViolation);
         }
     }
 
-    public List<String> getAllowedLocations() {
-        return allowedLocations;
-    }
 
     @Override
     public Map<String, Object> createAttributesMap() {
