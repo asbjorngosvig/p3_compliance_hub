@@ -52,18 +52,19 @@ public class SecurityConfig {
     UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
+        configuration.setAllowCredentials(true);
+
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:5173",
                 "http://compliancehub-alpha.vercel.app",
                 "https://compliancehub-alpha.vercel.app"
         ));
 
-        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
-        configuration.setAllowCredentials(true);
+        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
-        System.out.println("CORS CONFIG APPLIED!");
         return source;
     }
 
