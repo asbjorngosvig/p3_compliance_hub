@@ -3,11 +3,7 @@ import {instance} from "./axiosClient";
 
 const login = async (data: ILoginData) => {
     const res = await instance.post<IAuthResponse>("/users/login", data);
-
-
-    localStorage.setItem("token", res.data.token); //save token
-
-    return res.data; //contains token
+    return res.data;
 };
 
 const register = async (data: IRegisterData) => {
@@ -17,11 +13,10 @@ const register = async (data: IRegisterData) => {
 };
 
 const logout = () => {
-    localStorage.removeItem("token");
 };
 
 const isAuthenticated = () => {
-    return Boolean(localStorage.getItem("token"));
+
 };
 
 export const authService = {
