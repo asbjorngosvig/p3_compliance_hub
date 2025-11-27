@@ -40,6 +40,7 @@ public class NeedEmailNotice implements CommunicationStrategy {
         this.email = (String) attributes.get("email");
         this.daysOfNotice = (int) attributes.get("daysOfNotice");
 
+
         if (email == null || daysOfNotice == -1) {
             throw new RuntimeException("Error parsing attributes for communication strategy");
         }
