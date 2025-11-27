@@ -45,7 +45,7 @@ public class UserController {
 
         return ResponseEntity.created(location).body(user);
     }
-    
+
     @PostMapping("/register")
     public User register(@RequestBody UserLoginDTO userDTO){
         return service.register(userDTO);
