@@ -23,6 +23,7 @@ export default function LoginCard() {
 
     return (
         <div className="w-full max-w-md mx-auto border rounded-2xl p-6 bg-slate-50 shadow-sm border-gray-200">
+            <form>
             <div className="mb-4">
                 <h2 className="text-2xl font-semibold text-slate-700">Login</h2>
                 <p className="text-gray-600 text-sm">
@@ -65,6 +66,7 @@ export default function LoginCard() {
                     Login
                 </Button>
             </div>
+            </form>
         </div>
     );
 };
