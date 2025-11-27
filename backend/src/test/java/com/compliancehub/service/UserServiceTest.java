@@ -11,48 +11,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-/*
-public class UserServiceTest {
-
-    private UserService userService;
-    private UserRepository userRepository;
-    private User user;
-
-    @BeforeEach
-    void setUp() {
-
-        user = new User();
-        user.setId(1L);
-        user.setName("testDataProcessor");
-        user.setHosting_location("testHostingLocation");
-        user.setService("CloudStorage");
-        user.setPurpose("dataBackup");
-        user.setNote("testNote");
-        user.setWebsite("https://example.com");
-
-        userRepository.deleteAll();
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-    }
-
-    @Test
-    void testGetById(){
-
-        UserGetByIdResponse response = userService.getById(1L);
-
-        assertEquals(1L, response.id());
-        assertEquals("testDataProcessor", response.name());
-        assertEquals("testHostingLocation", response.hosting_location());
-        assertEquals("CloudStorage", response.service());
-        assertEquals("dataBackup", response.purpose());
-        assertEquals("testNote", response.note());
-        assertEquals("https://example.com", response.website());
-    }
-
-}
-
- */
-
-
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
