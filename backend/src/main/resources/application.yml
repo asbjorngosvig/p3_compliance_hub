@@ -16,6 +16,8 @@ spring:
     url: jdbc:${DATABASE_URL} # NAME MUST NOT CHANGE
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
+    hikari:
+      maximum-pool-size: 4
 
   jpa:
     hibernate:
