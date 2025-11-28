@@ -7,9 +7,6 @@ public class MockDPA {
     public static DPA getMock() {
         DPA mockDPA = new DPA();
 
-
-
-        mockDPA.setRequirements(MockRequirements.getMock(mockDPA));
         mockDPA.setCustomerName("AAU Copenhagen");
         mockDPA.setFileUrl("https://example.com");
         mockDPA.setProductName("UniFlow");
