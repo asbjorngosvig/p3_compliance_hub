@@ -1,6 +1,7 @@
 package com.compliancehub.service;
 
 
+import com.compliancehub.dto.user.UserDTO;
 import com.compliancehub.dto.user.UserLoginDTO;
 import com.compliancehub.model.Admin;
 import com.compliancehub.model.User;
@@ -41,20 +42,29 @@ class UserServiceTest {
     @Test
     void registerTest(){
         UUID id = UUID.randomUUID();
-        UserLoginDTO userDTO = new UserLoginDTO("Test@test.com", "SecretPassword");
 
-        Admin TestUser = new Admin();
-        TestUser.setId(id);
-        TestUser.setEmail(userDTO.username());
-        TestUser.setName("name");
+        UserDTO.CreateRequest createRequest = new UserDTO.CreateRequest(
+            "TestUser",
+            "Test@test.com",
+            "SecretPassword",
+            "ADMIN"
+        );
 
-        when(userRepository.save(any(User.class))).thenReturn(TestUser);
+        Admin testUser = new Admin();
+        testUser.setId(id);
+        testUser.setEmail(createRequest.email());
+        testUser.setName(createRequest.name());
+        testUser.setRole(createRequest.role());
 
-        User result = userService.register(userDTO);
+        when(userRepository.save(any(User.class))).thenReturn(testUser);
+
+        UserDTO.UserResponse result = userService.registerUser(createRequest);
 
         verify(userRepository, times(1)).save(any(User.class));
 
-        assertEquals(userDTO.username(), result.getEmail());
+        assertEquals(createRequest.email(), result.email());
+        assertEquals(createRequest.name(), result.name());
+        assertEquals(createRequest.role(), result.role());
 
     }
 

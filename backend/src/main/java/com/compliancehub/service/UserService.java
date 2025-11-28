@@ -1,6 +1,6 @@
 package com.compliancehub.service;
 
-import com.compliancehub.dto.user.UserGetUserResponse;
+import com.compliancehub.dto.user.UserDTO;
 import com.compliancehub.dto.user.UserLoginDTO;
 import com.compliancehub.model.Admin;
 import com.compliancehub.model.User;
@@ -32,34 +32,49 @@ public class UserService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(12);
 
-    public User register(UserLoginDTO userDTO){
+    public UserDTO.UserResponse registerUser(UserDTO.CreateRequest createRequest) {
         User user = new Admin();
-        user.setPassword(bCryptPasswordEncoder.encode(userDTO.password()));
-        user.setEmail(userDTO.username());
+        user.setPassword(bCryptPasswordEncoder.encode(createRequest.password()));
+        user.setEmail(createRequest.name());
         user.setName("name");
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        return new UserDTO.UserResponse(
+                savedUser.getId(),
+                savedUser.getName(),
+                savedUser.getEmail(),
+                savedUser.getRole()
+        );
     }
 
-    public UserGetUserResponse getById(UUID id) {
+    public UserDTO.UserResponse getById(UUID id) {
         Optional<User> optionalUser = userRepository.findById(id);
 
         // make sure that user exists before returning
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            return new UserGetUserResponse(user.getId(), user.getEmail(), user.getName(), user.getRole());
+            return new UserDTO.UserResponse(
+                    user.getId(),
+                    user.getEmail(),
+                    user.getName(),
+                    user.getRole());
         } else {
             throw new InputMismatchException("Could not find user with id: " +  id);
         }
     }
 
-    public UserGetUserResponse getByEmail(String email) {
+    public UserDTO.UserResponse getByEmail(String email) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
 
         // make sure that user exists before returning
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            return new UserGetUserResponse(user.getId(), user.getEmail(), user.getName(), user.getRole());
+            return new UserDTO.UserResponse(
+                 user.getId(),
+                 user.getEmail(),
+                 user.getName(),
+                 user.getRole());
         } else {
             throw new InputMismatchException("Could not find user with email: " +  email);
         }

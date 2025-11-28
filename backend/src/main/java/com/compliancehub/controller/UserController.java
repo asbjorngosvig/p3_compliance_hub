@@ -1,6 +1,6 @@
 package com.compliancehub.controller;
 
-import com.compliancehub.dto.user.UserGetUserResponse;
+import com.compliancehub.dto.user.UserDTO;
 import com.compliancehub.dto.user.UserLoginDTO;
 import com.compliancehub.model.User;
 import com.compliancehub.service.UserService;
@@ -11,9 +11,6 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -29,26 +26,24 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<UserGetUserResponse> getUserById(@PathVariable UUID id) {
-        UserGetUserResponse user = service.getById(id);
+    private ResponseEntity<UserDTO.UserResponse> getUserById(@PathVariable UUID id) {
+        UserDTO.UserResponse userDTO = service.getById(id);
 
-        URI location = URI.create("/users/" + user.id());
-
-        return ResponseEntity.created(location).body(user);
+        return ResponseEntity.ok(userDTO);
     }
 
     @GetMapping("/email/{email}")
-    private ResponseEntity<UserGetUserResponse> getUserByEmail(@PathVariable String email) {
-        UserGetUserResponse user = service.getByEmail(email);
+    private ResponseEntity<UserDTO.UserResponse> getUserByEmail(@PathVariable String email) {
+        UserDTO.UserResponse userDTO = service.getByEmail(email);
 
-        URI location = URI.create("/users/" + user.email());
-
-        return ResponseEntity.created(location).body(user);
+        return ResponseEntity.ok(userDTO);
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody UserLoginDTO userDTO){
-        return service.register(userDTO);
+    public ResponseEntity<UserDTO.CreateResponse> registerUser(@RequestBody UserDTO.CreateRequest createRequest) {
+        var createdUser = service.registerUser(createRequest);
+
+        return ResponseEntity.status(201).body(new UserDTO.CreateResponse(createdUser));
     }
 
     @PostMapping("/login")
