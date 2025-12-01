@@ -18,8 +18,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -41,6 +43,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(reqeust -> reqeust
                     .requestMatchers("/users/login","/users/register", "/api/users/login", "/api/users/register").permitAll() //Does not req auth for these 2// endpoints register should be removed later
                     .anyRequest().authenticated())
+
             .httpBasic(Customizer.withDefaults()) //rest api access
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
@@ -48,23 +51,16 @@ public class SecurityConfig {
     }
 
     @Bean
-    UrlBasedCorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-
-        configuration.setAllowCredentials(true);
-
-        configuration.setAllowedOrigins(Arrays.asList(
-                "http://localhost:5173",
-                "http://compliancehub-alpha.vercel.app",
-                "https://compliancehub-alpha.vercel.app"
-        ));
-
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+    public CorsFilter corsFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.setAllowedOriginPatterns(List.of("http://localhost:5173","http://compliancehub-alpha.vercel.app","https://compliancehub-alpha.vercel.app"));
+        config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source); // ensures CORS runs early
     }
 
     @Bean
