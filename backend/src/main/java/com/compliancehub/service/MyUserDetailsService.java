@@ -20,15 +20,17 @@ public class MyUserDetailsService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        Optional<User> optionalUser = userRepository.findByEmail(username);
+
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
 
             return new UserPrincipal(user);
         } else {
-            throw new RuntimeException("Error loading user");
+            throw new UsernameNotFoundException("Error loading user");
         }
     }
 }
