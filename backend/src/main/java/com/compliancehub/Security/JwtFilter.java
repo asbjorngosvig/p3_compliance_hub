@@ -31,11 +31,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String path = request.getRequestURI();
 
-        if (path.equals("/api/users/login") || path.equals("/api/users/register")) {
+        if (path.equals("/api/users/login") || path.equals("/api/users/register") ||
+                path.equals("/users/login") || path.equals("/users/register")) {
             filterChain.doFilter(request, response);
             return;
         }
-
 
         String token = request.getHeader("Cookie").substring(4);
         String userEmail;
