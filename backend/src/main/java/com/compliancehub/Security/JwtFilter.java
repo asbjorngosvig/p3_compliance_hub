@@ -29,12 +29,13 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String path = request.getRequestURI();
 
         if (request.getMethod().equalsIgnoreCase("OPTIONS")) {
             filterChain.doFilter(request, response);
             return;
         }
+
+        String path = request.getRequestURI();
 
         if (path.equals("/api/users/login") || path.equals("/api/users/register") ||
                 path.equals("/users/login") || path.equals("/users/register")) {
@@ -46,14 +47,20 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = request.getHeader("Cookie").substring(4);
         String userEmail;
 
-        if (token != null) {
+        if (token == null || token.isBlank()) {
+            filterChain.doFilter(request, response);
+            return;
+        } else {
             userEmail = jwtService.extractUserName(token);
             System.out.println("USERNAME===" + userEmail);
-        } else {
-            throw new RuntimeException("Error getting token");
         }
 
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (userEmail == null || userEmail.isBlank()) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails = applicationContext.getBean(MyUserDetailsService.class).loadUserByUsername(userEmail);
 
