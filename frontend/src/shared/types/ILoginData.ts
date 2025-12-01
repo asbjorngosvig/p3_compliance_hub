@@ -1,10 +1,10 @@
 export interface ILoginData {
-    email:string;
+    username:string; // email
     password:string;
 }
 export interface IRegisterData {
     name:string;
-    email:string;
+    username:string; // email
     role: "ADMIN" | "EMPLOYEE";
     password:string;
 }

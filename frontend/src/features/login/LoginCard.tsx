@@ -12,7 +12,7 @@ export default function LoginCard() {
 
     const handleLogin = async () => {
         try {
-            await authService.login({email, password});
+            await authService.login({"username": email, password});
             navigate("/dashboard");
         } catch (err) {
             alert("Invalid email or password");
