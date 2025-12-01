@@ -41,6 +41,11 @@ public class SecurityConfig {
             .authorizeHttpRequests(reqeust -> reqeust
                     .requestMatchers("/users/login","/users/register", "/api/users/login", "/api/users/register").permitAll() //Does not req auth for these 2// endpoints register should be removed later
                     .anyRequest().authenticated())
+                .formLogin(form -> form
+                        .loginPage("/api/users/login")
+                        .loginProcessingUrl("/api/users/login")
+                        .permitAll()
+                )
             .httpBasic(Customizer.withDefaults()) //rest api access
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
