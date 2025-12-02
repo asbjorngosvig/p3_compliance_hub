@@ -35,7 +35,7 @@ public class UserService {
     public UserDTO.UserResponse registerUser(UserDTO.CreateRequest createRequest) {
         User user = new Admin();
         user.setPassword(bCryptPasswordEncoder.encode(createRequest.password()));
-        user.setEmail(createRequest.name());
+        user.setEmail(createRequest.email());
         user.setName("name");
 
         User savedUser = userRepository.save(user);

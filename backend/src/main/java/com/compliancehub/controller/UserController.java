@@ -42,7 +42,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<UserDTO.CreateResponse> registerUser(@RequestBody UserDTO.CreateRequest createRequest) {
         var createdUser = service.registerUser(createRequest);
-
+        System.out.println(service.getByEmail("ryan@test.com"));
         return ResponseEntity.status(201).body(new UserDTO.CreateResponse(createdUser));
     }
 
@@ -52,10 +52,10 @@ public class UserController {
 
         ResponseCookie cookie = ResponseCookie.from("jwt", token)
                 .httpOnly(true)
-                .secure(true) // true in prod
+                .secure(false) // true in prod
                 .path("/")
                 .maxAge(24 * 60 * 60)
-                .sameSite("None")
+                .sameSite("Lax")
                 .build();
 
         return ResponseEntity.ok()

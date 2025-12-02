@@ -13,7 +13,7 @@ export default function LoginCard() {
     const handleLogin = async () => {
         try {
             await authService.login({"username": email, password});
-            navigate("/dashboard");
+            navigate("dashboard");
         } catch (err) {
             alert("Invalid email or password");
             console.error(err);
@@ -64,7 +64,7 @@ export default function LoginCard() {
                     />
                 </div>
 
-                <Button variant={"primary"} onClick={handleLogin} >
+                <Button variant={"primary"} onClick={(e) => { e.preventDefault(); handleLogin(); }} >
                     Login
                 </Button>
             </div>
