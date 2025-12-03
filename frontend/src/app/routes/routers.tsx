@@ -6,22 +6,22 @@ const S = (el: ReactElement) => (
     <Suspense fallback={<div>Loading…</div>}>{el}</Suspense>
 );
 
-const Dashboard          = lazy(() => import("../../features/dashboard/Dashboard"));
-const DataProcessors     = lazy(() => import("../../features/dataProcessors/SeeDataProcessors"));
-const AddDataProcessor   = lazy(() => import("../../features/dataProcessors/AddDataProcessor"));
-const Employees          = lazy(() => import("../../features/employees/Employees"));
-const AddDpa             = lazy(() => import("../../features/addDpa/AddDpa"));
-const Settings           = lazy(() => import("../../features/settings/Settings"));
-const Login              = lazy(() => import("../../features/login/Login"));
-const DpaOverview        = lazy(() => import("../../features/dpas/DpaOverview"));
-const DpaDetails         = lazy(() => import("../../features/dpas/DpaDetails"));
+const Dashboard        = lazy(() => import("../../features/dashboard/Dashboard"));
+const DataProcessors   = lazy(() => import("../../features/dataProcessors/SeeDataProcessors"));
+const AddDataProcessor = lazy(() => import("../../features/dataProcessors/AddDataProcessor"));
+const Employees        = lazy(() => import("../../features/employees/Employees"));
+const AddDpa           = lazy(() => import("../../features/addDpa/AddDpa"));
+const Settings         = lazy(() => import("../../features/settings/Settings"));
+const Login            = lazy(() => import("../../features/login/Login"));
+const DpaOverview      = lazy(() => import("../../features/dpas/DpaOverview"));
+const DpaDetails       = lazy(() => import("../../features/dpas/DpaDetails"));
 
 export const router = createBrowserRouter(
     [
         {
             index: true,
             element: S(<Login />),
-            handle: { title: "Login" }
+            handle: { title: "Login" },
         },
         {
             element: <AppLayout />,
