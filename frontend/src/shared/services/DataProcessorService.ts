@@ -4,7 +4,7 @@ import type { IDataProcessor } from "../types/IDataProcessor";
 const create = (data: IDataProcessor) => {
     return instance.post<IDataProcessor>("/dataprocessors/", {
         name: data.name,
-        processingLocation: data.processingLocation,
+        processingLocations: data.processingLocations,
         service: data.service,
         purpose: data.purpose,
         note: data.note,

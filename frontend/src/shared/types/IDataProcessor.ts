@@ -1,7 +1,7 @@
 export interface IDataProcessor {
     id?: string;
     name: string;
-    processingLocation: string[];
+    processingLocations: string[];
     service: string;
     purpose: string;
     note: string;
