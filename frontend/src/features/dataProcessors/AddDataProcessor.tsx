@@ -12,7 +12,7 @@ export default function AddDataProcessor() {
     const [website, setWebsite] = useState("");
     const [note, setNote] = useState("");
 
-    const [dpaCount, setDpaCount] = useState("");   // <-- STRING i UI
+
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -62,8 +62,10 @@ export default function AddDataProcessor() {
                         type="search"
                         value={processingLocation}
                         onChange={(e) => {
-                                    let arr: string[] = processingLocations;
-                                    arr.push(e.target.value);
+                                    let locations: string[] = processingLocations;
+                                    locations.push(e.target.value);
+                                    setProcessingLocations(locations);
+                                    
                                     setProcessingLocation(e.target.value);
                                     e.target.value = "";
                                 }
