@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import type { IDataProcessor} from "../../shared/types/IDataProcessor.ts";
 import {dataProcessorService} from "../../shared/services/DataProcessorService.ts";
 import {Button} from '../../shared/components/Buttons.tsx'
@@ -8,7 +7,6 @@ const SeeDataProcessors: React.FC = () => {
     const [search, setSearch] = useState("");
     const [dataProcessors, setDataProcessors] = useState<IDataProcessor[]>([]);
     const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
 
     // Fetch data from API when component mounts
     useEffect(() => {
