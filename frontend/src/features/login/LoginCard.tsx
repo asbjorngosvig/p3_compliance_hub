@@ -22,16 +22,13 @@ export default function LoginCard() {
 
 
     return (
-        <div className="w-full max-w-md mx-auto border rounded-2xl p-6 bg-slate-50 shadow-sm border-gray-200">
-            <form>
-            <div className="mb-4">
-                <h2 className="text-2xl font-semibold text-slate-700">Login</h2>
-                <p className="text-gray-600 text-sm">
-                    Enter your email below to login to your account
-                </p>
+        <div className="flex justify-center w-full max-w-md mx-auto border rounded-2xl p-6 bg-slate-50 shadow-sm border-gray-200">
+            <form className="w-full">
+            <div className="mb-10">
+                <h2 className="text-center text-2xl font-semibold text-slate-700">Login</h2>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-12">
                 <div className="flex flex-col space-y-1 ">
                     <label htmlFor="email" className="text-md font-medium text-slate-700 text-left">
                         Email
@@ -63,10 +60,11 @@ export default function LoginCard() {
                         autoComplete="current-password"
                     />
                 </div>
-
+                <div className="flex flex-col space-y-1">
                 <Button variant={"primary"} onClick={(e) => { e.preventDefault(); handleLogin(); }} >
                     Login
                 </Button>
+                </div>
             </div>
             </form>
         </div>
