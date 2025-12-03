@@ -1,25 +1,32 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { dataProcessorService } from "../../shared/services/DataProcessorService";
 
 export default function AddDataProcessor() {
     const [name, setName] = useState("");
-    const [hostingCountry, setHostingCountry] = useState("");
+    const [processingLocations, setProcessingLocations] = useState<string[]>([]);
+
+    const [processingLocation, setProcessingLocation] = useState("");
+    const [purpose, setPurpose] = useState("");
+    const [service, setService] = useState("");
+    const [website, setWebsite] = useState("");
+    const [note, setNote] = useState("");
+
     const [dpaCount, setDpaCount] = useState("");   // <-- STRING i UI
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        const newProcessor = {
-            name,
-            hostingCountry,
-            dpaCount: Number(dpaCount),   // <-- KONVERTER HER
-        };
-
-        console.log("New Data Processor:", newProcessor);
-
-        alert("Data Processor added successfully! (mock)");
+        handleLogin();
     };
 
+    const handleLogin = async () => {
+        try {
+            await dataProcessorService.create({name, processingLocations, service, purpose, note, website});
+        } catch (err) {
+            alert("Error adding data processor");
+            console.error(err);
+        }
+    };
     return (
         <div className="px-8 py-6">
             <h1 className="text-3xl font-bold text-gray-900">Add Data Processor</h1>
@@ -49,32 +56,87 @@ export default function AddDataProcessor() {
                 {/* Hosting Country */}
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-gray-700">
-                        Hosting Country
+                        Processing locations Country
                     </label>
                     <input
-                        type="text"
-                        value={hostingCountry}
-                        onChange={(e) => setHostingCountry(e.target.value)}
+                        type="search"
+                        value={processingLocation}
+                        onChange={(e) => {
+                                    let arr: string[] = processingLocations;
+                                    arr.push(e.target.value);
+                                    setProcessingLocation(e.target.value);
+                                    e.target.value = "";
+                                }
+                        }
                         placeholder="e.g. Germany"
                         required
                         className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:ring-2 focus:ring-green-500"
                     />
                 </div>
 
-                {/* DPA Count */}
+                {/* purpose */}
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-gray-700">
-                        Number of DPAs
+                        Purpose
                     </label>
                     <input
-                        type="number"
-                        value={dpaCount}
-                        onChange={(e) => setDpaCount(e.target.value)}  // <-- BLIVER STRING
+                        type="text"
+                        value={purpose}
+                        onChange={(e) => setPurpose(e.target.value)}
+                        placeholder="..."
                         required
-                        min={0}
                         className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:ring-2 focus:ring-green-500"
                     />
                 </div>
+
+
+                {/* Service */}
+                <div className="flex flex-col gap-1">
+                    <label className="text-sm font-medium text-gray-700">
+                        Service
+                    </label>
+                    <input
+                        type="text"
+                        value={service}
+                        onChange={(e) => setService(e.target.value)}
+                        placeholder="..."
+                        required
+                        className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:ring-2 focus:ring-green-500"
+                    />
+                </div>
+
+
+                {/* Note */}
+                <div className="flex flex-col gap-1">
+                    <label className="text-sm font-medium text-gray-700">
+                        Note
+                    </label>
+                    <input
+                        type="text"
+                        value={note}
+                        onChange={(e) => setNote(e.target.value)}
+                        placeholder="..."
+                        required
+                        className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:ring-2 focus:ring-green-500"
+                    />
+                </div>
+
+
+                {/* Website */}
+                <div className="flex flex-col gap-1">
+                    <label className="text-sm font-medium text-gray-700">
+                        Website
+                    </label>
+                    <input
+                        type="text"
+                        value={website}
+                        onChange={(e) => setWebsite(e.target.value)}
+                        placeholder="..."
+                        required
+                        className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:ring-2 focus:ring-green-500"
+                    />
+                </div>
+
 
                 {/* Submit */}
                 <button
