@@ -1,6 +1,10 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
+
 import { dataProcessorService } from "../../shared/services/DataProcessorService";
+
+import {Button} from '../../shared/components/Buttons.tsx'
+
 
 export default function AddDataProcessor() {
     const [name, setName] = useState("");
@@ -148,12 +152,7 @@ export default function AddDataProcessor() {
 
 
                 {/* Submit */}
-                <button
-                    type="submit"
-                    className="w-full rounded-lg bg-green-600 py-2.5 text-center text-sm font-medium text-white shadow hover:bg-green-700"
-                >
-                    Add Data Processor
-                </button>
+            <Button to="/dashboard" variant="primary">Add Data Processor</Button>
             </form>
         </div>
     );
