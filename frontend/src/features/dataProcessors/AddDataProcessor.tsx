@@ -6,7 +6,7 @@ export default function AddDataProcessor() {
     const [name, setName] = useState("");
     const [processingLocations, setProcessingLocations] = useState<string[]>([]);
 
-    const [processingLocation, setProcessingLocation] = useState("");
+    const [location, setLocation] = useState("");
     const [purpose, setPurpose] = useState("");
     const [service, setService] = useState("");
     const [website, setWebsite] = useState("");
@@ -21,7 +21,14 @@ export default function AddDataProcessor() {
 
     const handleLogin = async () => {
         try {
-            await dataProcessorService.create({name, processingLocations, service, purpose, note, website});
+            await dataProcessorService.create({
+              name,
+              processingLocations,
+              service,
+              purpose,
+              note,
+              website,
+            });
         } catch (err) {
             alert("Error adding data processor");
             console.error(err);
@@ -60,13 +67,13 @@ export default function AddDataProcessor() {
                     </label>
                     <input
                         type="search"
-                        value={processingLocation}
+                        value={location}
                         onChange={(e) => {
                                     let locations: string[] = processingLocations;
                                     locations.push(e.target.value);
                                     setProcessingLocations(locations);
-                                    
-                                    setProcessingLocation(e.target.value);
+
+                                    setLocation(e.target.value);
                                     e.target.value = "";
                                 }
                         }
