@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { IDataProcessor} from "../../shared/types/IDataProcessor.ts";
 import {dataProcessorService} from "../../shared/services/DataProcessorService.ts";
+import {Button} from '../../shared/components/Buttons.tsx'
 
 const SeeDataProcessors: React.FC = () => {
     const [search, setSearch] = useState("");
@@ -39,18 +40,9 @@ const SeeDataProcessors: React.FC = () => {
             {/* Header */}
             <div className="mb-6 flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-900">Data Processors</h1>
-                    <p className="mt-1 text-sm text-gray-500">
-                        Overview of all processors handling your data, their hosting location, and attached DPAs.
-                    </p>
+                    <h1 className="text-slate-700 text-4xl font-semibold">Data Processors</h1>
                 </div>
-                <button
-                    type="button"
-                    onClick={() => navigate("/dataprocessors/add")}
-                    className="rounded-xl bg-green-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-                >
-                    Add Data Processor
-                </button>
+            <Button to="/dataprocessors/add" variant="primary">Add Data Processor</Button>
             </div>
 
             {/* Search + count */}
