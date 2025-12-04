@@ -69,11 +69,6 @@ const DpaOverview: React.FC = () => {
 
     const showingCount = filteredDpas.length;
 
-    // Custom checkbox: hvid som default, grøn når checked
-    const checkboxClasses =
-        "h-4 w-4 rounded-sm border border-slate-300 bg-white appearance-none " +
-        "checked:bg-green-500 checked:border-green-500 cursor-pointer";
-
     return (
         <section className="mt-6 rounded-2xl bg-white p-4 shadow-sm lg:p-6">
             {/* Header med DPAs label, search i midten, showing + filter til højre */}
@@ -134,13 +129,6 @@ const DpaOverview: React.FC = () => {
                     <table className="min-w-full divide-y divide-slate-200">
                         <thead className="bg-slate-50">
                         <tr>
-                            <th className="w-10 px-4 py-3">
-                                <input
-                                    type="checkbox"
-                                    className={checkboxClasses}
-                                    aria-label="Select all rows"
-                                />
-                            </th>
                             <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
                                 Name
                             </th>
@@ -165,10 +153,6 @@ const DpaOverview: React.FC = () => {
                         <tbody className="divide-y divide-slate-100 bg-white text-sm">
                         {filteredDpas.map((dpa) => (
                             <tr key={dpa.id} className="hover:bg-slate-50">
-                                <td className="px-4 py-3">
-                                    <input type="checkbox" className={checkboxClasses} />
-                                </td>
-
                                 <td className="px-4 py-3 font-medium text-slate-800">
                                     {dpa.name}
                                 </td>
@@ -251,7 +235,7 @@ const DpaOverview: React.FC = () => {
                         {filteredDpas.length === 0 && (
                             <tr>
                                 <td
-                                    colSpan={7}
+                                    colSpan={6}
                                     className="px-4 py-10 text-center text-sm text-slate-400"
                                 >
                                     No DPAs match your search.
