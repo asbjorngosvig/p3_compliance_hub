@@ -22,7 +22,7 @@ export default function LoginCard() {
 
 
     return (
-        <div className="flex justify-center w-full max-w-md mx-auto border rounded-2xl p-6 bg-slate-50 shadow-sm border-gray-200">
+        <div className="flex justify-center w-full max-w-md mx-auto border rounded-2xl p-6 bg-white text-neutral-300 shadow-sm">
             <form className="w-full">
             <div className="mb-10">
                 <h2 className="text-center text-2xl font-semibold text-slate-700">Login</h2>
