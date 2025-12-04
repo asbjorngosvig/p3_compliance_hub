@@ -1,27 +1,20 @@
 import { instance } from "./axiosClient";
-import type { IDataProcessor } from "../types/IDataProcessor";
+import type { IDataProcessor, IDataProcessorGetAllResponse, IDataProcessorCreateResponse } from "../types/IDataProcessor";
 
 const create = (data: IDataProcessor) => {
-    return instance.post<IDataProcessor>("/dataprocessors/", {
-        name: data.name,
-        processingLocations: data.processingLocations,
-        service: data.service,
-        purpose: data.purpose,
-        note: data.note,
-        website: data.website
-    });
+    return instance.post<IDataProcessorCreateResponse>("/dataprocessors", data);
 };
+
 
 const getAll = () => {
-    return instance.get<IDataProcessor[]>("/dataprocessors");
+    return instance.get<IDataProcessorGetAllResponse>("/dataprocessors");
 };
-
-const getById = (id: string) => {
-    return instance.get<IDataProcessor>(`/dataprocessors/${id}`);
+const deleteById = (id: string) => {
+    return instance.delete(`/dataprocessors/${id}`);
 };
 
 export const dataProcessorService = {
     create,
     getAll,
-    getById
+    deleteById
 };

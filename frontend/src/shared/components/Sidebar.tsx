@@ -18,9 +18,9 @@ type SidebarItem = {
 };
 
 const navigation: SidebarItem[] = [
-    { name: "Home", to: "/dashboard", icon: HomeIcon },
-    { name: "Data Processors", to: "/dataprocessors", icon: DocumentTextIcon },
-    { name: "Employees", to: "/employees", icon: UserIcon },
+    { name: "Home", to: "dashboard", icon: HomeIcon },
+    { name: "Data Processors", to: "dataprocessors", icon: DocumentTextIcon },
+    { name: "Employees", to: "employees", icon: UserIcon },
 ];
 
 function classNames(...classes: Array<string | false | null | undefined>) {

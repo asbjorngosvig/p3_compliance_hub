@@ -8,4 +8,16 @@ export interface IDataProcessor {
     website: string;
 }
 
+export interface IDataProcessorGetAllResponse {
+    allDataProcessors: IDataProcessor[];
+    totalCount: number;
+    sortedBy: string;
+    order: string;
+}
+
+export interface IDataProcessorCreateResponse {
+    createdDataProcessor: IDataProcessor;
+}
+
+
 

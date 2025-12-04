@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import type { IDataProcessor } from "../../shared/types/IDataProcessor.ts";
-import { dataProcessorService } from "../../shared/services/DataProcessorService.ts";
-import { Button } from "../../shared/components/Buttons.tsx";
+import React, {useEffect, useState} from "react";
+import type {IDataProcessor} from "../../shared/types/IDataProcessor.ts";
+import {dataProcessorService} from "../../shared/services/DataProcessorService.ts";
+import {Button} from '../../shared/components/Buttons.tsx'
+
 
 const SeeDataProcessors: React.FC = () => {
     const [search, setSearch] = useState("");
@@ -13,7 +14,9 @@ const SeeDataProcessors: React.FC = () => {
         const fetchData = async () => {
             try {
                 const response = await dataProcessorService.getAll();
-                setDataProcessors(response.data);
+
+                // FIXED: backend returns { allDataProcessors: [...] }
+                setDataProcessors(response.data.allDataProcessors);
             } catch (error) {
                 console.error("Failed to fetch data processors:", error);
             } finally {
@@ -47,6 +50,9 @@ const SeeDataProcessors: React.FC = () => {
                         Add Data Processor
                     </Button>
                 </div>
+
+                <Button to="/dataprocessors/add" variant="primary">Add Data Processor</Button>
+
             </div>
 
             {/* Search + grid (anden hvide div) */}
