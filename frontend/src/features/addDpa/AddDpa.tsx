@@ -3,7 +3,7 @@ import { AddDpaPreview } from "./AddDpaPreview";
 
 export function AddDpa() {
     return (
-        <div className="flex items-start gap-10">
+        <div className="flex justify-items-start gap-10">
             <Dpaform />
             <AddDpaPreview />
         </div>
