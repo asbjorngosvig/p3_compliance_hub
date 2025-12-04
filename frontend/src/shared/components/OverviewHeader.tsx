@@ -18,6 +18,7 @@ export function OverviewHeader() {
     ];
 
     return (
+        <div className="shadow-sm bg-white p-4 rounded-2xl">
         <div className="  rounded-2xl w-full">
             <div className="flex items-center justify-between pb-4">
                 <p className="text-slate-700 text-4xl font-semibold">Overview</p>
@@ -25,6 +26,7 @@ export function OverviewHeader() {
             </div>
 
             <OverviewCards cards={cardsData} />
+        </div>
         </div>
     );
 }

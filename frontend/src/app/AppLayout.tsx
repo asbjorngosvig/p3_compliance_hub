@@ -19,7 +19,7 @@ export default function AppLayout() {
                 toggle={() => setIsSidebarCollapsed((v) => !v)}
             />
 
-            <main className="flex-1 min-w-0 overflow-hidden pr-6 pl-6 transition-all">
+            <main className="flex-1 min-w-0 overflow-y-auto pr-6 pl-6 transition-all">
                 {/* Use the available width — don't center-limit this wrapper unless you intend to */}
                 <div className="">
                     <Outlet />
