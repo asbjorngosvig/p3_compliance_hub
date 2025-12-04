@@ -41,9 +41,6 @@ export default function AddDataProcessor() {
     return (
         <div className="px-8 py-6">
             <h1 className="text-3xl font-bold text-gray-900">Add Data Processor</h1>
-            <p className="mt-1 text-gray-500">
-                Fill in the required information to add a new data processor.
-            </p>
 
             <form
                 onSubmit={handleSubmit}
@@ -87,7 +84,7 @@ export default function AddDataProcessor() {
                     />
                 </div>
 
-                {/* purpose */}
+                {/* Purpose */}
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-gray-700">
                         Purpose
@@ -96,7 +93,7 @@ export default function AddDataProcessor() {
                         type="text"
                         value={purpose}
                         onChange={(e) => setPurpose(e.target.value)}
-                        placeholder="..."
+                        placeholder="e.g. Hosting database"
                         required
                         className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:ring-2 focus:ring-green-500"
                     />
@@ -112,7 +109,7 @@ export default function AddDataProcessor() {
                         type="text"
                         value={service}
                         onChange={(e) => setService(e.target.value)}
-                        placeholder="..."
+                        placeholder="e.g. Cloud infrastructure (IaaS)"
                         required
                         className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:ring-2 focus:ring-green-500"
                     />
@@ -128,7 +125,7 @@ export default function AddDataProcessor() {
                         type="text"
                         value={note}
                         onChange={(e) => setNote(e.target.value)}
-                        placeholder="..."
+                        placeholder="e.g. DPA signed 2024-05-01"
                         required
                         className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:ring-2 focus:ring-green-500"
                     />
@@ -144,7 +141,7 @@ export default function AddDataProcessor() {
                         type="text"
                         value={website}
                         onChange={(e) => setWebsite(e.target.value)}
-                        placeholder="..."
+                        placeholder="e.g. https://www.example.com"
                         required
                         className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:ring-2 focus:ring-green-500"
                     />
