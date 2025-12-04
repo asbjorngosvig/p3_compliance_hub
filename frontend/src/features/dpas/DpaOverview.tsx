@@ -60,7 +60,15 @@ const DpaOverview: React.FC = () => {
     }, [search, dpas]);
 
     const handleDelete = (id: number) => {
-        setDpas((prev) => prev.filter((dpa) => dpa.id !== id));
+        const dpa = dpas.find((d) => d.id === id);
+        if (!dpa) return;
+
+        const ok = window.confirm(
+            `Delete DPA for ${dpa.name}? This cannot be undone.`
+        );
+        if (!ok) return;
+
+        setDpas((prev) => prev.filter((d) => d.id !== id));
     };
 
     const handleEdit = (id: number) => {

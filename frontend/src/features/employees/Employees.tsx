@@ -93,7 +93,7 @@ export default function Employees() {
         if (!emp) return;
 
         const ok = window.confirm(
-            `Remove ${emp.name} from ComplianceHub? This cannot be undone (mock).`
+            `Remove ${emp.name} from ComplianceHub? This cannot be undone.`
         );
         if (!ok) return;
 
