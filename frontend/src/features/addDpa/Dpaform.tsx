@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 export function Dpaform() {
+    const [name, setName] = useState("");
     const [website, setWebsite] = useState("");
     const [contractualSafeguard, setContractualSafeguard] = useState("");
     const [hostingLocation, setHostingLocation] = useState("");
@@ -56,12 +57,25 @@ export function Dpaform() {
 
                 <div className="flex-1 overflow-y-auto pr-1 space-y-6">
 
+                    {/* Name */}
+                    <div>
+                        <label className="mb-2 block text-sm font-semibold text-black">Name</label>
+                        <input
+                            type="text"
+                            placeholder="e.g. AAU"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="w-full rounded-lg border border-gray-400 p-4 outline-none focus:ring-2 focus:ring-blue-500"
+                            required
+                        />
+                    </div>
+
                     {/* Website */}
                     <div>
                         <label className="mb-2 block text-sm font-semibold text-black">Website</label>
                         <input
                             type="url"
-                            placeholder="Placeholder"
+                            placeholder="e.g. https://www.example.com"
                             value={website}
                             onChange={(e) => setWebsite(e.target.value)}
                             className="w-full rounded-lg border border-gray-400 p-4 outline-none focus:ring-2 focus:ring-blue-500"
@@ -74,7 +88,7 @@ export function Dpaform() {
                         <label className="mb-2 block text-sm font-semibold text-black">Contractual Safeguard</label>
                         <input
                             type="text"
-                            placeholder="Placeholder"
+                            placeholder="e.g. Intra-EU processing only"
                             value={contractualSafeguard}
                             onChange={(e) => setContractualSafeguard(e.target.value)}
                             className="w-full rounded-lg border border-gray-400 p-4 outline-none focus:ring-2 focus:ring-blue-500"
@@ -87,7 +101,7 @@ export function Dpaform() {
                         <label className="mb-2 block text-sm font-semibold text-black">Hosting Location</label>
                         <input
                             type="text"
-                            placeholder="Placeholder"
+                            placeholder="e.g. Denmark"
                             value={hostingLocation}
                             onChange={(e) => setHostingLocation(e.target.value)}
                             className="w-full rounded-lg border border-gray-400 p-4 outline-none focus:ring-2 focus:ring-blue-500"
@@ -100,7 +114,7 @@ export function Dpaform() {
                         <label className="mb-2 block text-sm font-semibold text-black">Type of Service</label>
                         <input
                             type="text"
-                            placeholder="Placeholder"
+                            placeholder="e.g. exam management platform"
                             value={serviceType}
                             onChange={(e) => setServiceType(e.target.value)}
                             className="w-full rounded-lg border border-gray-400 p-4 outline-none focus:ring-2 focus:ring-blue-500"
@@ -124,7 +138,7 @@ export function Dpaform() {
                             />
                             <label htmlFor="fileUpload" className="cursor-pointer text-blue-600 underline">Link</label>
                             <span> or drag and drop</span>
-                            <p className="mt-2 text-sm text-gray-600">SVG, PNG, JPG or GIF (max. 3MB)</p>
+                            <p className="mt-2 text-sm text-gray-600">PDF, SVG, PNG, JPG or GIF (max. 3MB)</p>
                         </div>
 
                         {file && (
