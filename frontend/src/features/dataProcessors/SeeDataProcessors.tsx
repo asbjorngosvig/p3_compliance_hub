@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import type { IDataProcessor} from "../../shared/types/IDataProcessor.ts";
+import React, {useEffect, useState} from "react";
+import type {IDataProcessor} from "../../shared/types/IDataProcessor.ts";
 import {dataProcessorService} from "../../shared/services/DataProcessorService.ts";
 import {Button} from '../../shared/components/Buttons.tsx'
 
@@ -13,7 +13,9 @@ const SeeDataProcessors: React.FC = () => {
         const fetchData = async () => {
             try {
                 const response = await dataProcessorService.getAll();
-                setDataProcessors(response.data);
+
+                // FIXED: backend returns { allDataProcessors: [...] }
+                setDataProcessors(response.data.allDataProcessors);
             } catch (error) {
                 console.error("Failed to fetch data processors:", error);
             } finally {
@@ -40,7 +42,7 @@ const SeeDataProcessors: React.FC = () => {
                 <div>
                     <h1 className="text-slate-700 text-4xl font-semibold">Data Processors</h1>
                 </div>
-            <Button to="/dataprocessors/add" variant="primary">Add Data Processor</Button>
+                <Button to="/dataprocessors/add" variant="primary">Add Data Processor</Button>
             </div>
 
             {/* Search + count */}
@@ -70,12 +72,12 @@ const SeeDataProcessors: React.FC = () => {
                             <span className="text-sm font-semibold text-gray-900">{dp.name}</span>
                             <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500">
                                 <span className="inline-flex items-center rounded-full bg-gray-50 px-2.5 py-1">
-                                    <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-green-500" />
+                                    <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-green-500"/>
                                     Processing Locations: {dp.processingLocations || "Unknown"}
                                 </span>
                                 <span className="inline-flex items-center rounded-full bg-gray-50 px-2.5 py-1">
-                                    <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-blue-500" />
-                                    {dp.service ? dp.service.length : 0} DPA{dp.service?.length !== 1 && "s"}
+                                 <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-blue-500"/>
+                                Service: {dp.service}
                                 </span>
                             </div>
                         </div>
@@ -90,7 +92,8 @@ const SeeDataProcessors: React.FC = () => {
                 ))}
 
                 {filteredProcessors.length === 0 && (
-                    <div className="mt-6 rounded-2xl border border-dashed border-gray-200 bg-gray-50 px-6 py-10 text-center">
+                    <div
+                        className="mt-6 rounded-2xl border border-dashed border-gray-200 bg-gray-50 px-6 py-10 text-center">
                         <p className="text-sm font-medium text-gray-700">No data processors found</p>
                         <p className="mt-1 text-xs text-gray-500">
                             Try adjusting your search or add a new data processor.
