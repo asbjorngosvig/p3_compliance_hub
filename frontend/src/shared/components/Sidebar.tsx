@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {
     HomeIcon,
     DocumentTextIcon,
@@ -8,6 +8,8 @@ import {
     ListBulletIcon,
 } from "@heroicons/react/24/outline";
 import { Logo } from "./Logo";
+import {Button} from "./Buttons.tsx";
+import {authService} from "../services/AuthService.ts";
 
 type SidebarItem = {
     name: string;
@@ -32,6 +34,18 @@ export function Sidebar({
     isCollapsed: boolean;
     toggle: () => void;
 }) {
+
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+            await authService.logout();
+            navigate("/");
+        } catch (err) {
+            alert("Failed logout");
+            console.error(err);
+        }
+    };
     return (
         // No 'fixed' here; sidebar is a normal flex child. Use shrink-0 so it doesn't compress.
         <aside
@@ -111,12 +125,15 @@ export function Sidebar({
                     {!isCollapsed && <span>Settings</span>}
                 </NavLink>
 
-                <NavLink to="/" className="flex items-center justify-center">
+                <Button variant={"primary"} onClick={(e) => { e.preventDefault(); handleLogout(); }}
+                        className="flex justify-center !bg-transparent !border-none !shadow-none !p-0 !m-0 hover:!bg-transparent"
+                >
                     <ArrowRightEndOnRectangleIcon
-                        className="text-black h-5 w-5 flex-shrink-0 hover:text-[#6A42AB] transition"
+                        className="text-black h-5 w-5 hover:text-[#6A42AB] transition"
                         aria-hidden="true"
                     />
-                </NavLink>
+                </Button>
+
             </div>
         </aside>
     );
