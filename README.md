@@ -13,7 +13,7 @@ Our system solves this by giving users a **clear, real-time overview of potentia
 
 ## Team & Academic Context
 
-We are a team of **7 students at Aalborg University, Copenhagen**, working on our **3rd-semester project**.  
+We are a team of **6 students at Aalborg University, Copenhagen**, working on our **3rd-semester project**.  
 The project is grounded in our courses on **Object-Oriented Programming, User Interface Design, and Software Development & Engineering**, including UML modeling and backend architecture.  
 This project combines **real-world problem-solving** with academic rigor for a real company.
 
