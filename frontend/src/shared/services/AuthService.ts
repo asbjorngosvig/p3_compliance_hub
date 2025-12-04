@@ -12,8 +12,12 @@ const register = async (data: IRegisterData) => {
     return res.data;
 };
 
-const logout = () => {
+const logout = async () => {
+    const res = await instance.post<IAuthResponse>("/users/logout");
+
+    return res.data;
 };
+
 
 const isAuthenticated = () => {
 
