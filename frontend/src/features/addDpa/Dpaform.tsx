@@ -44,10 +44,11 @@ export function Dpaform() {
         if (f) onFilePick(f);
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        alert("DPA added (simulated)");
-    };
+const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    alert("DPA added (simulated)");
+};
 
     return (
         <div className="w-full h-full flex justify-center px-4">

@@ -3,8 +3,6 @@ import type { FormEvent } from "react";
 
 import { dataProcessorService } from "../../shared/services/DataProcessorService";
 
-import {Button} from '../../shared/components/Buttons.tsx'
-
 
 export default function AddDataProcessor() {
     const [name, setName] = useState("");
@@ -138,7 +136,7 @@ export default function AddDataProcessor() {
                         Website
                     </label>
                     <input
-                        type="text"
+                        type="url"
                         value={website}
                         onChange={(e) => setWebsite(e.target.value)}
                         placeholder="e.g. https://www.example.com"
@@ -149,7 +147,14 @@ export default function AddDataProcessor() {
 
 
                 {/* Submit */}
-            <Button to="/dashboard" variant="primary">Add Data Processor</Button>
+                <div className="mt-6 flex justify-end">
+                    <button
+                        type="submit"
+                        className="rounded-lg bg-[#7BA043] px-6 py-2 text-white hover:brightness-110"
+                    >
+                        Add Data Processor
+                    </button>
+                </div>
             </form>
         </div>
     );
