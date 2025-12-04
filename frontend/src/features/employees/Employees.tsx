@@ -1,13 +1,12 @@
 import { useMemo, useState, type FormEvent } from "react";
 
-type Role = "Admin" | "Editor" | "Viewer";
+type Role = "Admin" | "Employee";
 
 type Employee = {
     id: number;
     name: string;
     email: string;
     role: Role;
-    canManageDpas: boolean;
     status: "Active" | "Invited" | "Suspended";
 };
 
@@ -17,7 +16,6 @@ const initialEmployees: Employee[] = [
         name: "Sune (CTO)",
         email: "sune@uniwise.eu",
         role: "Admin",
-        canManageDpas: true,
         status: "Active",
     },
     {
@@ -25,15 +23,13 @@ const initialEmployees: Employee[] = [
         name: "Data Protection Officer",
         email: "dpo@uniwise.eu",
         role: "Admin",
-        canManageDpas: true,
         status: "Active",
     },
     {
         id: 3,
         name: "Support",
         email: "support@uniwise.eu",
-        role: "Viewer",
-        canManageDpas: false,
+        role: "Employee",
         status: "Active",
     },
 ];
@@ -43,8 +39,7 @@ export default function Employees() {
     const [search, setSearch] = useState("");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
-    const [role, setRole] = useState<Role>("Viewer");
-    const [canManageDpas, setCanManageDpas] = useState(false);
+    const [role, setRole] = useState<Role>("Employee");
 
     const handleAddEmployee = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -59,17 +54,14 @@ export default function Employees() {
             name: name.trim(),
             email: email.trim(),
             role,
-            canManageDpas,
             status: "Invited",
         };
 
         setEmployees((prev) => [newEmployee, ...prev]);
 
-        // reset form
         setName("");
         setEmail("");
-        setRole("Viewer");
-        setCanManageDpas(false);
+        setRole("Employee");
 
         alert("Employee added (mock) – remember: this is frontend only.");
     };
@@ -80,8 +72,7 @@ export default function Employees() {
                 emp.id === id
                     ? {
                         ...emp,
-                        role: emp.role === "Admin" ? "Viewer" : "Admin",
-                        canManageDpas: emp.role !== "Admin", // hvis vi fjerner admin → ingen DPA access
+                        role: emp.role === "Admin" ? "Employee" : "Admin",
                     }
                     : emp
             )
@@ -116,10 +107,7 @@ export default function Employees() {
             {/* Header */}
             <div className="flex items-start justify-between">
                 <div>
-                    <h1 className="text-2xl font-semibold text-gray-900">Employees</h1>
-                    <p className="mt-1 text-sm text-gray-500">
-                        Control who has access to ComplianceHub and who can administer DPAs.
-                    </p>
+                    <h1 className="text-slate-700 text-4xl font-semibold">Employees</h1>
                 </div>
             </div>
 
@@ -130,7 +118,7 @@ export default function Employees() {
                         Invite new employee
                     </h2>
                     <p className="text-xs text-gray-500">
-                        New employees will be created as &quot;Invited&quot; (mock).
+                        New employees will be created as "Invited" (mock).
                     </p>
                 </div>
 
@@ -174,33 +162,13 @@ export default function Employees() {
                             onChange={(e) => setRole(e.target.value as Role)}
                         >
                             <option value="Admin">Admin</option>
-                            <option value="Editor">Editor</option>
-                            <option value="Viewer">Viewer</option>
+                            <option value="Employee">Employee</option>
                         </select>
                     </div>
 
-                    <div className="flex flex-col justify-between md:col-span-1">
-                        <label className="mb-1 block text-xs font-medium text-gray-700">
-                            DPA permissions
-                        </label>
-                        <div className="flex items-center gap-2">
-                            <input
-                                id="canManageDpas"
-                                type="checkbox"
-                                className="h-4 w-4 rounded border-gray-300 bg-white text-indigo-600 focus:ring-indigo-500 checked:bg-indigo-600 checked:border-indigo-600"
-                                checked={canManageDpas}
-                                onChange={(e) => setCanManageDpas(e.target.checked)}
-                            />
-
-                            <label
-                                htmlFor="canManageDpas"
-                                className="text-xs text-gray-700"
-                            >
-                                Can create / edit DPAs
-                            </label>
-                        </div>
-
-                        <div className="mt-3 flex justify-end md:mt-0">
+                    {/* Right column (button still aligned the same) */}
+                    <div className="flex flex-col justify-end md:col-span-1">
+                        <div className="flex justify-end">
                             <button
                                 type="submit"
                                 className="inline-flex items-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1"
@@ -225,8 +193,8 @@ export default function Employees() {
                         />
                     </div>
                     <span className="text-xs text-gray-500">
-            Showing: {filteredEmployees.length} employees
-          </span>
+                        Showing: {filteredEmployees.length} employees
+                    </span>
                 </div>
 
                 <div className="overflow-hidden rounded-lg border border-gray-100">
@@ -243,9 +211,6 @@ export default function Employees() {
                                 Role
                             </th>
                             <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                                DPA access
-                            </th>
-                            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
                                 Status
                             </th>
                             <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-gray-500">
@@ -253,11 +218,12 @@ export default function Employees() {
                             </th>
                         </tr>
                         </thead>
+
                         <tbody className="divide-y divide-gray-100 bg-white">
                         {filteredEmployees.length === 0 && (
                             <tr>
                                 <td
-                                    colSpan={6}
+                                    colSpan={5}
                                     className="px-4 py-6 text-center text-sm text-gray-500"
                                 >
                                     No employees match your search.
@@ -277,33 +243,23 @@ export default function Employees() {
                                     {emp.role}
                                 </td>
                                 <td className="whitespace-nowrap px-4 py-3 text-sm">
-                                    {emp.canManageDpas ? (
-                                        <span className="inline-flex rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700">
-                        Can manage DPAs
-                      </span>
-                                    ) : (
-                                        <span className="inline-flex rounded-full bg-gray-50 px-2.5 py-0.5 text-xs font-medium text-gray-500">
-                        View only
-                      </span>
-                                    )}
-                                </td>
-                                <td className="whitespace-nowrap px-4 py-3 text-sm">
                                     {emp.status === "Active" && (
                                         <span className="inline-flex rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">
-                        Active
-                      </span>
+                                            Active
+                                        </span>
                                     )}
                                     {emp.status === "Invited" && (
                                         <span className="inline-flex rounded-full bg-yellow-50 px-2.5 py-0.5 text-xs font-medium text-yellow-700">
-                        Invited
-                      </span>
+                                            Invited
+                                        </span>
                                     )}
                                     {emp.status === "Suspended" && (
                                         <span className="inline-flex rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-medium text-red-700">
-                        Suspended
-                      </span>
+                                            Suspended
+                                        </span>
                                     )}
                                 </td>
+
                                 <td className="whitespace-nowrap px-4 py-3 text-right text-sm">
                                     <div className="flex justify-end gap-2">
                                         <button
@@ -313,6 +269,7 @@ export default function Employees() {
                                         >
                                             {emp.role === "Admin" ? "Remove admin" : "Make admin"}
                                         </button>
+
                                         <button
                                             type="button"
                                             onClick={() => handleRemove(emp.id)}
