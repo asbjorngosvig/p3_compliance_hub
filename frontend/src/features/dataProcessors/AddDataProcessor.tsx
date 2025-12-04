@@ -3,8 +3,6 @@ import type { FormEvent } from "react";
 
 import { dataProcessorService } from "../../shared/services/DataProcessorService";
 
-import {Button} from '../../shared/components/Buttons.tsx'
-
 
 export default function AddDataProcessor() {
     const [name, setName] = useState("");
@@ -57,7 +55,7 @@ export default function AddDataProcessor() {
                         onChange={(e) => setName(e.target.value)}
                         placeholder="e.g. AWS Frankfurt"
                         required
-                        className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:ring-2 focus:ring-green-500"
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     />
                 </div>
 
@@ -80,7 +78,7 @@ export default function AddDataProcessor() {
                         }
                         placeholder="e.g. Germany"
                         required
-                        className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:ring-2 focus:ring-green-500"
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     />
                 </div>
 
@@ -95,7 +93,7 @@ export default function AddDataProcessor() {
                         onChange={(e) => setPurpose(e.target.value)}
                         placeholder="e.g. Hosting database"
                         required
-                        className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:ring-2 focus:ring-green-500"
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     />
                 </div>
 
@@ -111,7 +109,7 @@ export default function AddDataProcessor() {
                         onChange={(e) => setService(e.target.value)}
                         placeholder="e.g. Cloud infrastructure (IaaS)"
                         required
-                        className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:ring-2 focus:ring-green-500"
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     />
                 </div>
 
@@ -127,7 +125,7 @@ export default function AddDataProcessor() {
                         onChange={(e) => setNote(e.target.value)}
                         placeholder="e.g. DPA signed 2024-05-01"
                         required
-                        className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:ring-2 focus:ring-green-500"
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     />
                 </div>
 
@@ -138,18 +136,25 @@ export default function AddDataProcessor() {
                         Website
                     </label>
                     <input
-                        type="text"
+                        type="url"
                         value={website}
                         onChange={(e) => setWebsite(e.target.value)}
                         placeholder="e.g. https://www.example.com"
                         required
-                        className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:ring-2 focus:ring-green-500"
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     />
                 </div>
 
 
                 {/* Submit */}
-            <Button to="/dashboard" variant="primary">Add Data Processor</Button>
+                <div className="mt-6 flex justify-end">
+                    <button
+                        type="submit"
+                        className="rounded-lg bg-[#7BA043] px-6 py-2 text-white hover:brightness-110"
+                    >
+                        Add Data Processor
+                    </button>
+                </div>
             </form>
         </div>
     );
