@@ -65,7 +65,7 @@ export function Dpaform() {
                             placeholder="e.g. AAU"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="w-full rounded-lg border border-gray-400 p-4 outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                             required
                         />
                     </div>
@@ -78,7 +78,7 @@ export function Dpaform() {
                             placeholder="e.g. https://www.example.com"
                             value={website}
                             onChange={(e) => setWebsite(e.target.value)}
-                            className="w-full rounded-lg border border-gray-400 p-4 outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                             required
                         />
                     </div>
@@ -91,7 +91,7 @@ export function Dpaform() {
                             placeholder="e.g. Intra-EU processing only"
                             value={contractualSafeguard}
                             onChange={(e) => setContractualSafeguard(e.target.value)}
-                            className="w-full rounded-lg border border-gray-400 p-4 outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                             required
                         />
                     </div>
@@ -104,7 +104,7 @@ export function Dpaform() {
                             placeholder="e.g. Denmark"
                             value={hostingLocation}
                             onChange={(e) => setHostingLocation(e.target.value)}
-                            className="w-full rounded-lg border border-gray-400 p-4 outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                             required
                         />
                     </div>
@@ -117,7 +117,7 @@ export function Dpaform() {
                             placeholder="e.g. exam management platform"
                             value={serviceType}
                             onChange={(e) => setServiceType(e.target.value)}
-                            className="w-full rounded-lg border border-gray-400 p-4 outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                             required
                         />
                     </div>

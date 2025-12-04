@@ -1,4 +1,5 @@
 import { useMemo, useState, type FormEvent } from "react";
+import { Button } from "../../shared/components/Buttons.tsx";
 
 type Role = "Admin" | "Employee";
 
@@ -41,9 +42,7 @@ export default function Employees() {
     const [email, setEmail] = useState("");
     const [role, setRole] = useState<Role>("Employee");
 
-    const handleAddEmployee = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
+    const addEmployee = () => {
         if (!name.trim() || !email.trim()) {
             alert("Please fill in both name and email.");
             return;
@@ -66,14 +65,19 @@ export default function Employees() {
         alert("Employee added (mock) – remember: this is frontend only.");
     };
 
+    const handleAddEmployeeSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        addEmployee();
+    };
+
     const handleToggleAdmin = (id: number) => {
         setEmployees((prev) =>
             prev.map((emp) =>
                 emp.id === id
                     ? {
-                        ...emp,
-                        role: emp.role === "Admin" ? "Employee" : "Admin",
-                    }
+                          ...emp,
+                          role: emp.role === "Admin" ? "Employee" : "Admin",
+                      }
                     : emp
             )
         );
@@ -123,7 +127,7 @@ export default function Employees() {
                 </div>
 
                 <form
-                    onSubmit={handleAddEmployee}
+                    onSubmit={handleAddEmployeeSubmit}
                     className="grid grid-cols-1 gap-4 md:grid-cols-4"
                 >
                     <div className="md:col-span-1">
@@ -169,12 +173,11 @@ export default function Employees() {
                     {/* Right column (button still aligned the same) */}
                     <div className="flex flex-col justify-end md:col-span-1">
                         <div className="flex justify-end">
-                            <button
-                                type="submit"
-                                className="inline-flex items-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1"
+                            <Button
+                                variant="primary"
                             >
                                 Add employee
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </form>
@@ -183,17 +186,17 @@ export default function Employees() {
             {/* Search + table */}
             <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                 <div className="mb-4 flex items-center justify-between gap-4">
-                    <div className="relative w-full max-w-xs">
+                    <div className="relative w-full max-w-md">
                         <input
                             type="text"
-                            placeholder="Search employees"
-                            className="w-full rounded-md border border-gray-300 px-3 py-2 pl-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                            placeholder="Search in employees"
+                            className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-green-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-100"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                    <span className="text-xs text-gray-500">
-                        Showing: {filteredEmployees.length} employees
+                    <span className="text-xs text-gray-500 md:text-sm">
+                        Showing: <span className="font-medium">{filteredEmployees.length}</span> employees
                     </span>
                 </div>
 
