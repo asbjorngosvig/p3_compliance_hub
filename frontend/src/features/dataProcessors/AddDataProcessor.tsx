@@ -1,8 +1,9 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 import { dataProcessorService } from "../../shared/services/DataProcessorService";
-
 
 export default function AddDataProcessor() {
     const [name, setName] = useState("");
@@ -14,6 +15,7 @@ export default function AddDataProcessor() {
     const [website, setWebsite] = useState("");
     const [note, setNote] = useState("");
 
+    const navigate = useNavigate();
 
     const handleCreate = async () => {
         try {
@@ -28,24 +30,25 @@ export default function AddDataProcessor() {
 
             alert("Data Processor successfully created");
 
-            setName(""); //reset all fields
+            // reset all fields
+            setName("");
             setProcessingLocations([]);
             setLocation("");
             setPurpose("");
             setService("");
             setWebsite("");
             setNote("");
-
         } catch (err) {
             console.error(err);
             alert("Error adding data processor");
         }
     };
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         handleCreate();
     };
+
     return (
         <div className="px-8 py-6">
             <h1 className="text-3xl font-bold text-gray-900">Add Data Processor</h1>
@@ -82,11 +85,12 @@ export default function AddDataProcessor() {
                             if (e.key === "Enter") {
                                 e.preventDefault();
                                 if (location.trim().length > 0) {
-                                    setProcessingLocations(prev => [...prev, location]);
+                                    setProcessingLocations((prev) => [...prev, location]);
                                     setLocation(""); // clear input
                                 }
                             }
                         }}
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     />
                 </div>
 
@@ -105,7 +109,6 @@ export default function AddDataProcessor() {
                     />
                 </div>
 
-
                 {/* Service */}
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-gray-700">
@@ -120,7 +123,6 @@ export default function AddDataProcessor() {
                         className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     />
                 </div>
-
 
                 {/* Note */}
                 <div className="flex flex-col gap-1">
@@ -137,7 +139,6 @@ export default function AddDataProcessor() {
                     />
                 </div>
 
-
                 {/* Website */}
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-gray-700">
@@ -153,12 +154,20 @@ export default function AddDataProcessor() {
                     />
                 </div>
 
+                {/* Bottom buttons: Back + Submit */}
+                <div className="mt-6 flex justify-between">
+                    <button
+                        type="button"
+                        onClick={() => navigate(-1)}
+                        className="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50"
+                    >
+                        <ArrowLeftIcon className="mr-1 h-4 w-4" />
+                        Back
+                    </button>
 
-                {/* Submit */}
-                <div className="mt-6 flex justify-end">
                     <button
                         type="submit"
-                        className="rounded-lg bg-[#7BA043] px-6 py-2 text-white hover:brightness-110"
+                        className="rounded-lg bg-[#7BA043] px-6 py-2 text-sm font-medium text-white shadow-sm hover:brightness-110"
                     >
                         Add Data Processor
                     </button>

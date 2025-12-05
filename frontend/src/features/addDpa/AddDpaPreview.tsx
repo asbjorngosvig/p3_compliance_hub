@@ -13,9 +13,7 @@ export function AddDpaPreview() {
                             </span>
                             <span>Preview</span>
                         </div>
-                        <p className="mt-2 text-sm">
-                            Violations occurred : 67
-                        </p>
+                        <p className="mt-2 text-sm">Violations occurred : 67</p>
                     </div>
                     <button
                         type="button"
@@ -34,9 +32,7 @@ export function AddDpaPreview() {
                             </span>
                             <span>Action</span>
                         </div>
-                        <p className="mt-2 text-sm">
-                            Most common: Terminate
-                        </p>
+                        <p className="mt-2 text-sm">Most common: Terminate</p>
                     </div>
                     <button
                         type="button"
