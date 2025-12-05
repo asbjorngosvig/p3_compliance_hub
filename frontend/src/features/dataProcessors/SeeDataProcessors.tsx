@@ -51,8 +51,6 @@ const SeeDataProcessors: React.FC = () => {
                     </Button>
                 </div>
 
-                <Button to="/dataprocessors/add" variant="primary">Add Data Processor</Button>
-
             </div>
 
             {/* Search + grid (anden hvide div) */}
