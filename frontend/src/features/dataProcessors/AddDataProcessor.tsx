@@ -15,26 +15,36 @@ export default function AddDataProcessor() {
     const [note, setNote] = useState("");
 
 
-
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        handleLogin();
-    };
-
-    const handleLogin = async () => {
+    const handleCreate = async () => {
         try {
             await dataProcessorService.create({
-              name,
-              processingLocations,
-              service,
-              purpose,
-              note,
-              website,
+                name,
+                processingLocations,
+                service,
+                purpose,
+                note,
+                website,
             });
+
+            alert("Data Processor successfully created");
+
+            setName(""); //reset all fields
+            setProcessingLocations([]);
+            setLocation("");
+            setPurpose("");
+            setService("");
+            setWebsite("");
+            setNote("");
+
         } catch (err) {
-            alert("Error adding data processor");
             console.error(err);
+            alert("Error adding data processor");
         }
+    };
+
+    const handleSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        handleCreate();
     };
     return (
         <div className="px-8 py-6">
@@ -65,20 +75,18 @@ export default function AddDataProcessor() {
                         Processing locations Country
                     </label>
                     <input
-                        type="search"
+                        type="text"
                         value={location}
-                        onChange={(e) => {
-                                    let locations: string[] = processingLocations;
-                                    locations.push(e.target.value);
-                                    setProcessingLocations(locations);
-
-                                    setLocation(e.target.value);
-                                    e.target.value = "";
+                        onChange={(e) => setLocation(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                e.preventDefault();
+                                if (location.trim().length > 0) {
+                                    setProcessingLocations(prev => [...prev, location]);
+                                    setLocation(""); // clear input
                                 }
-                        }
-                        placeholder="e.g. Germany"
-                        required
-                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                            }
+                        }}
                     />
                 </div>
 
