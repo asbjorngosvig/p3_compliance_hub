@@ -56,7 +56,7 @@ public class SecurityConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOriginPatterns(List.of("http://localhost:5173","http://compliancehub-alpha.vercel.app","https://compliancehub-alpha.vercel.app"));
+        config.setAllowedOriginPatterns(List.of("http://localhost:5173","https://compliancehub-alpha.vercel.app"));
         config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
 
