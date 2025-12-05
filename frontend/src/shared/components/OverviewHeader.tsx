@@ -1,6 +1,13 @@
 import {OverviewCards} from './OverviewCards.tsx';
 import type {priorityStatus} from './OverviewCard.tsx';
 import {Button} from './Buttons.tsx'
+import {
+    ExclamationTriangleIcon,
+    CheckCircleIcon,
+    FolderIcon,
+    EnvelopeIcon
+} from "@heroicons/react/24/outline";
+
 
 
 export function OverviewHeader() {
@@ -10,11 +17,12 @@ export function OverviewHeader() {
         numberCount: number;
         violationStatus: boolean;
         priority?: priorityStatus;
+        Icon: React.ElementType;
     }[] = [
-        { title: "Violations", description: "Detected:", numberCount: 5, violationStatus: false, priority: "Urgent" },
-        { title: "Compliant", description: "Compliant DPAs:", numberCount: 27, violationStatus: false },
-        { title: "Pending", description: "Awaited response:", numberCount: 2, violationStatus: false },
-        { title: "To be contacted", description: "30 days to contact:", numberCount: 5, violationStatus: false },
+        { title: "Violations", description: "Detected:", numberCount: 5, violationStatus: false, priority: "Urgent", Icon: ExclamationTriangleIcon },
+        { title: "Compliant", description: "Compliant DPAs:", numberCount: 27, violationStatus: false, Icon: CheckCircleIcon },
+        { title: "Total DPA's", description: "Amount:", numberCount: 20, violationStatus: false, Icon:  FolderIcon},
+        { title: "To be contacted", description: "30 days to contact:", numberCount: 5, violationStatus: false, Icon: EnvelopeIcon },
     ];
 
     return (

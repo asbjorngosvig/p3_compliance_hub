@@ -203,7 +203,7 @@ const DpaOverview: React.FC = () => {
 
             {/* TABLE */}
             <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200">
-                <div className="max-h-[520px] overflow-y-auto">
+                <div className="max-h-[48vh] overflow-y-auto">
                     <table className="min-w-full divide-y divide-slate-200">
                         <thead className="bg-slate-50">
                         <tr>

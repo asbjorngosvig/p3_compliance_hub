@@ -3,7 +3,7 @@ package com.compliancehub.Strategy.CommunicationStrategy;
 import com.compliancehub.model.Action;
 import com.compliancehub.model.DPA;
 import com.compliancehub.strategy.CommunicationStrategy.NeedEmailNotice;
-import com.compliancehub.strategy.CommunicationStrategy.NeedWrittenAprooval;
+import com.compliancehub.strategy.CommunicationStrategy.NeedWrittenApproval;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class NeedWrittenAproovalTest {
 
-    NeedWrittenAprooval strategy;
+    NeedWrittenApproval strategy;
     DPA dpa = new DPA();
     Map<String, Object> attributes = new HashMap<>();
     String email = "test@test.com";
@@ -23,7 +23,7 @@ class NeedWrittenAproovalTest {
     @BeforeEach
     void setup() {
         attributes.put("email", email);
-        strategy = new NeedWrittenAprooval(attributes);
+        strategy = new NeedWrittenApproval(attributes);
     }
 
 
