@@ -83,8 +83,8 @@ class DPAControllerTest {
                 .content(objectMapper.writeValueAsString(req)))
             .andExpect(status().isCreated()) // Forventer 201 Created
             .andExpect(header().string("Location", "/dpa/" + newId)) // Tjekker Location header
-            .andExpect(jsonPath("$.createDPA.id").value(newId.toString()))
-            .andExpect(jsonPath("$.createDPA.customerName").value("Test Customer"));
+            .andExpect(jsonPath("$.createdDPA.id").value(newId.toString()))
+            .andExpect(jsonPath("$.createdDPA.customerName").value("Test Customer"));
     }
 
     // --- UDKOMMENTERET TEST (Venter på implementering af GetAll) ---

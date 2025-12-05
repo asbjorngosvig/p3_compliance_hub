@@ -31,7 +31,7 @@ public class DataProcessorDTO {
     ) {}
 
     public record CreateResponse(
-        StandardDataProcessorResponse createDataProcessor
+        StandardDataProcessorResponse createdDataProcessor
     ) {}
 
     public record GetAllResponse(

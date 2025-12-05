@@ -31,7 +31,7 @@ public class DPA_DTO {
     ){}
 
     public record CreateResponse(
-        StandardDPAResponse createDPA
+        StandardDPAResponse createdDPA
     ){}
 
 

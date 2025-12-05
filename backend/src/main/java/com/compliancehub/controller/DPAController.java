@@ -24,7 +24,7 @@ public class DPAController {
         DPA_DTO.CreateResponse createResponse = service.create(req);
 
         // Good practice: Return the location header
-        URI location = URI.create("/dpa/" + createResponse.createDPA().id());
+        URI location = URI.create("/dpa/" + createResponse.createdDPA().id());
 
         return ResponseEntity.created(location).body(createResponse);
     }
