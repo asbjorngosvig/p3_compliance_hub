@@ -8,6 +8,7 @@ interface OverviewCardsProps {
         numberCount: number;
         violationStatus: boolean;
         priority?: priorityStatus;
+        Icon: React.ElementType;
     }[];
 }
 
