@@ -44,7 +44,20 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = request.getHeader("Cookie").substring(4);
+        String token = null;
+        String cookieHeader = request.getHeader("Cookie");
+
+        if (cookieHeader != null) {
+            for (String cookie : cookieHeader.split(";")) {
+                cookie = cookie.trim();
+                if (cookie.startsWith("jwt=")) {
+                    token = cookie.substring(4);
+                    break;
+                }
+            }
+        }
+
+
         String userEmail;
 
         if (token == null || token.isBlank()) {
