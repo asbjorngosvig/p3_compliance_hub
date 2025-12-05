@@ -97,7 +97,7 @@ class DataProcessorControllerTest {
             .andExpect(jsonPath("$.allDataProcessors[1].name").value("B"))
             .andExpect(jsonPath("$.totalCount").value(2));
     }
-
+    
     @Test
     void delete_shouldReturnNoContent() throws Exception {
         UUID id = UUID.randomUUID();
