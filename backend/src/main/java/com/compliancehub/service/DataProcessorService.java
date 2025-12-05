@@ -27,7 +27,7 @@ public class DataProcessorService {
         DataProcessor savedDP = dataProcessorRepository.save(newDP);
 
         return new DataProcessorDTO.CreateResponse(
-            new DataProcessorDTO.DataProcessorResponse(
+            new DataProcessorDTO.StandardDataProcessorResponse(
                 savedDP.getId(),
                 savedDP.getName(),
                 savedDP.getProcessingLocations(),
@@ -41,7 +41,7 @@ public class DataProcessorService {
 
     //Get All Data Processors
     public DataProcessorDTO.GetAllResponse getAll(){
-        List<DataProcessorDTO.DataProcessorResponse> allDataProcessors = dataProcessorRepository
+        List<DataProcessorDTO.StandardDataProcessorResponse> allDataProcessors = dataProcessorRepository
             // Hent alle DataProcessors fra DB, sorteret alfabetisk
                 .findAll(Sort.by("name").ascending())
                 .stream()
@@ -50,7 +50,7 @@ public class DataProcessorService {
             // - Undgår at sende interne felter og relationer (fx violations)
             // - Afkobler API fra database-entity, så ændringer i entiteten ikke bryder frontend
             // - Giver mulighed for at tilføje metadata eller transformationer senere uden at ændre entiteten
-                .map(dp -> new DataProcessorDTO.DataProcessorResponse(
+                .map(dp -> new DataProcessorDTO.StandardDataProcessorResponse(
                     dp.getId(),
                     dp.getName(),
                     dp.getProcessingLocations(),

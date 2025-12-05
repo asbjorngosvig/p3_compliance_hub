@@ -1,32 +1,67 @@
 package com.compliancehub.service;
 
-
-import com.compliancehub.dto.DPADTO;
-import com.compliancehub.model.DPA;
-import com.compliancehub.model.DataProcessor;
-import com.compliancehub.model.Requirement;
+import com.compliancehub.dto.DPA_DTO;
+import com.compliancehub.model.*;
 import com.compliancehub.repository.DPARepository;
 import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
 import com.compliancehub.strategy.RequirementsEvaluator.RequirementsEvaluator;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class DPAService {
-    DPARepository dpaRepository;
+    private final DPARepository repository;
 
-    public DPADTO.GetAllResponse getAll() {
-        List<DPA> allDPA = dpaRepository.findAll();
-
-        List<DPADTO.DPAResponse> dpaResonses = allDPA.stream().map(dpa->
-             new DPADTO.DPAResponse(dpa.getDPAId(), dpa.getViolations(), dpa.getCustomerName(), dpa.getProductName())
-        ).toList();
-
-        return new DPADTO.GetAllResponse(dpaResonses, (long) allDPA.size(), "Date created", "Ascending");
+    public DPAService(DPARepository repository){
+        this.repository = repository;
     }
+
+    public DPA_DTO.CreateResponse create(DPA_DTO.CreateRequest req){
+        DPA newDPA = new DPA();
+        newDPA.setCustomerName(req.customerName());
+        newDPA.setProductName(req.productName());
+        newDPA.setFileUrl(req.fileUrl());
+
+        if (req.requirements() != null) {
+            for (Requirement r : req.requirements()) {
+                newDPA.addRequirement(r);
+            }
+        }
+
+        if (req.communicationStrategies() != null) {
+            for (CommunicationStrategy s : req.communicationStrategies()) {
+                newDPA.addCommunicationStrategy(s);
+            }
+        }
+
+        DPA savedDPA = repository.save(newDPA);
+
+        return new DPA_DTO.CreateResponse(
+            new DPA_DTO.StandardDPAResponse(
+                savedDPA.getId(),
+                savedDPA.getViolations(),
+                savedDPA.getRequirements(),
+                savedDPA.getCommunicationStrats(),
+                savedDPA.getCustomerName(),
+                savedDPA.getProductName(),
+                savedDPA.getCreatedDate(),
+                savedDPA.getFileUrl()
+            )
+        );
+    }
+
+
+
+
+//    public DPA_DTO.GetAllResponse getAll() {
+//        List<DPA> allDPA = repository.findAll();
+//
+//        List<DPA_DTO.DPAResponse> dpaResonses = allDPA.stream().map(dpa->
+//             new DPA_DTO.DPAResponse(dpa.getDPAId(), dpa.getViolations(), dpa.getCustomerName(), dpa.getProductName())
+//        ).toList();
+//
+//        return new DPA_DTO.GetAllResponse(dpaResonses, (long) allDPA.size(), "Date created", "Ascending");
+//    }
 
     public RequirementsEvaluator getReqEvaluator(Requirement requirement) {
         switch (requirement.getReqEvaluator()) {

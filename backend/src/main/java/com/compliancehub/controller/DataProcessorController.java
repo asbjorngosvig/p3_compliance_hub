@@ -27,7 +27,7 @@ public class DataProcessorController {
         DataProcessorDTO.CreateResponse createResponse = service.create(req);
 
         // Good practice: Return the location header
-        URI location = URI.create("/dataprocessors/" + createResponse.createdDataProcessor().id());
+        URI location = URI.create("/dataprocessors/" + createResponse.createDataProcessor().id());
 
         return ResponseEntity.created(location).body(createResponse);
     }

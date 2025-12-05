@@ -18,29 +18,16 @@ import java.util.UUID;
 public class DPA {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID DPAId;
+    private UUID id;
 
-    @OneToMany(
-            mappedBy = "dpa",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "dpa", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Violation> violations = new ArrayList<>();
 
-    @OneToMany(
-            mappedBy = "dpa",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "dpa", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Requirement> requirements = new ArrayList<>();
 
-
-    @OneToMany(
-            mappedBy = "dpa",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<CommunicationStrategy> communicationStrats;
+    @OneToMany(mappedBy = "dpa", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommunicationStrategy> communicationStrats = new ArrayList<>();
 
     @Column(nullable = false)
     private String customerName;
@@ -52,14 +39,22 @@ public class DPA {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;
 
-//    @UpdateTimestamp
-//    @Column(nullable = false)
-//    private LocalDateTime lastChangedDate;
-
     @Column(length = 500, nullable = false)
     private String fileUrl;
 
+    // --- HELPER METHODS ---
+    public void addRequirement(Requirement req) {
+        requirements.add(req);
+        req.setDpa(this); // Sætter foreign key på barnet
+    }
+
+    public void addCommunicationStrategy(CommunicationStrategy strat) {
+        communicationStrats.add(strat);
+        strat.setDpa(this); // Sætter foreign key på barnet
+    }
+
     public void addViolation(Violation violation) {
-        this.violations.add(violation);
+        violations.add(violation);
+        violation.setDpa(this); // Sætter foreign key på barnet
     }
 }

@@ -1,6 +1,5 @@
 package com.compliancehub.dto;
 
-import com.compliancehub.model.DataProcessor;
 import org.hibernate.validator.constraints.URL;
 
 import java.util.List;
@@ -10,16 +9,6 @@ public class DataProcessorDTO {
 
     // Private constructor to hide the implicit public one
     private DataProcessorDTO() {}
-
-    public record DataProcessorResponse(
-        UUID id,
-        String name,
-        List<String> processingLocations,
-        String service,
-        String purpose,
-        String note,
-        String website
-    ) {}
 
     public record CreateRequest(
         String name,
@@ -31,12 +20,22 @@ public class DataProcessorDTO {
         String website
     ) {}
 
+    public record StandardDataProcessorResponse(
+        UUID id,
+        String name,
+        List<String> processingLocations,
+        String service,
+        String purpose,
+        String note,
+        String website
+    ) {}
+
     public record CreateResponse(
-        DataProcessorResponse createdDataProcessor
+        StandardDataProcessorResponse createDataProcessor
     ) {}
 
     public record GetAllResponse(
-        List<DataProcessorResponse> allDataProcessors,
+        List<StandardDataProcessorResponse> allDataProcessors,
         Long totalCount,
         String sortedBy,
         String order

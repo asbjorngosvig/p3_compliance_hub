@@ -48,8 +48,8 @@ class DataProcessorServiceTest {
 
         DataProcessorDTO.CreateResponse response = dataProcessorService.create(request);
 
-        assertEquals(id, response.createdDataProcessor().id());
-        assertEquals("Test DP", response.createdDataProcessor().name());
+        assertEquals(id, response.createDataProcessor().id());
+        assertEquals("Test DP", response.createDataProcessor().name());
 
         verify(dataProcessorRepository, times(1)).save(any(DataProcessor.class));
     }

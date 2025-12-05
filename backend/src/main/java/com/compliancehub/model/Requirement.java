@@ -1,10 +1,8 @@
 package com.compliancehub.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore; // VIGTIG IMPORT
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -22,6 +20,7 @@ public class Requirement {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID requirementID;
 
+    @JsonIgnore // Forhindrer uendeligt JSON loop
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "dpa_id", nullable = false)
     private DPA dpa;
