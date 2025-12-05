@@ -46,7 +46,7 @@ class DataProcessorControllerTest {
 
         //init af fake DP
         //herefter wrappe dp'en i create DTO (så entity ik exposes til api. se mainkoden for mere info)
-        DataProcessorDTO.DataProcessorResponse dp = new DataProcessorDTO.DataProcessorResponse(
+        DataProcessorDTO.StandardDataProcessorResponse dp = new DataProcessorDTO.StandardDataProcessorResponse(
             id, "Test DP", List.of("Loc1"), "Service", "Purpose", "Note", "https://example.com"
         );
         DataProcessorDTO.CreateResponse createResponse = new DataProcessorDTO.CreateResponse(dp);
@@ -76,10 +76,10 @@ class DataProcessorControllerTest {
         UUID id2 = UUID.randomUUID();
 
         //init af fake DP'er til liste af DP'er
-        DataProcessorDTO.DataProcessorResponse dp1 = new DataProcessorDTO.DataProcessorResponse(
+        DataProcessorDTO.StandardDataProcessorResponse dp1 = new DataProcessorDTO.StandardDataProcessorResponse(
             id1, "A", List.of("Loc1"), "Service1", "Purpose1", "Note1", "https://site1.com"
         );
-        DataProcessorDTO.DataProcessorResponse dp2 = new DataProcessorDTO.DataProcessorResponse(
+        DataProcessorDTO.StandardDataProcessorResponse dp2 = new DataProcessorDTO.StandardDataProcessorResponse(
             id2, "B", List.of("Loc2"), "Service2", "Purpose2", "Note2", "https://site2.com"
         );
 
@@ -97,7 +97,7 @@ class DataProcessorControllerTest {
             .andExpect(jsonPath("$.allDataProcessors[1].name").value("B"))
             .andExpect(jsonPath("$.totalCount").value(2));
     }
-
+    
     @Test
     void delete_shouldReturnNoContent() throws Exception {
         UUID id = UUID.randomUUID();

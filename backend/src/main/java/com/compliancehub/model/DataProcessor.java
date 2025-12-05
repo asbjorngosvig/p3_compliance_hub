@@ -1,5 +1,6 @@
 package com.compliancehub.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore; // Husk import
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -23,8 +24,8 @@ public class DataProcessor {
     @Column(nullable = false)
     private String name;
 
-    @JdbcTypeCode(SqlTypes.ARRAY) // Tells Hibernate: "This is a SQL Array (text[])"
-    @Column(name = "processing_locations", columnDefinition = "text[]") // Optional: ensures DB creates text[] column
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    @Column(name = "processing_locations", columnDefinition = "text[]")
     private List<String> processingLocations = new ArrayList<>();
 
     @Column(length = 500, nullable = false)
@@ -39,6 +40,10 @@ public class DataProcessor {
     @Column(length = 500, nullable = false)
     private String website;
 
+    // Vi sætter @JsonIgnore her, fordi det er vigtigere at se "Hvem?"
+    // inde på Violation-objektet, end at se "Hvad har de gjort?"
+    // når vi bare slår en processor op.
+    @JsonIgnore
     @OneToMany(mappedBy = "dataProcessor")
     private List<Violation> violations;
 

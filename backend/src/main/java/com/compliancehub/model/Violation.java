@@ -1,5 +1,6 @@
 package com.compliancehub.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore; // HUSK DENNE
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,6 +21,7 @@ public class Violation {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID violationId;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "dpa_id", nullable = false)
     private DPA dpa;
@@ -41,7 +43,13 @@ public class Violation {
     @Column(nullable = false)
     private boolean isResolved = false;
 
+    // ... helper methods
     public void resolve() {
         this.isResolved = true;
+    }
+
+    public void addAction(Action action) {
+        actions.add(action);
+        action.setViolation(this);
     }
 }
