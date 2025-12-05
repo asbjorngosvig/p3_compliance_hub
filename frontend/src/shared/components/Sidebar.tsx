@@ -1,4 +1,4 @@
-import {NavLink, useNavigate} from "react-router-dom";
+import { NavLink, useNavigate, Link } from "react-router-dom";
 import {
     HomeIcon,
     DocumentTextIcon,
@@ -8,8 +8,8 @@ import {
     ListBulletIcon,
 } from "@heroicons/react/24/outline";
 import { Logo } from "./Logo";
-import {Button} from "./Buttons.tsx";
-import {authService} from "../services/AuthService.ts";
+import { Button } from "./Buttons.tsx";
+import { authService } from "../services/AuthService.ts";
 
 type SidebarItem = {
     name: string;
@@ -34,7 +34,6 @@ export function Sidebar({
     isCollapsed: boolean;
     toggle: () => void;
 }) {
-
     const navigate = useNavigate();
 
     const handleLogout = async () => {
@@ -46,8 +45,8 @@ export function Sidebar({
             console.error(err);
         }
     };
+
     return (
-        // No 'fixed' here; sidebar is a normal flex child. Use shrink-0 so it doesn't compress.
         <aside
             className={classNames(
                 "h-screen bg-white flex flex-col transition-all duration-300 ease-in-out flex-shrink-0",
@@ -62,7 +61,7 @@ export function Sidebar({
                 )}
             >
                 {!isCollapsed && (
-                    <div className="mx-auto w-full">
+                    <Link to="dashboard" className="mx-auto w-full">
                         <Logo
                             showTitle
                             title="ComplianceHub"
@@ -72,7 +71,7 @@ export function Sidebar({
                             imgClassName="h-[min(12cqh,24px)]"
                             titleClassName="text-center"
                         />
-                    </div>
+                    </Link>
                 )}
 
                 <button
@@ -101,7 +100,12 @@ export function Sidebar({
                             )
                         }
                     >
-                        {Icon && <Icon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />}
+                        {Icon && (
+                            <Icon
+                                className="h-5 w-5 flex-shrink-0"
+                                aria-hidden="true"
+                            />
+                        )}
                         {!isCollapsed && <span className="truncate">{name}</span>}
                     </NavLink>
                 ))}
@@ -121,19 +125,26 @@ export function Sidebar({
                         )
                     }
                 >
-                    <Cog6ToothIcon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
+                    <Cog6ToothIcon
+                        className="h-5 w-5 flex-shrink-0"
+                        aria-hidden="true"
+                    />
                     {!isCollapsed && <span>Settings</span>}
                 </NavLink>
 
-                <Button variant={"primary"} onClick={(e) => { e.preventDefault(); handleLogout(); }}
-                        className="flex justify-center !bg-transparent !border-none !shadow-none !p-0 !m-0 hover:!bg-transparent"
+                <Button
+                    variant={"primary"}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        handleLogout();
+                    }}
+                    className="flex justify-center !bg-transparent !border-none !shadow-none !p-0 !m-0 hover:!bg-transparent"
                 >
                     <ArrowRightEndOnRectangleIcon
                         className="text-black h-5 w-5 hover:text-[#6A42AB] transition"
                         aria-hidden="true"
                     />
                 </Button>
-
             </div>
         </aside>
     );
