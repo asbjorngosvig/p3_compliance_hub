@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from "react";
-import type {IDataProcessor} from "../../shared/types/IDataProcessor.ts";
-import {dataProcessorService} from "../../shared/services/DataProcessorService.ts";
-import {Button} from '../../shared/components/Buttons.tsx'
-
+import React, { useEffect, useState } from "react";
+import type { IDataProcessor } from "../../shared/types/IDataProcessor.ts";
+import { dataProcessorService } from "../../shared/services/DataProcessorService.ts";
+import { Button } from "../../shared/components/Buttons.tsx";
 
 const SeeDataProcessors: React.FC = () => {
     const [search, setSearch] = useState("");
@@ -15,7 +14,7 @@ const SeeDataProcessors: React.FC = () => {
             try {
                 const response = await dataProcessorService.getAll();
 
-                // FIXED: backend returns { allDataProcessors: [...] }
+                // backend returns { allDataProcessors: [...] }
                 setDataProcessors(response.data.allDataProcessors);
             } catch (error) {
                 console.error("Failed to fetch data processors:", error);
@@ -38,11 +37,11 @@ const SeeDataProcessors: React.FC = () => {
 
     return (
         <div className="flex flex-col gap-6 px-8 py-6">
-            {/* Header + Add button (første hvide div) */}
-            <div >
+            {/* Header + Add button */}
+            <div>
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-slate-700 text-4xl font-semibold">
+                        <h1 className="text-4xl font-semibold text-slate-700">
                             Data Processors
                         </h1>
                     </div>
@@ -50,13 +49,10 @@ const SeeDataProcessors: React.FC = () => {
                         Add Data Processor
                     </Button>
                 </div>
-
-                <Button to="/dataprocessors/add" variant="primary">Add Data Processor</Button>
-
             </div>
 
-            {/* Search + grid (anden hvide div) */}
-            <div className="shadow-sm bg-white p-4 rounded-2xl">
+            {/* Search + grid */}
+            <div className="rounded-2xl bg-white p-4 shadow-sm">
                 {/* Search + count */}
                 <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                     <div className="relative w-full max-w-md">
