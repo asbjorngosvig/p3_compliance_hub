@@ -34,6 +34,16 @@ const SeeDataProcessors: React.FC = () => {
     const confirm = useConfirm();
 
     const handleDelete = async (dp: IDataProcessor) => {
+        if (!dp.id) {
+            await confirm({
+                title: "Cannot Delete",
+                message: `Data processor "${dp.name}" does not have a valid ID and cannot be deleted.`,
+                confirmText: "OK",
+                cancelText: "",
+            });
+            return;
+        }
+
         const ok = await confirm({
             title: "Delete Data Processor",
             message: `Are you sure you want to delete "${dp.name}"? This action cannot be undone.`,
