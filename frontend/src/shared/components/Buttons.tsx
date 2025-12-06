@@ -2,7 +2,7 @@ import {useNavigate} from "react-router-dom";
 import React from "react";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-    variant?: "primary" | "secondary" | "tertiary";
+    variant?: "primary" | "secondary" | "tertiary"| "danger" | "neutral";
     to?: string;
 };
 
@@ -24,7 +24,11 @@ export function Button({
         secondary:
             "bg-[#D4DFE6] text-[#2A5D84] hover:bg-[#CAE5F7] focus:ring-blue-700 disabled:bg-blue-300",
         tertiary:
-            "border-2 border-[#D4DFE6] text-[#414141] hover:bg-[#D4DFE6] focus:ring-blue-700 disabled:bg-blue-300"
+            "border-2 border-[#D4DFE6] text-[#414141] hover:bg-[#D4DFE6] focus:ring-blue-700 disabled:bg-blue-300",
+        neutral:
+            "text-gray-600 hover:text-gray-800 px-2 py-1",
+        danger:
+            "text-red-600 hover:text-red-800 px-2 py-1"
     }[variant];
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {

@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import type { IDataProcessor } from "../../shared/types/IDataProcessor.ts";
 import { dataProcessorService } from "../../shared/services/DataProcessorService.ts";
 import { Button } from "../../shared/components/Buttons.tsx";
+import {
+    TrashIcon,
+    DocumentMagnifyingGlassIcon
+} from "@heroicons/react/24/outline";
 
 const SeeDataProcessors: React.FC = () => {
     const [search, setSearch] = useState("");
@@ -97,13 +101,24 @@ const SeeDataProcessors: React.FC = () => {
                                     </span>
                                 </div>
                             </div>
-
-                            <button
-                                type="button"
-                                className="text-xs font-medium text-gray-400 hover:text-gray-600"
-                            >
-                                View details
-                            </button>
+                            <div className="flex items-center gap-3">
+                                <Button
+                                    variant="neutral"
+                                    className="flex items-center gap-1 text-xs"
+                                    onClick={() => console.log("View", dp.id)}
+                                >
+                                    <DocumentMagnifyingGlassIcon className="h-4 w-4" />
+                                    View
+                                </Button>
+                                <Button
+                                    variant="danger"
+                                    className="flex items-center gap-1 text-xs"
+                                    onClick={() => console.log("Delete", dp.id)}
+                                >
+                                    <TrashIcon className="h-4 w-4" />
+                                    Delete
+                                </Button>
+                            </div>
                         </article>
                     ))}
 
