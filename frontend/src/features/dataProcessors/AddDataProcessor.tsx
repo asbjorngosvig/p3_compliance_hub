@@ -4,12 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 import { dataProcessorService } from "../../shared/services/DataProcessorService";
+import { locationsService } from "../../shared/services/LocationsService";
+
+
+
 
 export default function AddDataProcessor() {
-    const [name, setName] = useState("");
-    const [processingLocations, setProcessingLocations] = useState<string[]>([]);
+    const [processingLocations, setProcessingLocations] = useState<string[]>([]); // chosen processing locations
 
-    const [location, setLocation] = useState("");
+    const [fetchedLocations, setFetchedLocations] = useState<string[]>([]); // List of locations from backend
+
+    const [name, setName] = useState("");
+    const [location, setLocation] = useState(""); // Input holder for location
     const [purpose, setPurpose] = useState("");
     const [service, setService] = useState("");
     const [website, setWebsite] = useState("");
@@ -44,12 +50,22 @@ export default function AddDataProcessor() {
         }
     };
 
+    // Fetches processing locations based on what the user has written so far. Is called by the 'onchange' input.
+    const fetchLocationsList = async (location: String) => {
+        try {
+            let res = await locationsService.get("/"+location);
+            setFetchedLocations(Array.from(res.data));
+        } catch (err) {
+            alert("Error getting locations");
+        }
+    }
+
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         handleCreate();
     };
 
-    return (
+     return (
         <div className="px-8 py-6">
             <h1 className="text-3xl font-bold text-gray-900">Add Data Processor</h1>
 
@@ -72,29 +88,76 @@ export default function AddDataProcessor() {
                     />
                 </div>
 
-                {/* Hosting Country */}
-                <div className="flex flex-col gap-1">
-                    <label className="text-sm font-medium text-gray-700">
-                        Processing locations Country
-                    </label>
-                    <input
-                        type="text"
-                        value={location}
-                        onChange={(e) => setLocation(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                                e.preventDefault();
-                                if (location.trim().length > 0) {
-                                    setProcessingLocations((prev) => [...prev, location]);
-                                    setLocation(""); // clear input
-                                }
-                            }
-                        }}
-                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                    />
-                </div>
 
-                {/* Purpose */}
+          {/* Hosting Country */}
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-gray-700">
+              Processing locations Country
+            </label>
+            <input
+              type="text"
+              list="processingLocations"
+              value={location}
+              onChange={(e) => {
+                setLocation(e.target.value);
+                fetchLocationsList(e.target.value);
+              }}
+              onClick={() => fetchLocationsList("")}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  if (fetchedLocations.length === 0) {
+                    alert("No such location");
+                    return;
+                  }
+                  let loc = fetchedLocations[0];
+                  if (processingLocations.includes(loc)) {
+                    alert("Location already selected");
+                    return;
+                  }
+                  e.preventDefault();
+                  if (loc.trim().length > 0) {
+                    setProcessingLocations((prev) => [...prev, loc]);
+                    setLocation(""); // clear input
+                  }
+                }
+              }}
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            />
+            {/* Laver en dropdown ud fra alle de fetchede locations fra backend*/}
+            <datalist id="processingLocations">
+              {fetchedLocations.map((loc, i) => (
+                <option key={i} value={loc}></option>
+              ))}
+            </datalist>
+
+            {/* Shows all currently selected processingLocations*/}
+            {processingLocations.map((loc) => (
+              <p // Hover effects and logic for deleting a selected processor by clicking it
+                onMouseEnter={(e) => {
+                  if (e.target instanceof HTMLParagraphElement)
+                    e.target.style.textDecoration = "line-through";
+                }}
+                onMouseOut={(e) => {
+                  if (e.target instanceof HTMLParagraphElement)
+                    e.target.style.textDecoration = "none";
+                }}
+                onMouseOver={(e) => {
+                  if (e.target instanceof HTMLParagraphElement)
+                    e.target.style.cursor = "pointer";
+                }}
+                //Filters out the clicked location. Works as a deletion
+                onClick={() =>
+                  setProcessingLocations(
+                    processingLocations.filter((loc1) => loc1 !== loc)
+                  )
+                }
+              >
+                {loc}
+              </p>
+            ))}
+          </div>
+
+          {/* Purpose */}
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-gray-700">
                         Purpose
