@@ -7,6 +7,7 @@ import { dataProcessorService } from "../../shared/services/DataProcessorService
 import { locationsService } from "../../shared/services/LocationService";
 
 
+
 export default function AddDataProcessor() {
     const [processingLocations, setProcessingLocations] = useState<string[]>([]); // chosen processing locations
 
@@ -127,26 +128,30 @@ export default function AddDataProcessor() {
                 <option key={i} value={loc}></option>
               ))}
             </datalist>
-            
+
             {/* Shows all currently selected processingLocations*/}
             {processingLocations.map((loc) => (
               <p // Hover effects and logic for deleting a selected processor by clicking it
-                onMouseEnter={e =>{
-                    if (e.target instanceof HTMLParagraphElement)
-                        e.target.style.textDecoration = "line-through"}
-                }
-                onMouseOut={e => {
-                    if (e.target instanceof HTMLParagraphElement)
-                        e.target.style.textDecoration = "none"}}
-
-                onMouseOver={e => {
-                    if (e.target instanceof HTMLParagraphElement)
-                        e.target.style.cursor = "pointer"
+                onMouseEnter={(e) => {
+                  if (e.target instanceof HTMLParagraphElement)
+                    e.target.style.textDecoration = "line-through";
                 }}
-                
+                onMouseOut={(e) => {
+                  if (e.target instanceof HTMLParagraphElement)
+                    e.target.style.textDecoration = "none";
+                }}
+                onMouseOver={(e) => {
+                  if (e.target instanceof HTMLParagraphElement)
+                    e.target.style.cursor = "pointer";
+                }}
                 //Filters out the clicked location. Works as a deletion
-                onClick={()=>setProcessingLocations(processingLocations.filter(loc1=>loc1!==loc))} 
-              >{loc}
+                onClick={() =>
+                  setProcessingLocations(
+                    processingLocations.filter((loc1) => loc1 !== loc)
+                  )
+                }
+              >
+                {loc}
               </p>
             ))}
           </div>

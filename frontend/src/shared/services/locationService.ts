@@ -6,5 +6,5 @@ const get = (location: String) => {
 };
 
 export const locationsService = {
-    get
+  get,
 };
