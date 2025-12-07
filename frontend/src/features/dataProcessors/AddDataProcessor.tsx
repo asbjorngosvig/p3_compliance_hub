@@ -6,6 +6,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { dataProcessorService } from "../../shared/services/DataProcessorService";
 import { locationsService } from "../../shared/services/LocationService";
 
+
 export default function AddDataProcessor() {
     const [processingLocations, setProcessingLocations] = useState<string[]>([]); // chosen processing locations
 
@@ -99,7 +100,7 @@ export default function AddDataProcessor() {
                 setLocation(e.target.value);
                 fetchLocationsList(e.target.value);
               }}
-              onClick={(e) => fetchLocationsList("")}
+              onClick={() => fetchLocationsList("")}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   if (fetchedLocations.length === 0) {
@@ -128,12 +129,23 @@ export default function AddDataProcessor() {
             </datalist>
             
             {/* Shows all currently selected processingLocations*/}
-            {processingLocations.map((loc, i) => (
+            {processingLocations.map((loc) => (
               <p // Hover effects and logic for deleting a selected processor by clicking it
-                onMouseEnter={e =>e.target.style.textDecoration = "line-through"}
-                onMouseOut={e => e.target.style.textDecoration = "none"}
-                onMouseOver={e => e.target.style.cursor = "pointer"}
-                onClick={(e) => setProcessingLocations(processingLocations.filter(loc1=>loc1!==loc))}
+                onMouseEnter={e =>{
+                    if (e.target instanceof HTMLParagraphElement)
+                        e.target.style.textDecoration = "line-through"}
+                }
+                onMouseOut={e => {
+                    if (e.target instanceof HTMLParagraphElement)
+                        e.target.style.textDecoration = "none"}}
+
+                onMouseOver={e => {
+                    if (e.target instanceof HTMLParagraphElement)
+                        e.target.style.cursor = "pointer"
+                }}
+                
+                //Filters out the clicked location. Works as a deletion
+                onClick={()=>setProcessingLocations(processingLocations.filter(loc1=>loc1!==loc))} 
               >{loc}
               </p>
             ))}
