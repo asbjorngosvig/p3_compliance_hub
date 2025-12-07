@@ -17,7 +17,6 @@ export default function AddDataProcessor() {
 
     const navigate = useNavigate();
 
-
     const handleCreate = async () => {
         try {
             await dataProcessorService.create({
@@ -50,7 +49,7 @@ export default function AddDataProcessor() {
         handleCreate();
     };
 
-     return (
+    return (
         <div className="px-8 py-6">
             <h1 className="text-3xl font-bold text-gray-900">Add Data Processor</h1>
 
