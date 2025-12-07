@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from "react";
-import { ArrowsUpDownIcon } from "@heroicons/react/24/outline";
+import {ArrowsUpDownIcon, TrashIcon} from "@heroicons/react/24/outline";
+import {useConfirm} from "../../shared/components/ConfirmDialog.tsx";
+import {Button} from "../../shared/components/Buttons.tsx";
 
 type DpaStatus = "Compliant" | "Violation" | "Pending";
 type DpaPriority = "None" | "Urgent" | "Important";
@@ -15,6 +17,7 @@ interface DpaRow {
 }
 
 type SortKey = "name" | "status" | "priority" | "action" | "timeframe";
+
 
 // Dummy data
 const initialDpas: DpaRow[] = [
@@ -80,12 +83,19 @@ const DpaOverview: React.FC = () => {
 
         return sorted;
     }, [dpas, search, sort]);
+    const confirm = useConfirm();
+    const handleDelete = async (id: number) => {
 
-    const handleDelete = (id: number) => {
         const dpa = dpas.find((d) => d.id === id);
         if (!dpa) return;
 
-        const ok = window.confirm(`Delete DPA for ${dpa.name}? This cannot be undone.`);
+        const ok = await confirm({
+            title: "Delete DPA",
+            message: `Are you sure you want to delete "${dpa.name}"? This action cannot be undone.`,
+            confirmText: "Delete",
+            cancelText: "Cancel",
+        });
+
         if (!ok) return;
 
         setDpas((prev) => prev.filter((d) => d.id !== id));
@@ -238,16 +248,6 @@ const DpaOverview: React.FC = () => {
                                     <div className="flex items-center justify-end gap-2">
                                         <button
                                             type="button"
-                                            onClick={() => handleDelete(dpa.id)}
-                                            className="rounded-full p-1.5 text-slate-400 transition hover:bg-red-50 hover:text-red-600"
-                                        >
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="h-4 w-4">
-                                                <path d="M9 3h6m-9 4h12M9 7v12m6-12v12M5 7l1 13a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-13" />
-                                            </svg>
-                                        </button>
-
-                                        <button
-                                            type="button"
                                             onClick={() => handleEdit(dpa.id)}
                                             className="rounded-full p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
                                         >
@@ -255,6 +255,14 @@ const DpaOverview: React.FC = () => {
                                                 <path d="M16.5 3.5 20.5 7.5 8 20H4v-4L16.5 3.5z" />
                                             </svg>
                                         </button>
+                                        <Button
+                                            variant="neutral"
+                                            className="flex items-center gap-1 text-xs"
+                                            onClick={() => handleDelete(dpa.id)}
+                                        >
+                                            <TrashIcon className="h-4 w-4" />
+                                            Delete
+                                        </Button>
                                     </div>
                                 </td>
                             </tr>

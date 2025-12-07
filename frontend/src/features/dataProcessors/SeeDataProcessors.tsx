@@ -2,6 +2,12 @@ import React, { useEffect, useState } from "react";
 import type { IDataProcessor } from "../../shared/types/IDataProcessor.ts";
 import { dataProcessorService } from "../../shared/services/DataProcessorService.ts";
 import { Button } from "../../shared/components/Buttons.tsx";
+import {useConfirm} from "../../shared/components/ConfirmDialog.tsx";
+
+import {
+    TrashIcon,
+    DocumentMagnifyingGlassIcon
+} from "@heroicons/react/24/outline";
 
 const SeeDataProcessors: React.FC = () => {
     const [search, setSearch] = useState("");
@@ -25,6 +31,38 @@ const SeeDataProcessors: React.FC = () => {
 
         fetchData();
     }, []);
+    const confirm = useConfirm();
+
+    const handleDelete = async (dp: IDataProcessor) => {
+        if (!dp.id) {
+            await confirm({
+                title: "Cannot Delete",
+                message: `Data processor "${dp.name}" does not have a valid ID and cannot be deleted.`,
+                confirmText: "OK",
+                cancelText: "",
+            });
+            return;
+        }
+
+        const ok = await confirm({
+            title: "Delete Data Processor",
+            message: `Are you sure you want to delete "${dp.name}"? This action cannot be undone.`,
+            confirmText: "Delete",
+            cancelText: "Cancel",
+        });
+
+        if (!ok) return;
+
+        try {
+            await dataProcessorService.deleteById(dp.id);
+
+            setDataProcessors(prev =>
+                prev.filter(x => x.id !== dp.id)
+            );
+        } catch (error) {
+            console.error("Failed to delete:", error);
+        }
+    };
 
     // Filtered based on search input
     const filteredProcessors = dataProcessors.filter((dp) =>
@@ -97,13 +135,24 @@ const SeeDataProcessors: React.FC = () => {
                                     </span>
                                 </div>
                             </div>
-
-                            <button
-                                type="button"
-                                className="text-xs font-medium text-gray-400 hover:text-gray-600"
-                            >
-                                View details
-                            </button>
+                            <div className="flex items-center gap-3">
+                                <Button
+                                    variant="neutral"
+                                    className="flex items-center gap-1 text-xs"
+                                    onClick={() => console.log("View", dp.id)}
+                                >
+                                    <DocumentMagnifyingGlassIcon className="h-4 w-4" />
+                                    View
+                                </Button>
+                                <Button
+                                    variant="neutral"
+                                    className="flex items-center gap-1 text-xs"
+                                    onClick={() => handleDelete(dp)}
+                                >
+                                    <TrashIcon className="h-4 w-4" />
+                                    Delete
+                                </Button>
+                            </div>
                         </article>
                     ))}
 
