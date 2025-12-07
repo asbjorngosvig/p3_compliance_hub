@@ -93,18 +93,6 @@ export default function AddDataProcessor() {
               }}
               className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
             />
-
-            <p>
-              {" "}
-              {
-                // Display all the selected locations underneath the input with a ", " between each
-                processingLocations.map((location, i) =>
-                  i != processingLocations.length - 1
-                    ? (location += ", ")
-                    : location
-                )
-              }
-            </p>
           </div>
 
           {/* Purpose */}
