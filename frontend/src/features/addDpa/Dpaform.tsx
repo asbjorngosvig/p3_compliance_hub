@@ -107,11 +107,6 @@ const Dpaform: React.FC = () => {
                     </p>
                 </div>
 
-                {/* Info box about requirements and strategies */}
-                <div className="rounded-lg bg-blue-50 border border-blue-200 px-4 py-3 text-sm text-blue-700">
-                    <p className="font-medium mb-1">Note:</p>
-                    <p>Requirements and communication strategies can be added after creating the DPA.</p>
-                </div>
 
                 {/* Bottom: Back + Add DPA */}
                 <div className="mt-6 flex justify-between">
