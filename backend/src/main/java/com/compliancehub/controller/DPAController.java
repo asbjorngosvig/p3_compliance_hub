@@ -4,6 +4,7 @@ import com.compliancehub.dto.DPA_DTO;
 import com.compliancehub.service.DPAService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.UUID;
 
 import java.net.URI;
 
@@ -29,11 +30,11 @@ public class DPAController {
         return ResponseEntity.created(location).body(createResponse);
     }
 
-    @DeleteMapping("/")
-    void delete() {
-        // todo: fill in logic
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
-
     @GetMapping("/")
     public ResponseEntity<DPA_DTO.GetAllResponse> getAll() {
         return ResponseEntity.ok(service.getAll());

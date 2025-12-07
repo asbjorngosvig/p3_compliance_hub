@@ -7,6 +7,7 @@ import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvalua
 import com.compliancehub.strategy.RequirementsEvaluator.RequirementsEvaluator;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class DPAService {
@@ -70,6 +71,9 @@ public class DPAService {
                 .toList();
 
         return new DPA_DTO.GetAllResponse(dpaResponses, (long) allDPAs.size());
+    }
+    public void delete(UUID id) {
+        repository.deleteById(id);
     }
 
     public RequirementsEvaluator getReqEvaluator(Requirement requirement) {
