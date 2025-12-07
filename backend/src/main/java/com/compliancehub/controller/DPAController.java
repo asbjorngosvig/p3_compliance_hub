@@ -34,8 +34,8 @@ public class DPAController {
         // todo: fill in logic
     }
 
-//    @GetMapping("/")
-//    public ResponseEntity<DPA_DTO.GetAllResponse> getAll() {
-//        return ResponseEntity.ok(service.getAll());
-//    }
+    @GetMapping("/")
+    public ResponseEntity<DPA_DTO.GetAllResponse> getAll() {
+        return ResponseEntity.ok(service.getAll());
+    }
 }
