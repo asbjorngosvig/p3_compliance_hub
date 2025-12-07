@@ -18,6 +18,7 @@ import java.util.UUID;
 public class DPA {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "dpaid")  // <-- ADD THIS LINE
     private UUID id;
 
     @OneToMany(mappedBy = "dpa", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -1,9 +1,13 @@
 import { instance } from "./axiosClient";
-import type {IDPA} from "../types/dpa.types";
+import type { IDPA, CreateDPARequest } from "../types/dpa.types";
 
 export interface GetAllDPAsResponse {
     dpas: IDPA[];
     totalCount: number;
+}
+
+export interface CreateDPAResponse {
+    createdDPA: IDPA;
 }
 
 export const dpaService = {
@@ -12,14 +16,8 @@ export const dpaService = {
         return response.data;
     },
 
-    async create(data: {
-        requirements: any[];
-        communicationStrategies: any[];
-        customerName: string;
-        productName: string;
-        fileUrl: string;
-    }): Promise<{ createdDPA: IDPA }> {
-        const response = await instance.post("/dpa/", data);
+    async create(data: CreateDPARequest): Promise<CreateDPAResponse> {
+        const response = await instance.post<CreateDPAResponse>("/dpa/", data);
         return response.data;
     },
 

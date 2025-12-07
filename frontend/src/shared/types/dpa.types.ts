@@ -10,15 +10,15 @@ export interface IViolation {
 }
 
 export interface IRequirement {
-    id: string;
+    id?: string;
     reqEvaluator: string;
     attributes: Record<string, any>;
 }
 
 export interface ICommunicationStrategy {
-    id: string;
+    id?: string;
     strategyType: string;
-    details: string;
+    attributes: Record<string, any>;
 }
 
 export interface IDPA {
@@ -39,4 +39,13 @@ export interface DpaRow {
     priority: DpaPriority;
     action: DpaAction;
     timeframe: string;
+}
+
+// Request payload for creating a DPA
+export interface CreateDPARequest {
+    requirements: IRequirement[];
+    communicationStrategies: ICommunicationStrategy[];
+    customerName: string;
+    productName: string;
+    fileUrl: string;
 }
