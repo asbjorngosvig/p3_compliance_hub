@@ -4,6 +4,6 @@ const get = (location: String) => {
     return instance.get<String>("/locations"+location);
 };
 
-export const locationsService = {
+export const locationService = {
   get,
 };

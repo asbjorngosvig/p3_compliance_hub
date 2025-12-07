@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 import { dataProcessorService } from "../../shared/services/DataProcessorService";
-import { locationsService } from "../../shared/services/LocationService";
+import { locationService } from "../../shared/services/LocationService";
+
 
 
 
@@ -52,8 +53,7 @@ export default function AddDataProcessor() {
     // Fetches processing locations based on what the user has written so far. Is called by the 'onchange' input.
     const fetchLocationsList = async (location: String) => {
         try {
-            let res = await locationsService.get("/"+location);
-            console.log("Location res: ",res)
+            let res = await locationService.get("/"+location);
             setFetchedLocations(Array.from(res.data));
         } catch (err) {
             alert("Error getting locations");
