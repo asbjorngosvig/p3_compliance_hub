@@ -5,11 +5,14 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 import { dataProcessorService } from "../../shared/services/DataProcessorService";
 import { locationsService } from "../../shared/services/LocationsService";
+import { useConfirm } from "../../shared/components/ConfirmDialog.tsx";
 
 
 export default function AddDataProcessor() {
-    const [processingLocations, setProcessingLocations] = useState<string[]>([]); // chosen processing locations
+    const navigate = useNavigate();
+    const confirm = useConfirm();
 
+    const [processingLocations, setProcessingLocations] = useState<string[]>([]); // chosen processing locations
     const [fetchedLocations, setFetchedLocations] = useState<string[]>([]); // List of locations from backend
 
     const [name, setName] = useState("");
@@ -18,10 +21,20 @@ export default function AddDataProcessor() {
     const [service, setService] = useState("");
     const [website, setWebsite] = useState("");
     const [note, setNote] = useState("");
-
-    const navigate = useNavigate();
+    const [locationError, setLocationError] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleCreate = async () => {
+        setError(null);
+        setIsSubmitting(true);
+
+        if (processingLocations.length === 0) {
+            setError("Please select at least one processing location.");
+            setIsSubmitting(false);
+            return;
+        }
+
         try {
             await dataProcessorService.create({
                 name,
@@ -32,38 +45,59 @@ export default function AddDataProcessor() {
                 website,
             });
 
-            alert("Data Processor successfully created");
+            await confirm({
+                title: "Success!",
+                message: "The Data Processor was created successfully.",
+                confirmText: "OK",
+                type: "success"
+            });
 
-            // reset all fields
-            setName("");
-            setProcessingLocations([]);
-            setLocation("");
-            setPurpose("");
-            setService("");
-            setWebsite("");
-            setNote("");
-        } catch (err) {
-            console.error(err);
-            alert("Error adding data processor");
+            navigate(-1);
+        } catch (err: any) {
+            setError(err.response?.data?.message || "Failed to create Data Processor. Please try again.");
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
     // Fetches processing locations based on what the user has written so far. Is called by the 'onchange' input.
-    const fetchLocationsList = async (location: String) => {
+    const fetchLocationsList = async (val: string) => {
         try {
-            let res = await locationsService.get("/"+location);
+            const res = await locationsService.get("/" + val);
             setFetchedLocations(Array.from(res.data));
-        } catch (err) {
-            alert("Error getting locations");
+        } catch {
+            setFetchedLocations([]);
         }
-    }
+    };
+
+    const handleLocationEnter = (e: any) => {
+        if (e.key !== "Enter") return;
+
+        e.preventDefault();
+        setLocationError(null);
+
+        if (fetchedLocations.length === 0) {
+            setLocationError("No such location found.");
+            return;
+        }
+
+        const loc = fetchedLocations[0];
+
+        if (processingLocations.includes(loc)) {
+            setLocationError("Location already selected.");
+            return;
+        }
+
+        setProcessingLocations((prev) => [...prev, loc]);
+        setLocation("");
+    };
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         handleCreate();
     };
 
-     return (
+    return (
         <div className="px-8 py-6">
             <h1 className="text-3xl font-bold text-gray-900">Add Data Processor</h1>
 
@@ -71,10 +105,16 @@ export default function AddDataProcessor() {
                 onSubmit={handleSubmit}
                 className="mt-6 max-w-xl space-y-5 rounded-xl border border-gray-200 bg-white p-6 shadow"
             >
+                {error && (
+                    <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+                        {error}
+                    </div>
+                )}
+
                 {/* Name */}
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-gray-700">
-                        Processor Name
+                        Processor Name <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text"
@@ -87,78 +127,57 @@ export default function AddDataProcessor() {
                 </div>
 
 
-          {/* Hosting Country */}
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">
-              Processing locations Country
-            </label>
-            <input
-              type="text"
-              list="processingLocations"
-              value={location}
-              onChange={(e) => {
-                setLocation(e.target.value);
-                fetchLocationsList(e.target.value);
-              }}
-              onClick={() => fetchLocationsList("")}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  if (fetchedLocations.length === 0) {
-                    alert("No such location");
-                    return;
-                  }
-                  let loc = fetchedLocations[0];
-                  if (processingLocations.includes(loc)) {
-                    alert("Location already selected");
-                    return;
-                  }
-                  e.preventDefault();
-                  if (loc.trim().length > 0) {
-                    setProcessingLocations((prev) => [...prev, loc]);
-                    setLocation(""); // clear input
-                  }
-                }
-              }}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-            />
-            {/* Laver en dropdown ud fra alle de fetchede locations fra backend*/}
-            <datalist id="processingLocations">
-              {fetchedLocations.map((loc, i) => (
-                <option key={i} value={loc}></option>
-              ))}
-            </datalist>
+                {/* Processing Locations */}
+                <div className="space-y-1">
+                    <label className="block text-sm font-medium text-gray-700">
+                        Processing Locations Country
+                    </label>
+                    <input
+                        type="text"
+                        list="processingLocations"
+                        value={location}
+                        onChange={(e) => {
+                            setLocation(e.target.value);
+                            fetchLocationsList(e.target.value);
+                        }}
+                        onClick={() => fetchLocationsList("")}
+                        onKeyDown={handleLocationEnter}
+                        placeholder="Type to search locations..."
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    />
+                    <datalist id="processingLocations">
+                        {fetchedLocations.map((loc, i) => (
+                            <option key={i} value={loc} />
+                        ))}
+                    </datalist>
 
-            {/* Shows all currently selected processingLocations*/}
-            {processingLocations.map((loc) => (
-              <p // Hover effects and logic for deleting a selected processor by clicking it
-                onMouseEnter={(e) => {
-                  if (e.target instanceof HTMLParagraphElement)
-                    e.target.style.textDecoration = "line-through";
-                }}
-                onMouseOut={(e) => {
-                  if (e.target instanceof HTMLParagraphElement)
-                    e.target.style.textDecoration = "none";
-                }}
-                onMouseOver={(e) => {
-                  if (e.target instanceof HTMLParagraphElement)
-                    e.target.style.cursor = "pointer";
-                }}
-                //Filters out the clicked location. Works as a deletion
-                onClick={() =>
-                  setProcessingLocations(
-                    processingLocations.filter((loc1) => loc1 !== loc)
-                  )
-                }
-              >
-                {loc}
-              </p>
-            ))}
-          </div>
+                    {locationError && (
+                        <p className="text-xs text-red-600">{locationError}</p>
+                    )}
 
-          {/* Purpose */}
+                    {processingLocations.length > 0 && (
+                        <div className="mt-2 flex flex-wrap gap-2">
+                            {processingLocations.map((loc, index) => (
+                                <span
+                                    key={index}
+                                    onClick={() =>
+                                        setProcessingLocations(
+                                            processingLocations.filter((l) => l !== loc)
+                                        )
+                                    }
+                                    className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-700 cursor-pointer hover:bg-slate-200 hover:line-through transition"
+                                >
+                                    {loc}
+                                </span>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* Purpose */}
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-gray-700">
-                        Purpose
+                        Purpose <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text"
@@ -173,7 +192,7 @@ export default function AddDataProcessor() {
                 {/* Service */}
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-gray-700">
-                        Service
+                        Service <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text"
@@ -188,7 +207,7 @@ export default function AddDataProcessor() {
                 {/* Note */}
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-gray-700">
-                        Note
+                        Note <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text"
@@ -203,7 +222,7 @@ export default function AddDataProcessor() {
                 {/* Website */}
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-gray-700">
-                        Website
+                        Website <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="url"
@@ -220,7 +239,8 @@ export default function AddDataProcessor() {
                     <button
                         type="button"
                         onClick={() => navigate(-1)}
-                        className="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50"
+                        disabled={isSubmitting}
+                        className="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-50"
                     >
                         <ArrowLeftIcon className="mr-1 h-4 w-4" />
                         Back
@@ -228,9 +248,10 @@ export default function AddDataProcessor() {
 
                     <button
                         type="submit"
-                        className="rounded-lg bg-[#7BA043] px-6 py-2 text-sm font-medium text-white shadow-sm hover:brightness-110"
+                        disabled={isSubmitting}
+                        className="rounded-lg bg-[#7BA043] px-6 py-2 text-sm font-medium text-white shadow-sm hover:brightness-110 disabled:opacity-50"
                     >
-                        Add Data Processor
+                        {isSubmitting ? "Creating..." : "Add Data Processor"}
                     </button>
                 </div>
             </form>

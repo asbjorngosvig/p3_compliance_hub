@@ -99,12 +99,13 @@ const Dpaform: React.FC = () => {
     };
 
     return (
-        <section className="flex-1 rounded-2xl bg-white p-6 shadow-sm">
+        <section className="flex-1 rounded-2xl p-6">
+            <h1 className="mb-4 text-3xl font-bold text-gray-900 tracking-tight">Add New DPA</h1>
             <form
                 onSubmit={handleSubmit}
                 className="mt-6 max-w-xl space-y-5 rounded-xl border border-gray-200 bg-white p-6 shadow"
             >
-                <h1 className="mb-4 text-2xl font-semibold tracking-tight">Add New DPA</h1>
+
 
                 {error && (
                     <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
