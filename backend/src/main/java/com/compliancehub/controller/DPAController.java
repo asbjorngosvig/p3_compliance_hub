@@ -39,4 +39,11 @@ public class DPAController {
     public ResponseEntity<DPA_DTO.GetAllResponse> getAll() {
         return ResponseEntity.ok(service.getAll());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DPA_DTO.StandardDPAResponse> getById(@PathVariable UUID id) {
+        DPA_DTO.StandardDPAResponse dpa = service.getById(id);
+        return ResponseEntity.ok(dpa);
+    }
+
 }
