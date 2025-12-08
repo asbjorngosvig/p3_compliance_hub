@@ -25,6 +25,19 @@ public class DPAService {
         this.repository = repository;
         this.dataProcessorService = dataProcessorService;
     }
+    public DPA_DTO.StandardDPAResponse getById(UUID id) {
+        DPA dpa = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("DPA not found with id: " + id));
+
+        return new DPA_DTO.StandardDPAResponse(
+                dpa.getId(),
+                dpa.getViolations(),
+                dpa.getCustomerName(),
+                dpa.getProductName(),
+                dpa.getCreatedDate(),
+                dpa.getFileUrl()
+        );
+    }
 
     public DPA_DTO.CreateResponse create(DPA_DTO.CreateRequest req){
         DPA newDPA = new DPA();
