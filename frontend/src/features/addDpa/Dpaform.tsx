@@ -1,24 +1,26 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { dpaService} from "../../shared/services/dpaService.ts";
-import type { CreateDPARequest} from "../../shared/types/dpa.types.ts";
+import { dpaService } from "../../shared/services/dpaService";
 import { locationsService } from "../../shared/services/LocationsService";
+import type { CreateDPARequest } from "../../shared/types/dpa.types";
+import { useConfirm} from "../../shared/components/ConfirmDialog.tsx";
 
 const Dpaform: React.FC = () => {
     const navigate = useNavigate();
+    const confirm = useConfirm();
 
-    const [processingLocations, setProcessingLocations] = useState<string[]>([]); // chosen processing locations
-    const [fetchedLocations, setFetchedLocations] = useState<string[]>([]); // List of locations from backend
-    const [location, setLocation] = useState(""); // Input holder for location
-    // Form state
     const [customerName, setCustomerName] = useState("");
     const [productName, setProductName] = useState("");
     const [fileUrl, setFileUrl] = useState("");
+    const [processingLocations, setProcessingLocations] = useState<string[]>([]);
+    const [fetchedLocations, setFetchedLocations] = useState<string[]>([]);
+    const [location, setLocation] = useState("");
+    const [needWrittenAprooval, setNeedWrittenAprooval] = useState(false);
+    const [daysOfNotice, setDaysOfNotice] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
-
-
+    const [locationError, setLocationError] = useState<string | null>(null);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -26,46 +28,69 @@ const Dpaform: React.FC = () => {
         setIsSubmitting(true);
 
         try {
-            // Prepare the request payload
             const requestData: CreateDPARequest = {
-                requirements: [], // Empty for now, can be added later
-                communicationStrategies: [], // Empty for now, can be added later
+                allowedProcessingLocations: processingLocations,
+                needWrittenAprooval,
+                daysOfNotice,
                 customerName,
                 productName,
                 fileUrl,
             };
 
-            // Call the API
-            const response = await dpaService.create(requestData);
+            await dpaService.create(requestData);
 
-            console.log("DPA created successfully:", response.createdDPA);
+            await confirm({
+                title: "DPA Created Successfully",
+                message: "Your new DPA has been added.",
+                confirmText: "OK",
+                type: "success",
+                cancelText: undefined,
+            });
 
-            // Navigate back or to a success page
             navigate(-1);
         } catch (err: any) {
-            console.error("Error creating DPA:", err);
             setError(err.response?.data?.message || "Failed to create DPA. Please try again.");
         } finally {
             setIsSubmitting(false);
         }
     };
-    const fetchLocationsList = async (location: String) => {
+
+    const fetchLocationsList = async (val: string) => {
         try {
-            let res = await locationsService.get("/" + location);
+            const res = await locationsService.get("/" + val);
             setFetchedLocations(Array.from(res.data));
-        } catch (err) {
-            alert("Error getting locations");
+        } catch {
+            setFetchedLocations([]);
         }
     };
+
+    const handleLocationEnter = (e: any) => {
+        if (e.key !== "Enter") return;
+
+        e.preventDefault();
+        setLocationError(null);
+
+        if (fetchedLocations.length === 0) {
+            setLocationError("No such location found.");
+            return;
+        }
+
+        const loc = fetchedLocations[0];
+
+        if (processingLocations.includes(loc)) {
+            setLocationError("Location already selected.");
+            return;
+        }
+
+        setProcessingLocations((prev) => [...prev, loc]);
+        setLocation("");
+    };
+
     return (
         <section className="flex-1 rounded-2xl bg-white p-6 shadow-sm">
             <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Header */}
-                <h1 className="mb-4 text-2xl font-semibold tracking-tight">
-                    Add New DPA
-                </h1>
+                <h1 className="mb-4 text-2xl font-semibold tracking-tight">Add New DPA</h1>
 
-                {/* Error message */}
                 {error && (
                     <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
                         {error}
@@ -79,10 +104,10 @@ const Dpaform: React.FC = () => {
                     </label>
                     <input
                         type="text"
-                        placeholder="e.g. AAU"
                         value={customerName}
                         onChange={(e) => setCustomerName(e.target.value)}
                         required
+                        placeholder="e.g. AAU"
                         className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition focus:bg-white focus:ring-2 focus:ring-slate-200"
                     />
                 </div>
@@ -90,14 +115,14 @@ const Dpaform: React.FC = () => {
                 {/* Product Name */}
                 <div className="space-y-1">
                     <label className="block text-sm font-medium text-slate-700">
-                        Type of Service <span className="text-red-500">*</span>
+                        Product/Service Name <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text"
-                        placeholder="e.g. Exam Management Platform"
                         value={productName}
                         onChange={(e) => setProductName(e.target.value)}
                         required
+                        placeholder="e.g. Exam Management Platform"
                         className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition focus:bg-white focus:ring-2 focus:ring-slate-200"
                     />
                 </div>
@@ -109,20 +134,18 @@ const Dpaform: React.FC = () => {
                     </label>
                     <input
                         type="url"
-                        placeholder="https://www.example.com"
                         value={fileUrl}
                         onChange={(e) => setFileUrl(e.target.value)}
                         required
+                        placeholder="e.g. https://www.example.com/dpa.pdf"
                         className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition focus:bg-white focus:ring-2 focus:ring-slate-200"
                     />
-                    <p className="text-xs text-slate-500 mt-1">
-                        Enter the URL where the DPA document is hosted
-                    </p>
                 </div>
-                {/* */}
-                <div className="flex flex-col gap-1">
-                    <label className="text-sm font-medium text-gray-700">
-                        Allowed processing locations
+
+                {/* Allowed Processing Locations */}
+                <div className="space-y-1">
+                    <label className="block text-sm font-medium text-slate-700">
+                        Allowed Processing Locations
                     </label>
                     <input
                         type="text"
@@ -133,69 +156,74 @@ const Dpaform: React.FC = () => {
                             fetchLocationsList(e.target.value);
                         }}
                         onClick={() => fetchLocationsList("")}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                                if (fetchedLocations.length === 0) {
-                                    alert("No such location");
-                                    return;
-                                }
-                                let loc = fetchedLocations[0];
-                                if (processingLocations.includes(loc)) {
-                                    alert("Location already selected");
-                                    return;
-                                }
-                                e.preventDefault();
-                                if (loc.trim().length > 0) {
-                                    setProcessingLocations((prev) => [...prev, loc]);
-                                    setLocation(""); // clear input
-                                }
-                            }
-                        }}
-                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                        onKeyDown={handleLocationEnter}
+                        placeholder="Type to search locations..."
+                        className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition focus:bg-white focus:ring-2 focus:ring-slate-200"
                     />
-                    {/* Laver en dropdown ud fra alle de fetchede locations fra backend*/}
                     <datalist id="processingLocations">
                         {fetchedLocations.map((loc, i) => (
-                            <option key={i} value={loc}></option>
+                            <option key={i} value={loc} />
                         ))}
                     </datalist>
 
-                    {/* Shows all currently selected processingLocations*/}
-                    {processingLocations.map((loc) => (
-                        <p // Hover effects and logic for deleting a selected processor by clicking it
-                            onMouseEnter={(e) => {
-                                if (e.target instanceof HTMLParagraphElement)
-                                    e.target.style.textDecoration = "line-through";
-                            }}
-                            onMouseOut={(e) => {
-                                if (e.target instanceof HTMLParagraphElement)
-                                    e.target.style.textDecoration = "none";
-                            }}
-                            onMouseOver={(e) => {
-                                if (e.target instanceof HTMLParagraphElement)
-                                    e.target.style.cursor = "pointer";
-                            }}
-                            //Filters out the clicked location. Works as a deletion
-                            onClick={() =>
-                                setProcessingLocations(
-                                    processingLocations.filter((loc1) => loc1 !== loc)
-                                )
-                            }
-                        >
-                            {loc}
-                        </p>
-                    ))}
+                    {locationError && (
+                        <p className="text-xs text-red-600">{locationError}</p>
+                    )}
+
+                    {processingLocations.length > 0 && (
+                        <div className="mt-2 flex flex-wrap gap-2">
+                            {processingLocations.map((loc, index) => (
+                                <span
+                                    key={index}
+                                    onClick={() =>
+                                        setProcessingLocations(
+                                            processingLocations.filter((l) => l !== loc)
+                                        )
+                                    }
+                                    className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-700 cursor-pointer hover:bg-slate-200 hover:line-through transition"
+                                >
+                                    {loc}
+                                </span>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
+                {/* Approval checkbox */}
+                <div className="flex items-center space-x-2">
+                    <input
+                        type="checkbox"
+                        checked={needWrittenAprooval}
+                        onChange={(e) => setNeedWrittenAprooval(e.target.checked)}
+                        className="h-4 w-4 rounded border-slate-300 text-[#7BA043]"
+                    />
+                    <span className="text-sm font-medium text-slate-700">
+                        Requires written approval before data processor changes
+                    </span>
+                </div>
 
+                {/* Days of Notice */}
+                <div className="space-y-1">
+                    <label className="block text-sm font-medium text-slate-700">
+                        Days of Notice
+                    </label>
+                    <input
+                        type="number"
+                        min="0"
+                        value={daysOfNotice}
+                        onChange={(e) => setDaysOfNotice(parseInt(e.target.value) || 0)}
+                        placeholder="e.g. 30"
+                        className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition focus:bg-white focus:ring-2 focus:ring-slate-200"
+                    />
+                </div>
 
-                {/* Bottom: Back + Add DPA */}
+                {/* Bottom buttons */}
                 <div className="mt-6 flex justify-between">
                     <button
                         type="button"
                         onClick={() => navigate(-1)}
                         disabled={isSubmitting}
-                        className="inline-flex items-center rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="inline-flex items-center rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-50"
                     >
                         <ArrowLeftIcon className="mr-1 h-4 w-4" />
                         Back
@@ -204,7 +232,7 @@ const Dpaform: React.FC = () => {
                     <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="rounded-lg bg-[#7BA043] px-6 py-2 text-sm font-medium text-white shadow-sm transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-[#7BA043]/40 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="rounded-lg bg-[#7BA043] px-6 py-2 text-sm font-medium text-white shadow-sm transition hover:brightness-110 disabled:opacity-50"
                     >
                         {isSubmitting ? "Creating..." : "Add DPA"}
                     </button>

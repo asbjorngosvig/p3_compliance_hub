@@ -43,8 +43,9 @@ export interface DpaRow {
 
 // Request payload for creating a DPA
 export interface CreateDPARequest {
-    requirements: IRequirement[];
-    communicationStrategies: ICommunicationStrategy[];
+    allowedProcessingLocations: string[];
+    needWrittenAprooval: boolean;
+    daysOfNotice: number;
     customerName: string;
     productName: string;
     fileUrl: string;
