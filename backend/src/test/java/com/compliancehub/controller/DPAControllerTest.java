@@ -15,9 +15,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -50,21 +52,19 @@ class DPAControllerTest {
     void create_shouldReturnCreatedDPA() throws Exception {
         // Arrange
         UUID newId = UUID.randomUUID();
-
         // Request DTO (Input)
         DPA_DTO.CreateRequest req = new DPA_DTO.CreateRequest(
-                new ArrayList<>(), // Empty requirements
-                new ArrayList<>(), // Empty strategies
-                "Test Customer",
-                "Test Product",
+                List.of("DENMARK", "SWEDEN"),
+                true,
+                30,
+                "microsoft",
+                "UNIflow",
                 "http://example.com"
         );
 
         // Response DTO (Output fra mock service)
         DPA_DTO.StandardDPAResponse standardResponse = new DPA_DTO.StandardDPAResponse(
                 newId,
-                new ArrayList<>(),
-                new ArrayList<>(),
                 new ArrayList<>(),
                 "Test Customer",
                 "Test Product",
