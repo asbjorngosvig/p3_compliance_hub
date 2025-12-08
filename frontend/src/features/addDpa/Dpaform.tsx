@@ -1,29 +1,24 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-
 import { dpaService} from "../../shared/services/dpaService.ts";
 import type { CreateDPARequest} from "../../shared/types/dpa.types.ts";
-
 import { locationsService } from "../../shared/services/LocationsService";
-
 
 const Dpaform: React.FC = () => {
     const navigate = useNavigate();
+
     const [processingLocations, setProcessingLocations] = useState<string[]>([]); // chosen processing locations
-
     const [fetchedLocations, setFetchedLocations] = useState<string[]>([]); // List of locations from backend
-
     const [location, setLocation] = useState(""); // Input holder for location
-
-
-
     // Form state
     const [customerName, setCustomerName] = useState("");
     const [productName, setProductName] = useState("");
     const [fileUrl, setFileUrl] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -53,21 +48,14 @@ const Dpaform: React.FC = () => {
         } finally {
             setIsSubmitting(false);
         }
-    const handleSubmit = (e: FormEvent) => {
-      e.preventDefault();
-      // TODO: hook this up to your real submit logic later
-      console.log("Add DPA form submitted");
-
     };
-
-    // Fetches processing locations based on what the user has written so far. Is called by the 'onchange' input.
     const fetchLocationsList = async (location: String) => {
-      try {
-        let res = await locationsService.get("/" + location);
-        setFetchedLocations(Array.from(res.data));
-      } catch (err) {
-        alert("Error getting locations");
-      }
+        try {
+            let res = await locationsService.get("/" + location);
+            setFetchedLocations(Array.from(res.data));
+        } catch (err) {
+            alert("Error getting locations");
+        }
     };
     return (
         <section className="flex-1 rounded-2xl bg-white p-6 shadow-sm">
@@ -99,11 +87,10 @@ const Dpaform: React.FC = () => {
                     />
                 </div>
 
-
                 {/* Product Name */}
                 <div className="space-y-1">
                     <label className="block text-sm font-medium text-slate-700">
-                        Product/Service Name <span className="text-red-500">*</span>
+                        Type of Service <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text"
@@ -115,76 +102,6 @@ const Dpaform: React.FC = () => {
                     />
                 </div>
 
-
-          {/* */}
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">
-              Allowed processing locations
-            </label>
-            <input
-              type="text"
-              list="processingLocations"
-              value={location}
-              onChange={(e) => {
-                setLocation(e.target.value);
-                fetchLocationsList(e.target.value);
-              }}
-              onClick={() => fetchLocationsList("")}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  if (fetchedLocations.length === 0) {
-                    alert("No such location");
-                    return;
-                  }
-                  let loc = fetchedLocations[0];
-                  if (processingLocations.includes(loc)) {
-                    alert("Location already selected");
-                    return;
-                  }
-                  e.preventDefault();
-                  if (loc.trim().length > 0) {
-                    setProcessingLocations((prev) => [...prev, loc]);
-                    setLocation(""); // clear input
-                  }
-                }
-              }}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-            />
-            {/* Laver en dropdown ud fra alle de fetchede locations fra backend*/}
-            <datalist id="processingLocations">
-              {fetchedLocations.map((loc, i) => (
-                <option key={i} value={loc}></option>
-              ))}
-            </datalist>
-
-            {/* Shows all currently selected processingLocations*/}
-            {processingLocations.map((loc) => (
-              <p // Hover effects and logic for deleting a selected processor by clicking it
-                onMouseEnter={(e) => {
-                  if (e.target instanceof HTMLParagraphElement)
-                    e.target.style.textDecoration = "line-through";
-                }}
-                onMouseOut={(e) => {
-                  if (e.target instanceof HTMLParagraphElement)
-                    e.target.style.textDecoration = "none";
-                }}
-                onMouseOver={(e) => {
-                  if (e.target instanceof HTMLParagraphElement)
-                    e.target.style.cursor = "pointer";
-                }}
-                //Filters out the clicked location. Works as a deletion
-                onClick={() =>
-                  setProcessingLocations(
-                    processingLocations.filter((loc1) => loc1 !== loc)
-                  )
-                }
-              >
-                {loc}
-              </p>
-            ))}
-          </div>
-
-
                 {/* File URL */}
                 <div className="space-y-1">
                     <label className="block text-sm font-medium text-slate-700">
@@ -192,7 +109,7 @@ const Dpaform: React.FC = () => {
                     </label>
                     <input
                         type="url"
-                        placeholder="e.g. https://www.example.com/dpa.pdf"
+                        placeholder="https://www.example.com"
                         value={fileUrl}
                         onChange={(e) => setFileUrl(e.target.value)}
                         required
@@ -202,6 +119,74 @@ const Dpaform: React.FC = () => {
                         Enter the URL where the DPA document is hosted
                     </p>
                 </div>
+                {/* */}
+                <div className="flex flex-col gap-1">
+                    <label className="text-sm font-medium text-gray-700">
+                        Allowed processing locations
+                    </label>
+                    <input
+                        type="text"
+                        list="processingLocations"
+                        value={location}
+                        onChange={(e) => {
+                            setLocation(e.target.value);
+                            fetchLocationsList(e.target.value);
+                        }}
+                        onClick={() => fetchLocationsList("")}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                if (fetchedLocations.length === 0) {
+                                    alert("No such location");
+                                    return;
+                                }
+                                let loc = fetchedLocations[0];
+                                if (processingLocations.includes(loc)) {
+                                    alert("Location already selected");
+                                    return;
+                                }
+                                e.preventDefault();
+                                if (loc.trim().length > 0) {
+                                    setProcessingLocations((prev) => [...prev, loc]);
+                                    setLocation(""); // clear input
+                                }
+                            }
+                        }}
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    />
+                    {/* Laver en dropdown ud fra alle de fetchede locations fra backend*/}
+                    <datalist id="processingLocations">
+                        {fetchedLocations.map((loc, i) => (
+                            <option key={i} value={loc}></option>
+                        ))}
+                    </datalist>
+
+                    {/* Shows all currently selected processingLocations*/}
+                    {processingLocations.map((loc) => (
+                        <p // Hover effects and logic for deleting a selected processor by clicking it
+                            onMouseEnter={(e) => {
+                                if (e.target instanceof HTMLParagraphElement)
+                                    e.target.style.textDecoration = "line-through";
+                            }}
+                            onMouseOut={(e) => {
+                                if (e.target instanceof HTMLParagraphElement)
+                                    e.target.style.textDecoration = "none";
+                            }}
+                            onMouseOver={(e) => {
+                                if (e.target instanceof HTMLParagraphElement)
+                                    e.target.style.cursor = "pointer";
+                            }}
+                            //Filters out the clicked location. Works as a deletion
+                            onClick={() =>
+                                setProcessingLocations(
+                                    processingLocations.filter((loc1) => loc1 !== loc)
+                                )
+                            }
+                        >
+                            {loc}
+                        </p>
+                    ))}
+                </div>
+
 
 
                 {/* Bottom: Back + Add DPA */}
