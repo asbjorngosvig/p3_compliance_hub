@@ -121,9 +121,6 @@ export default function Employees() {
                     <h2 className="text-sm font-medium text-gray-900">
                         Invite new employee
                     </h2>
-                    <p className="text-xs text-gray-500">
-                        New employees will be created as "Invited" (mock).
-                    </p>
                 </div>
 
                 <form
