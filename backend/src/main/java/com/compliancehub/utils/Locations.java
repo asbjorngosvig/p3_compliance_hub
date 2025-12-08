@@ -13,6 +13,7 @@ public class Locations {
     public final static Set<String> EU = new HashSet<>(Arrays.asList("AUSTRIA", "BELGIUM", "BULGARIA", "CROATIA", "CYPRUS", "CZECHIA", "DENMARK", "ESTONIA", "FINLAND", "FRANCE", "GERMANY", "GREECE", "HUNGARY", "IRELAND", "ITALY", "LATVIA", "LITHUANIA", "LUXEMBOURG", "MALTA", "NETHERLANDS", "POLAND", "PORTUGAL", "ROMANIA", "SLOVAKIA", "SLOVENIA", "SPAIN", "SWEDEN"));
     public final static Set<String> EEA = new HashSet<>(Arrays.asList("AUSTRIA", "BELGIUM", "BULGARIA", "CROATIA", "CYPRUS", "CZECHIA", "DENMARK", "ESTONIA", "FINLAND", "FRANCE", "GERMANY", "GREECE", "HUNGARY", "IRELAND", "ITALY", "LATVIA", "LITHUANIA", "LUXEMBOURG", "MALTA", "NETHERLANDS", "POLAND", "PORTUGAL", "ROMANIA", "SLOVAKIA", "SLOVENIA", "SPAIN", "SWEDEN", "NORWAY", "LICHTENSTEIN", "ICELAND"));
     public final static Set<String> NORTH_AMERICA = new HashSet<>(Arrays.asList("ANTIGUA AND BARBUDA", "BAHAMAS", "BARBADOS", "BELIZE", "CANADA", "COSTA RICA", "CUBA", "DOMINICA", "DOMINIAN REPUBLiC", "EL SALVADOR", "GRENADA", "GUATEMALA", "HAITI", "HONDURAS", "JAMAICE", "MEXICO", "NICARAGUA", "PANAMA", "SAINT KITTS AND NEVIS", "SAINT LUCIA", "SAINT VINCENT AND THE GRENADINES", "TRINIDAD AND TOBAGO", "UNITED STATES"));
+    public final static Set<String> SPECIAL_LOCATION_NAMES = new HashSet<>(Arrays.asList("UNDEFINED","EEA","EU", "NORTH_AMERICA"));
 
     public final static Map<String, Set<String>> groups = new HashMap<>();
     // create groups here
@@ -23,8 +24,12 @@ public class Locations {
         // ... More groups here, if ya know any!  ! !
     }
 
+
     static { // All the countriez/locations here
         locations.add("UNDEFINED");
+        locations.add("EU");
+        locations.add("EEA");
+        locations.add("NORTH AMERICA");
         locations.add("AFGHANISTAN");
         locations.add("ÅLAND ISLANDS");
         locations.add("ALBANIA");

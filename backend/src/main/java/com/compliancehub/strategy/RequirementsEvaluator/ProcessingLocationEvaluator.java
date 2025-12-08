@@ -3,6 +3,7 @@ package com.compliancehub.strategy.RequirementsEvaluator;
 import com.compliancehub.model.DPA;
 import com.compliancehub.model.DataProcessor;
 import com.compliancehub.model.Violation;
+import com.compliancehub.utils.Locations;
 import lombok.Data;
 
 import java.util.*;
@@ -18,19 +19,26 @@ public class ProcessingLocationEvaluator implements RequirementsEvaluator {
 
     @Override
     public void evaluate(DPA dpa, DataProcessor dataProcessor) {
+
+        // gets locations with all EEA, EU, NA so on... countries
+        List<String> DPLocations = extractSpecialLocations(dataProcessor.getProcessingLocations());
+        List<String> DPALocations = extractSpecialLocations(allowedLocations);
+
         // Safety check: Hvis dataProcessor eller allowedLocations er tomme, stop.
-        if (dataProcessor.getProcessingLocations() == null || allowedLocations.isEmpty()) {
+        if (DPLocations.isEmpty() || DPALocations.isEmpty()) {
             return;
         }
 
         List<String> violationsFound = new ArrayList<>();
 
-        for (String location : dataProcessor.getProcessingLocations()) {
-            if (!allowedLocations.contains(location)) {
+        // checks any location mismatch
+        for (String location : DPLocations) {
+            if (!DPALocations.contains(location)) {
                 violationsFound.add(location);
             }
         }
 
+        // samler alle landende som er mismathced og laver èn violation til dem
         if (!violationsFound.isEmpty()) {
             Violation newViolation = new Violation();
             newViolation.setDpa(dpa);
@@ -46,6 +54,27 @@ public class ProcessingLocationEvaluator implements RequirementsEvaluator {
             // Vigtigt: Brug helper metoden på DPA for at gemme relationen korrekt
             dpa.addViolation(newViolation);
         }
+    }
+
+    // fjerner grupperne og tilføjer hvert land fra gruppen i stedet
+    private List<String> extractSpecialLocations(List<String> locations) {
+        List<String> newLocations = new ArrayList<>(locations);
+        // hvis en locations er EEA, Undefined osv...
+        if (newLocations.contains("EEA")) {
+            newLocations.remove("EEA");
+            newLocations.addAll(Locations.EEA);
+        }
+
+        if (newLocations.contains("EU")) {
+            newLocations.remove("EU");
+            newLocations.addAll(Locations.EU);
+        }
+
+        if (newLocations.contains("NORTH_AMERICA")) {
+            newLocations.remove("NORTH_AMERICA");
+            newLocations.addAll(Locations.NORTH_AMERICA);
+        }
+        return newLocations;
     }
 
     @Override
