@@ -44,7 +44,7 @@ public class DataProcessor {
     // inde på Violation-objektet, end at se "Hvad har de gjort?"
     // når vi bare slår en processor op.
     @JsonIgnore
-    @OneToMany(mappedBy = "dataProcessor")
+    @OneToMany(mappedBy = "dataProcessor", cascade = CascadeType.ALL)
     private List<Violation> violations;
 
 }
