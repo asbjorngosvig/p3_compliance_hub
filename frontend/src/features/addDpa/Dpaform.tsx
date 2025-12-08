@@ -50,7 +50,7 @@ const Dpaform: React.FC = () => {
                 fileUrl,
             };
 
-            const response = await dpaService.create(requestData);
+            await dpaService.create(requestData);
 
             // OPTIONAL: show success confirmation
             await confirm({
