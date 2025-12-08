@@ -40,6 +40,7 @@ const SeeDataProcessors: React.FC = () => {
                 message: `Data processor "${dp.name}" does not have a valid ID and cannot be deleted.`,
                 confirmText: "OK",
                 cancelText: "",
+                type: "danger"
             });
             return;
         }
@@ -49,6 +50,7 @@ const SeeDataProcessors: React.FC = () => {
             message: `Are you sure you want to delete "${dp.name}"? This action cannot be undone.`,
             confirmText: "Delete",
             cancelText: "Cancel",
+            type: "danger"
         });
 
         if (!ok) return;
