@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ViolationDTO {
     public record standardResponse(
-            String message,
+            String description,
             java.util.UUID id,
             List<ActionDTO.standardResponse> actions
     ){}
