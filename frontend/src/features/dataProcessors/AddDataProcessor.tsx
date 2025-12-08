@@ -5,11 +5,14 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 import { dataProcessorService } from "../../shared/services/DataProcessorService";
 import { locationsService } from "../../shared/services/LocationsService";
+import { useConfirm } from "../../shared/components/ConfirmDialog.tsx";
 
 
 export default function AddDataProcessor() {
-    const [processingLocations, setProcessingLocations] = useState<string[]>([]); // chosen processing locations
+    const navigate = useNavigate();
+    const confirm = useConfirm();
 
+    const [processingLocations, setProcessingLocations] = useState<string[]>([]); // chosen processing locations
     const [fetchedLocations, setFetchedLocations] = useState<string[]>([]); // List of locations from backend
 
     const [name, setName] = useState("");
@@ -19,10 +22,19 @@ export default function AddDataProcessor() {
     const [website, setWebsite] = useState("");
     const [note, setNote] = useState("");
     const [locationError, setLocationError] = useState<string | null>(null);
-
-    const navigate = useNavigate();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleCreate = async () => {
+        setError(null);
+        setIsSubmitting(true);
+
+        if (processingLocations.length === 0) {
+            setError("Please select at least one processing location.");
+            setIsSubmitting(false);
+            return;
+        }
+
         try {
             await dataProcessorService.create({
                 name,
@@ -33,19 +45,18 @@ export default function AddDataProcessor() {
                 website,
             });
 
-            alert("Data Processor successfully created");
+            await confirm({
+                title: "Success!",
+                message: "The Data Processor was created successfully.",
+                confirmText: "OK",
+                type: "success"
+            });
 
-            // reset all fields
-            setName("");
-            setProcessingLocations([]);
-            setLocation("");
-            setPurpose("");
-            setService("");
-            setWebsite("");
-            setNote("");
-        } catch (err) {
-            console.error(err);
-            alert("Error adding data processor");
+            navigate(-1);
+        } catch (err: any) {
+            setError(err.response?.data?.message || "Failed to create Data Processor. Please try again.");
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -94,10 +105,16 @@ export default function AddDataProcessor() {
                 onSubmit={handleSubmit}
                 className="mt-6 max-w-xl space-y-5 rounded-xl border border-gray-200 bg-white p-6 shadow"
             >
+                {error && (
+                    <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+                        {error}
+                    </div>
+                )}
+
                 {/* Name */}
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-gray-700">
-                        Processor Name
+                        Processor Name <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text"
@@ -160,7 +177,7 @@ export default function AddDataProcessor() {
                 {/* Purpose */}
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-gray-700">
-                        Purpose
+                        Purpose <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text"
@@ -175,7 +192,7 @@ export default function AddDataProcessor() {
                 {/* Service */}
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-gray-700">
-                        Service
+                        Service <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text"
@@ -190,7 +207,7 @@ export default function AddDataProcessor() {
                 {/* Note */}
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-gray-700">
-                        Note
+                        Note <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text"
@@ -205,7 +222,7 @@ export default function AddDataProcessor() {
                 {/* Website */}
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-gray-700">
-                        Website
+                        Website <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="url"
@@ -222,7 +239,8 @@ export default function AddDataProcessor() {
                     <button
                         type="button"
                         onClick={() => navigate(-1)}
-                        className="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50"
+                        disabled={isSubmitting}
+                        className="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-50"
                     >
                         <ArrowLeftIcon className="mr-1 h-4 w-4" />
                         Back
@@ -230,9 +248,10 @@ export default function AddDataProcessor() {
 
                     <button
                         type="submit"
-                        className="rounded-lg bg-[#7BA043] px-6 py-2 text-sm font-medium text-white shadow-sm hover:brightness-110"
+                        disabled={isSubmitting}
+                        className="rounded-lg bg-[#7BA043] px-6 py-2 text-sm font-medium text-white shadow-sm hover:brightness-110 disabled:opacity-50"
                     >
-                        Add Data Processor
+                        {isSubmitting ? "Creating..." : "Add Data Processor"}
                     </button>
                 </div>
             </form>
