@@ -135,6 +135,7 @@ const DpaOverview: React.FC = () => {
             message: `Are you sure you want to delete "${dpa.name}"? This action cannot be undone.`,
             confirmText: "Delete",
             cancelText: "Cancel",
+            type: "danger"
         });
 
         if (!ok) return;
