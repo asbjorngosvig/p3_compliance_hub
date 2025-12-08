@@ -1,9 +1,16 @@
 import React, { useMemo, useState, useEffect } from "react";
-import {ArrowsUpDownIcon, TrashIcon} from "@heroicons/react/24/outline";
-import {useConfirm} from "../../shared/components/ConfirmDialog.tsx";
-import {Button} from "../../shared/components/Buttons.tsx";
-import { dpaService} from "../../shared/services/dpaService.ts";
-import type { IDPA, DpaRow, DpaStatus, DpaPriority, DpaAction} from "../../shared/types/dpa.types.ts";
+import { ArrowsUpDownIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { useConfirm } from "../../shared/components/ConfirmDialog.tsx";
+import { Button } from "../../shared/components/Buttons.tsx";
+import { dpaService } from "../../shared/services/dpaService.ts";
+import type {
+    IDPA,
+    DpaRow,
+    DpaStatus,
+    DpaPriority,
+    DpaAction,
+} from "../../shared/types/dpa.types.ts";
+import { useNavigate } from "react-router-dom";
 
 type SortKey = "name" | "status" | "priority" | "action" | "timeframe";
 
@@ -31,8 +38,10 @@ const mapDPAtoDpaRow = (dpa: IDPA): DpaRow => {
         status = "Violation";
 
         // Check severity to determine priority
-        const hasHighSeverity = dpa.violations.some(v =>
-            v.severity?.toLowerCase() === "high" || v.severity?.toLowerCase() === "critical"
+        const hasHighSeverity = dpa.violations.some(
+            (v) =>
+                v.severity?.toLowerCase() === "high" ||
+                v.severity?.toLowerCase() === "critical",
         );
 
         if (hasHighSeverity) {
@@ -74,6 +83,9 @@ const DpaOverview: React.FC = () => {
         direction: "asc",
     });
 
+    const confirm = useConfirm();
+    const navigate = useNavigate();
+
     // Fetch DPAs from backend
     useEffect(() => {
         const fetchDPAs = async () => {
@@ -99,7 +111,9 @@ const DpaOverview: React.FC = () => {
 
         if (search.trim()) {
             const term = search.toLowerCase();
-            result = result.filter((dpa) => dpa.name.toLowerCase().includes(term));
+            result = result.filter((dpa) =>
+                dpa.name.toLowerCase().includes(term),
+            );
         }
 
         const sorted = [...result].sort((a, b) => {
@@ -112,8 +126,6 @@ const DpaOverview: React.FC = () => {
 
         return sorted;
     }, [dpas, search, sort]);
-
-    const confirm = useConfirm();
 
     const handleDelete = async (id: string) => {
         const dpa = dpas.find((d) => d.id === id);
@@ -137,9 +149,8 @@ const DpaOverview: React.FC = () => {
         }
     };
 
-    const handleEdit = (id: string) => {
-        console.log("Edit DPA with id:", id);
-        // TODO: Implement edit functionality
+    const handleViewDetails = (id: string) => {
+        navigate(`/dpas/${id}`);
     };
 
     const showingCount = filteredAndSortedDpas.length;
@@ -160,7 +171,14 @@ const DpaOverview: React.FC = () => {
                             className="w-full rounded-full border border-slate-200 bg-slate-50 px-4 py-2 pr-10 text-sm placeholder:text-slate-400 outline-none transition focus:bg-white focus:ring-2 focus:ring-slate-200"
                         />
                         <button className="absolute inset-y-0 right-0 flex items-center pr-4 text-slate-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="h-4 w-4">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth={1.8}
+                                className="h-4 w-4"
+                            >
                                 <circle cx="11" cy="11" r="6" />
                                 <line x1="16" y1="16" x2="20" y2="20" />
                             </svg>
@@ -171,7 +189,8 @@ const DpaOverview: React.FC = () => {
                 {/* Sort button */}
                 <div className="relative flex items-center gap-3">
                     <span className="text-sm text-slate-500">
-                        <span className="font-medium text-slate-700">Showing :</span> {showingCount}
+                        <span className="font-medium text-slate-700">Showing :</span>{" "}
+                        {showingCount}
                     </span>
 
                     <button
@@ -185,7 +204,9 @@ const DpaOverview: React.FC = () => {
 
                     {isFilterOpen && (
                         <div className="absolute right-0 top-10 z-20 w-64 rounded-2xl bg-white p-3 shadow-xl border-2 border-[#D4DFE6]">
-                            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">Sort DPAs</p>
+                            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                                Sort DPAs
+                            </p>
 
                             <div className="space-y-1">
                                 {(
@@ -204,7 +225,8 @@ const DpaOverview: React.FC = () => {
                                             setSort((prev) => ({
                                                 key,
                                                 direction:
-                                                    prev.key === key && prev.direction === "asc"
+                                                    prev.key === key &&
+                                                    prev.direction === "asc"
                                                         ? "desc"
                                                         : "asc",
                                             }))
@@ -217,7 +239,11 @@ const DpaOverview: React.FC = () => {
                                     >
                                         <span>{label}</span>
                                         <span className="text-[10px] uppercase tracking-wide">
-                                            {sort.key === key ? (sort.direction === "asc" ? "A → Z" : "Z → A") : ""}
+                                            {sort.key === key
+                                                ? sort.direction === "asc"
+                                                    ? "A → Z"
+                                                    : "Z → A"
+                                                : ""}
                                         </span>
                                     </button>
                                 ))}
@@ -247,78 +273,122 @@ const DpaOverview: React.FC = () => {
                 <div className="max-h-[48vh] overflow-y-auto">
                     <table className="min-w-full divide-y divide-slate-200">
                         <thead className="bg-slate-50">
-                        <tr>
-                            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500">Name</th>
-                            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500">Status</th>
-                            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500">Timeframe</th>
-                            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500">Priority</th>
-                            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500">Action</th>
-                            <th className="w-20 px-4 py-3"></th>
-                        </tr>
+                            <tr>
+                                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
+                                    Name
+                                </th>
+                                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
+                                    Status
+                                </th>
+                                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
+                                    Timeframe
+                                </th>
+                                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
+                                    Priority
+                                </th>
+                                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
+                                    Action
+                                </th>
+                                <th className="w-20 px-4 py-3"></th>
+                            </tr>
                         </thead>
 
                         <tbody className="divide-y divide-slate-100 bg-white text-sm">
-                        {loading ? (
-                            <tr>
-                                <td colSpan={6} className="px-4 py-10 text-center text-sm text-slate-400">
-                                    <div className="flex items-center justify-center gap-2">
-                                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-slate-600"></div>
-                                        <span>Loading DPAs...</span>
-                                    </div>
-                                </td>
-                            </tr>
-                        ) : filteredAndSortedDpas.length === 0 ? (
-                            <tr>
-                                <td colSpan={6} className="px-4 py-10 text-center text-sm text-slate-400">
-                                    {search.trim() ? "No DPAs match your search." : "No DPAs found. Create one to get started."}
-                                </td>
-                            </tr>
-                        ) : (
-                            filteredAndSortedDpas.map((dpa) => (
-                                <tr key={dpa.id} className="hover:bg-slate-50">
-                                    <td className="px-4 py-3 font-medium text-slate-800">{dpa.name}</td>
-
-                                    <td className="px-4 py-3">
-                                        <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium ${statusBadgeClasses[dpa.status]}`}>
-                                            <span className="h-2 w-2 rounded-full bg-current" />
-                                            {dpa.status}
-                                        </span>
-                                    </td>
-
-                                    <td className="px-4 py-3">
-                                        <span className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${timeframeBadgeClasses(dpa.timeframe)}`}>
-                                            {dpa.timeframe}
-                                        </span>
-                                    </td>
-
-                                    <td className="px-4 py-3 text-slate-700">{dpa.priority}</td>
-
-                                    <td className="px-4 py-3 text-slate-700">{dpa.action}</td>
-
-                                    <td className="px-4 py-3 text-right">
-                                        <div className="flex items-center justify-end gap-2">
-                                            <button
-                                                type="button"
-                                                onClick={() => handleEdit(dpa.id)}
-                                                className="rounded-full p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="h-4 w-4">
-                                                    <path d="M16.5 3.5 20.5 7.5 8 20H4v-4L16.5 3.5z" />
-                                                </svg>
-                                            </button>
-                                            <Button
-                                                variant="neutral"
-                                                className="flex items-center gap-1 text-xs"
-                                                onClick={() => handleDelete(dpa.id)}
-                                            >
-                                                <TrashIcon className="h-4 w-4" />
-                                                Delete
-                                            </Button>
+                            {loading ? (
+                                <tr>
+                                    <td
+                                        colSpan={6}
+                                        className="px-4 py-10 text-center text-sm text-slate-400"
+                                    >
+                                        <div className="flex items-center justify-center gap-2">
+                                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-slate-600"></div>
+                                            <span>Loading DPAs...</span>
                                         </div>
                                     </td>
                                 </tr>
-                            ))
-                        )}
+                            ) : filteredAndSortedDpas.length === 0 ? (
+                                <tr>
+                                    <td
+                                        colSpan={6}
+                                        className="px-4 py-10 text-center text-sm text-slate-400"
+                                    >
+                                        {search.trim()
+                                            ? "No DPAs match your search."
+                                            : "No DPAs found. Create one to get started."}
+                                    </td>
+                                </tr>
+                            ) : (
+                                filteredAndSortedDpas.map((dpa) => (
+                                    <tr
+                                        key={dpa.id}
+                                        className="hover:bg-slate-50 cursor-pointer"
+                                        onClick={() => navigate(`/dpas/${dpa.id}`)}
+                                    >
+                                        <td className="px-4 py-3 font-medium text-slate-800">
+                                            {dpa.name}
+                                        </td>
+
+                                        <td className="px-4 py-3">
+                                            <span
+                                                className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium ${statusBadgeClasses[dpa.status]}`}
+                                            >
+                                                <span className="h-2 w-2 rounded-full bg-current" />
+                                                {dpa.status}
+                                            </span>
+                                        </td>
+
+                                        <td className="px-4 py-3">
+                                            <span
+                                                className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${timeframeBadgeClasses(
+                                                    dpa.timeframe,
+                                                )}`}
+                                            >
+                                                {dpa.timeframe}
+                                            </span>
+                                        </td>
+
+                                        <td className="px-4 py-3 text-slate-700">
+                                            {dpa.priority}
+                                        </td>
+
+                                        <td className="px-4 py-3 text-slate-700">
+                                            {dpa.action}
+                                        </td>
+
+                                        <td
+                                            className="px-4 py-3 text-right"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            <div className="flex items-center justify-end gap-2">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleViewDetails(dpa.id)}
+                                                    className="rounded-full p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+                                                >
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        strokeWidth={1.8}
+                                                        className="h-4 w-4"
+                                                    >
+                                                        <path d="M16.5 3.5 20.5 7.5 8 20H4v-4L16.5 3.5z" />
+                                                    </svg>
+                                                </button>
+                                                <Button
+                                                    variant="neutral"
+                                                    className="flex items-center gap-1 text-xs"
+                                                    onClick={() => handleDelete(dpa.id)}
+                                                >
+                                                    <TrashIcon className="h-4 w-4" />
+                                                    Delete
+                                                </Button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 </div>

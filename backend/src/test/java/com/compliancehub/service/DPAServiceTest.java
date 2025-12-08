@@ -35,7 +35,7 @@ class DPAServiceTest {
     @Test
     void getValidReqEvaluatorTest()  {
         Requirement requirement= new Requirement();
-        requirement.setReqEvaluator("ProcessingLocationsEvaluator");
+        requirement.setReqEvaluator("ProcessingLocationEvaluator");
         requirement.setAttributes(new HashMap<>());
 
         RequirementsEvaluator reqEvaluator = dpaService.getReqEvaluator(requirement);

@@ -70,6 +70,7 @@ public class DataProcessorService {
         );
     }
 
+
     public DataProcessorDTO.StandardDataProcessorResponse getById(UUID id) {
         DataProcessor dp = dataProcessorRepository.findById(id)
             .orElseThrow(() -> new NoSuchElementException(
@@ -85,6 +86,11 @@ public class DataProcessorService {
             dp.getNote(),
             dp.getWebsite()
         );
+
+    public List<DataProcessor> getAllEntities() {
+        List<DataProcessor> allDataProcessors = dataProcessorRepository.findAll();
+        return allDataProcessors;
+
     }
     
     public void delete(UUID id){
