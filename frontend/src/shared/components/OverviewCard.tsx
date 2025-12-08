@@ -2,7 +2,7 @@ export interface OverviewCardProps {
   title: string;
   description: string;
   numberCount: number;
-  violationStatus: boolean;
+  violationStatus?: boolean;
   priority?: priorityStatus;
   Icon?: React.ElementType;
 }
@@ -12,8 +12,8 @@ export function OverviewCard({
   title,
   description,
   numberCount,
-  violationStatus,
-  priority,
+  //violationStatus,
+  //priority,
   Icon,
 }: OverviewCardProps) {
   return (
@@ -38,11 +38,6 @@ export function OverviewCard({
               </p>
             </div>
 
-            {violationStatus && (
-              <div className="bg-[#D32F2F] text-white py-1.75 text-sm rounded-b-xl pt-1 px-4 -mx-4 -mb-10">
-                {priority && <p>Priority: {priority}</p>}
-              </div>
-            )}
           </div>
         </div>
     </>

@@ -17,13 +17,10 @@ const SeeDataProcessors: React.FC = () => {
     const confirm = useConfirm();
     const navigate = useNavigate();
 
-    // Fetch data from API when component mounts
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await dataProcessorService.getAll();
-
-                // backend returns { allDataProcessors: [...] }
                 setDataProcessors(response.data.allDataProcessors);
             } catch (error) {
                 console.error("Failed to fetch data processors:", error);
@@ -42,7 +39,7 @@ const SeeDataProcessors: React.FC = () => {
                 message: `Data processor "${dp.name}" does not have a valid ID and cannot be deleted.`,
                 confirmText: "OK",
                 cancelText: "",
-                type: "danger"
+                type: "danger",
             });
             return;
         }
@@ -52,21 +49,19 @@ const SeeDataProcessors: React.FC = () => {
             message: `Are you sure you want to delete "${dp.name}"? This action cannot be undone.`,
             confirmText: "Delete",
             cancelText: "Cancel",
-            type: "danger"
+            type: "danger",
         });
 
         if (!ok) return;
 
         try {
             await dataProcessorService.deleteById(dp.id);
-
             setDataProcessors((prev) => prev.filter((x) => x.id !== dp.id));
         } catch (error) {
             console.error("Failed to delete:", error);
         }
     };
 
-    // Filtered based on search input
     const filteredProcessors = dataProcessors.filter((dp) =>
         dp.name.toLowerCase().includes(search.toLowerCase()),
     );
@@ -118,7 +113,8 @@ const SeeDataProcessors: React.FC = () => {
                     {filteredProcessors.map((dp) => (
                         <article
                             key={dp.id}
-                            className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white px-5 py-4 shadow-sm"
+                            className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white px-5 py-4 shadow-sm hover:bg-gray-50 cursor-pointer"
+                            onClick={() => dp.id && navigate(`/dataprocessors/${dp.id}`)}
                         >
                             <div className="flex flex-col gap-1">
                                 <span className="text-sm font-semibold text-gray-900">
@@ -128,7 +124,9 @@ const SeeDataProcessors: React.FC = () => {
                                     <span className="inline-flex items-center rounded-full bg-gray-50 px-2.5 py-1">
                                         <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-green-500" />
                                         Processing Locations:{" "}
-                                        {dp.processingLocations || "Unknown"}
+                                        {(dp as any).processingLocations ||
+                                            dp.processingLocations ||
+                                            "Unknown"}
                                     </span>
                                     <span className="inline-flex items-center rounded-full bg-gray-50 px-2.5 py-1">
                                         <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-blue-500" />
@@ -137,11 +135,15 @@ const SeeDataProcessors: React.FC = () => {
                                     </span>
                                 </div>
                             </div>
+
                             <div className="flex items-center gap-3">
                                 <Button
                                     variant="neutral"
                                     className="flex items-center gap-1 text-xs"
-                                    onClick={() => dp.id && navigate(`/dataprocessors/${dp.id}`)}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        if (dp.id) navigate(`/dataprocessors/${dp.id}`);
+                                    }}
                                 >
                                     <DocumentMagnifyingGlassIcon className="h-4 w-4" />
                                     View
@@ -149,7 +151,10 @@ const SeeDataProcessors: React.FC = () => {
                                 <Button
                                     variant="neutral"
                                     className="flex items-center gap-1 text-xs"
-                                    onClick={() => handleDelete(dp)}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleDelete(dp);
+                                    }}
                                 >
                                     <TrashIcon className="h-4 w-4" />
                                     Delete
