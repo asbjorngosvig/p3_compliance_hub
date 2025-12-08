@@ -5,10 +5,7 @@ import com.compliancehub.model.DataProcessor;
 import com.compliancehub.model.Violation;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Data
 public class ProcessingLocationEvaluator implements RequirementsEvaluator {
@@ -68,6 +65,8 @@ public class ProcessingLocationEvaluator implements RequirementsEvaluator {
                 System.err.println("Fejl i parsing af locations: " + e.getMessage());
                 this.allowedLocations = new ArrayList<>();
             }
+        } else {
+            throw new InputMismatchException("invalid attributes for allowed Locations");
         }
     }
 }

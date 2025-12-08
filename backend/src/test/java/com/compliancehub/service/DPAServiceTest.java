@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,7 +37,9 @@ class DPAServiceTest {
     void getValidReqEvaluatorTest()  {
         Requirement requirement= new Requirement();
         requirement.setReqEvaluator("ProcessingLocationEvaluator");
-        requirement.setAttributes(new HashMap<>());
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("allowedLocations", List.of("EU"));
+        requirement.setAttributes(attributes);
 
         RequirementsEvaluator reqEvaluator = dpaService.getReqEvaluator(requirement);
         assertTrue(reqEvaluator instanceof ProcessingLocationEvaluator);

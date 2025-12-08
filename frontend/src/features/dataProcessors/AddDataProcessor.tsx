@@ -25,7 +25,7 @@ export default function AddDataProcessor() {
         try {
             await dataProcessorService.create({
                 name,
-                processingLocations: processingLocations,
+                processingLocations,
                 service,
                 purpose,
                 note,
