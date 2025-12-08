@@ -54,9 +54,11 @@ public class UserController {
 
         ResponseCookie cookie = ResponseCookie.from("jwt", token)
                 .httpOnly(true)
+                .secure(true)
                 .path("/")
                 .maxAge(24 * 60 * 60)
-                .sameSite("Lax")   // IMPORTANT
+                .sameSite("None")
+                .domain("compliancehub.osc-fr1.scalingo.io")
                 .build();
 
         return ResponseEntity.ok()
