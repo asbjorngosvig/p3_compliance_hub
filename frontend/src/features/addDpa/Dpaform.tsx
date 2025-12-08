@@ -100,7 +100,10 @@ const Dpaform: React.FC = () => {
 
     return (
         <section className="flex-1 rounded-2xl bg-white p-6 shadow-sm">
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form
+                onSubmit={handleSubmit}
+                className="mt-6 max-w-xl space-y-5 rounded-xl border border-gray-200 bg-white p-6 shadow"
+            >
                 <h1 className="mb-4 text-2xl font-semibold tracking-tight">Add New DPA</h1>
 
                 {error && (
@@ -201,33 +204,26 @@ const Dpaform: React.FC = () => {
                     )}
                 </div>
 
-                {/* Approval checkbox */}
-                <div className="flex items-center space-x-2">
-                    <input
-                        type="checkbox"
-                        checked={needWrittenAprooval}
-                        onChange={(e) => setNeedWrittenAprooval(e.target.checked)}
-                        className="h-4 w-4 rounded border-slate-300 text-[#7BA043]"
-                    />
-                    <span className="text-sm font-medium text-slate-700">
-                        Requires written approval before data processor changes
-                    </span>
-                </div>
+
 
                 {/* Days of Notice */}
-                <div className="space-y-1 relative">
+                <div className="space-y-1">
                     <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
-                        Days of Notice <InformationCircleIcon
-                        className="h-4 w-4 text-slate-400 cursor-pointer"
-                        onMouseEnter={() => setShowDaysInfo(true)}
-                        onMouseLeave={() => setShowDaysInfo(false)}
-                    />
+                        Days of Notice
+                        <InformationCircleIcon
+                            className="h-4 w-4 text-slate-400 cursor-pointer"
+                            onMouseEnter={() => setShowDaysInfo(true)}
+                            onMouseLeave={() => setShowDaysInfo(false)}
+                        />
                     </label>
+
+                    {/* Tooltip below label but outside the icon */}
                     {showDaysInfo && (
-                        <p className="absolute left-0 top-full mt-1 w-72 rounded-lg bg-slate-50 border border-slate-200 px-3 py-2 text-xs text-slate-700 shadow-sm">
-                            This is the contact timeframe for the user to contact the customer.
+                        <p className="mt-1 w-full max-w-sm rounded-lg bg-slate-50 border border-slate-200 px-3 py-2 text-xs text-slate-700 shadow-sm">
+                            The timeframe within which the customer must be notified in the event of a DPA violation
                         </p>
                     )}
+
                     <input
                         type="number"
                         min="0"
@@ -245,6 +241,18 @@ const Dpaform: React.FC = () => {
                         placeholder="e.g. 30"
                         className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition focus:bg-white focus:ring-2 focus:ring-slate-200 placeholder:text-slate-400"
                     />
+                </div>
+                {/* Approval checkbox */}
+                <div className="flex items-center space-x-2">
+                    <input
+                        type="checkbox"
+                        checked={needWrittenAprooval}
+                        onChange={(e) => setNeedWrittenAprooval(e.target.checked)}
+                        className="h-4 w-4 rounded border-slate-300 text-[#7BA043]"
+                    />
+                    <span className="text-sm font-medium text-slate-700">
+                        Requires written approval before data processor changes
+                    </span>
                 </div>
 
                 {/* Bottom buttons */}
