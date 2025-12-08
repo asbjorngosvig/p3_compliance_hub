@@ -18,7 +18,7 @@ class LocationsControllerTest {
 
     @Test
     void getAllLocations_ok() throws Exception {
-        mockMvc.perform(get("/locations"))
+        mockMvc.perform(get("/locations/"))
                 .andExpect(status().isOk());
     }
 
