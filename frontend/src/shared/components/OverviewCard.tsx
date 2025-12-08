@@ -2,7 +2,7 @@ export interface OverviewCardProps {
   title: string;
   description: string;
   numberCount: number;
-  violationStatus: boolean;
+  violationStatus?: boolean;
   priority?: priorityStatus;
   Icon?: React.ElementType;
 }
@@ -12,8 +12,8 @@ export function OverviewCard({
   title,
   description,
   numberCount,
-  violationStatus,
-  priority,
+  //violationStatus,
+  //priority,
   Icon,
 }: OverviewCardProps) {
   return (
