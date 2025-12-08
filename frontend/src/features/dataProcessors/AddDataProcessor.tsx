@@ -7,8 +7,6 @@ import { dataProcessorService } from "../../shared/services/DataProcessorService
 import { locationsService } from "../../shared/services/LocationsService";
 
 
-
-
 export default function AddDataProcessor() {
     const [processingLocations, setProcessingLocations] = useState<string[]>([]); // chosen processing locations
 
