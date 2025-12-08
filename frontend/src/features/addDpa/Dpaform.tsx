@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
 import { dpaService } from "../../shared/services/dpaService";
 import { locationsService } from "../../shared/services/LocationsService";
 import type { CreateDPARequest } from "../../shared/types/dpa.types";
@@ -21,13 +21,13 @@ const Dpaform: React.FC = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [locationError, setLocationError] = useState<string | null>(null);
+    const [showDaysInfo, setShowDaysInfo] = useState(false);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setError(null);
         setIsSubmitting(true);
 
-        // Required checks
         if (processingLocations.length === 0) {
             setError("Please select at least one processing location.");
             setIsSubmitting(false);
@@ -52,7 +52,6 @@ const Dpaform: React.FC = () => {
 
             await dpaService.create(requestData);
 
-            // OPTIONAL: show success confirmation
             await confirm({
                 title: "Success!",
                 message: "The DPA was created successfully.",
@@ -67,7 +66,6 @@ const Dpaform: React.FC = () => {
             setIsSubmitting(false);
         }
     };
-
 
     const fetchLocationsList = async (val: string) => {
         try {
@@ -217,25 +215,37 @@ const Dpaform: React.FC = () => {
                 </div>
 
                 {/* Days of Notice */}
-                <input
-                    type="number"
-                    min="0"
-                    value={daysOfNotice}
-                    onChange={(e) => {
-                        const v = e.target.value;
-                        // allow empty input
-                        if (v === "") {
-                            setDaysOfNotice("");
-                            return;
-                        }
-                        // allow only positive integers
-                        if (/^\d+$/.test(v)) {
-                            setDaysOfNotice(v);
-                        }
-                    }}
-                    placeholder="e.g. 30"
-                    className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition focus:bg-white focus:ring-2 focus:ring-slate-200 placeholder:text-slate-400"
-                />
+                <div className="space-y-1 relative">
+                    <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+                        Days of Notice <InformationCircleIcon
+                        className="h-4 w-4 text-slate-400 cursor-pointer"
+                        onMouseEnter={() => setShowDaysInfo(true)}
+                        onMouseLeave={() => setShowDaysInfo(false)}
+                    />
+                    </label>
+                    {showDaysInfo && (
+                        <p className="absolute left-0 top-full mt-1 w-72 rounded-lg bg-slate-50 border border-slate-200 px-3 py-2 text-xs text-slate-700 shadow-sm">
+                            This is the contact timeframe for the user to contact the customer.
+                        </p>
+                    )}
+                    <input
+                        type="number"
+                        min="0"
+                        value={daysOfNotice}
+                        onChange={(e) => {
+                            const v = e.target.value;
+                            if (v === "") {
+                                setDaysOfNotice("");
+                                return;
+                            }
+                            if (/^\d+$/.test(v)) {
+                                setDaysOfNotice(v);
+                            }
+                        }}
+                        placeholder="e.g. 30"
+                        className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition focus:bg-white focus:ring-2 focus:ring-slate-200 placeholder:text-slate-400"
+                    />
+                </div>
 
                 {/* Bottom buttons */}
                 <div className="mt-6 flex justify-between">
