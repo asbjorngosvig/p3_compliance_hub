@@ -126,7 +126,7 @@ const SeeDataProcessors: React.FC = () => {
                                     <span className="inline-flex items-center rounded-full bg-gray-50 px-2.5 py-1">
                                         <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-green-500" />
                                         Processing Locations:{" "}
-                                        {dp.processingLocations || "Unknown"}
+                                        {dp.processing_locations || "Unknown"}
                                     </span>
                                     <span className="inline-flex items-center rounded-full bg-gray-50 px-2.5 py-1">
                                         <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-blue-500" />
