@@ -28,7 +28,6 @@ const timeframeBadgeClasses = (timeframe: string) => {
 
 // Helper function to convert backend DPA to frontend DpaRow
 const mapDPAtoDpaRow = (dpa: IDPA): DpaRow => {
-    // Determine status based on violations
     let status: DpaStatus = "Compliant";
     let priority: DpaPriority = "None";
     let action: DpaAction = "None";
@@ -37,7 +36,6 @@ const mapDPAtoDpaRow = (dpa: IDPA): DpaRow => {
     if (dpa.violations && dpa.violations.length > 0) {
         status = "Violation";
 
-        // Check severity to determine priority
         const hasHighSeverity = dpa.violations.some(
             (v) =>
                 v.severity?.toLowerCase() === "high" ||
@@ -54,7 +52,6 @@ const mapDPAtoDpaRow = (dpa: IDPA): DpaRow => {
             timeframe = "1 month";
         }
     } else if (dpa.requirements && dpa.requirements.length > 0) {
-        // If has requirements but no violations, might be pending evaluation
         status = "Pending";
         priority = "Important";
         action = "Contact";
@@ -78,10 +75,12 @@ const DpaOverview: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
-    const [sort, setSort] = useState<{ key: SortKey; direction: "asc" | "desc" }>({
-        key: "name",
-        direction: "asc",
-    });
+    const [sort, setSort] = useState<{ key: SortKey; direction: "asc" | "desc" }>(
+        {
+            key: "name",
+            direction: "asc",
+        },
+    );
 
     const confirm = useConfirm();
     const navigate = useNavigate();
@@ -147,10 +146,6 @@ const DpaOverview: React.FC = () => {
             console.error("Failed to delete DPA:", err);
             setError("Failed to delete DPA. Please try again.");
         }
-    };
-
-    const handleViewDetails = (id: string) => {
-        navigate(`/dpas/${id}`);
     };
 
     const showingCount = filteredAndSortedDpas.length;
@@ -355,36 +350,19 @@ const DpaOverview: React.FC = () => {
                                             {dpa.action}
                                         </td>
 
+                                        {/* last column: DELETE ONLY, no edit icon */}
                                         <td
                                             className="px-4 py-3 text-right"
                                             onClick={(e) => e.stopPropagation()}
                                         >
-                                            <div className="flex items-center justify-end gap-2">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => handleViewDetails(dpa.id)}
-                                                    className="rounded-full p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
-                                                >
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        strokeWidth={1.8}
-                                                        className="h-4 w-4"
-                                                    >
-                                                        <path d="M16.5 3.5 20.5 7.5 8 20H4v-4L16.5 3.5z" />
-                                                    </svg>
-                                                </button>
-                                                <Button
-                                                    variant="neutral"
-                                                    className="flex items-center gap-1 text-xs"
-                                                    onClick={() => handleDelete(dpa.id)}
-                                                >
-                                                    <TrashIcon className="h-4 w-4" />
-                                                    Delete
-                                                </Button>
-                                            </div>
+                                            <Button
+                                                variant="neutral"
+                                                className="flex items-center gap-1 text-xs"
+                                                onClick={() => handleDelete(dpa.id)}
+                                            >
+                                                <TrashIcon className="h-4 w-4" />
+                                                Delete
+                                            </Button>
                                         </td>
                                     </tr>
                                 ))
