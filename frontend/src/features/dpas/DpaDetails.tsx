@@ -7,7 +7,7 @@ import { Button } from "../../shared/components/Buttons.tsx";
 import type { IDPA, IViolation } from "../../shared/types/dpa.types.ts";
 
 // Sæt til true for mock example of false for rigtig data
-const USE_MOCK = false;
+const USE_MOCK = true;
 
 const buildMockDpa = (idFromRoute?: string): IDPA => ({
     id: idFromRoute ?? "mock-dpa-id",
@@ -165,14 +165,6 @@ const DpaDetails: React.FC = () => {
                             Open DPA file
                         </Button>
                     )}
-                    <Button
-                        variant="neutral"
-                        className="flex items-center gap-1 text-xs"
-                        onClick={() => navigate(-1)}
-                    >
-                        <ArrowLeftIcon className="h-4 w-4" />
-                        Back
-                    </Button>
                 </div>
             </div>
 
@@ -259,6 +251,16 @@ const DpaDetails: React.FC = () => {
                             </dd>
                         </div>
                     </dl>
+                </div>
+
+                <div>
+                    <Button
+                        variant="tertiary"
+                        className="flex items-center gap-1 text-xs"
+                        onClick={() => navigate(-1)}>
+                        <ArrowLeftIcon className="h-4 w-4" />
+                        Back
+                    </Button>
                 </div>
             </div>
         </div>

@@ -11,6 +11,7 @@ import type {
     DpaAction,
 } from "../../shared/types/dpa.types.ts";
 import { useNavigate } from "react-router-dom";
+import { OverviewHeader } from "../../shared/components/OverviewHeader.tsx";
 
 type SortKey = "name" | "status" | "priority" | "action" | "timeframe";
 
@@ -151,7 +152,21 @@ const DpaOverview: React.FC = () => {
 
     const showingCount = filteredAndSortedDpas.length;
 
+    const totalDpas = dpas.length;
+    const violationsCount = dpas.filter((d) => d.status === "Violation").length;
+    const compliantCount = dpas.filter((d) => d.status === "Compliant").length;
+    const toBeContactedCount = dpas.filter((d) => d.action === "Contact").length;
+
     return (
+
+            <div className="space-y-6">
+
+            <OverviewHeader
+                totalDpas={totalDpas}
+                violationsCount={violationsCount}
+                compliantCount={compliantCount}
+                toBeContactedCount={toBeContactedCount}/>
+
         <section className="mt-6 rounded-2xl bg-white p-4 shadow-sm lg:p-6">
             {/* Header */}
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -371,8 +386,10 @@ const DpaOverview: React.FC = () => {
                         </tbody>
                     </table>
                 </div>
+                
             </div>
         </section>
+      </div>
     );
 };
 
