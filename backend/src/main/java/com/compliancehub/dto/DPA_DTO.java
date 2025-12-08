@@ -7,12 +7,14 @@ import org.hibernate.validator.constraints.URL;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class DPA_DTO {
     public record CreateRequest(
-        List<Requirement> requirements,
-        List<CommunicationStrategy> communicationStrategies,
+        List<String> allowedProcessingLocations,
+        boolean needWrittenAprooval,
+        Integer daysOfNotice,
         String customerName,
         String productName,
         @URL(message = "Source must be a valid URL")
@@ -21,9 +23,7 @@ public class DPA_DTO {
 
     public record StandardDPAResponse(
         UUID id,
-        List<Violation> violations,
-        List<Requirement> requirements,
-        List<CommunicationStrategy> communicationStrats,
+        List<Violation> violations, // violations have actions
         String customerName,
         String productName,
         LocalDateTime createdDate,
