@@ -97,8 +97,6 @@ public class DPAService {
                 .map(dpa -> new DPA_DTO.StandardDPAResponse(
                         dpa.getId(),
                         dpa.getViolations(),
-                        dpa.getRequirements(),
-                        dpa.getCommunicationStrats(),
                         dpa.getCustomerName(),
                         dpa.getProductName(),
                         dpa.getCreatedDate(),
