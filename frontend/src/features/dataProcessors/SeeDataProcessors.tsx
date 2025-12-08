@@ -2,17 +2,20 @@ import React, { useEffect, useState } from "react";
 import type { IDataProcessor } from "../../shared/types/IDataProcessor.ts";
 import { dataProcessorService } from "../../shared/services/DataProcessorService.ts";
 import { Button } from "../../shared/components/Buttons.tsx";
-import {useConfirm} from "../../shared/components/ConfirmDialog.tsx";
-
+import { useConfirm } from "../../shared/components/ConfirmDialog.tsx";
 import {
     TrashIcon,
-    DocumentMagnifyingGlassIcon
+    DocumentMagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
 
 const SeeDataProcessors: React.FC = () => {
     const [search, setSearch] = useState("");
     const [dataProcessors, setDataProcessors] = useState<IDataProcessor[]>([]);
     const [loading, setLoading] = useState(true);
+
+    const confirm = useConfirm();
+    const navigate = useNavigate();
 
     // Fetch data from API when component mounts
     useEffect(() => {
@@ -31,7 +34,6 @@ const SeeDataProcessors: React.FC = () => {
 
         fetchData();
     }, []);
-    const confirm = useConfirm();
 
     const handleDelete = async (dp: IDataProcessor) => {
         if (!dp.id) {
@@ -56,9 +58,7 @@ const SeeDataProcessors: React.FC = () => {
         try {
             await dataProcessorService.deleteById(dp.id);
 
-            setDataProcessors(prev =>
-                prev.filter(x => x.id !== dp.id)
-            );
+            setDataProcessors((prev) => prev.filter((x) => x.id !== dp.id));
         } catch (error) {
             console.error("Failed to delete:", error);
         }
@@ -66,7 +66,7 @@ const SeeDataProcessors: React.FC = () => {
 
     // Filtered based on search input
     const filteredProcessors = dataProcessors.filter((dp) =>
-        dp.name.toLowerCase().includes(search.toLowerCase())
+        dp.name.toLowerCase().includes(search.toLowerCase()),
     );
 
     if (loading) {
@@ -139,7 +139,7 @@ const SeeDataProcessors: React.FC = () => {
                                 <Button
                                     variant="neutral"
                                     className="flex items-center gap-1 text-xs"
-                                    onClick={() => console.log("View", dp.id)}
+                                    onClick={() => dp.id && navigate(`/dataprocessors/${dp.id}`)}
                                 >
                                     <DocumentMagnifyingGlassIcon className="h-4 w-4" />
                                     View

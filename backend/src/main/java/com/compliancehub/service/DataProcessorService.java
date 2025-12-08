@@ -70,6 +70,23 @@ public class DataProcessorService {
         );
     }
 
+    public DataProcessorDTO.StandardDataProcessorResponse getById(UUID id) {
+        DataProcessor dp = dataProcessorRepository.findById(id)
+            .orElseThrow(() -> new NoSuchElementException(
+                "DataProcessor with id " + id + " is not found"
+            ));
+
+        return new DataProcessorDTO.StandardDataProcessorResponse(
+            dp.getId(),
+            dp.getName(),
+            dp.getProcessingLocations(),
+            dp.getService(),
+            dp.getPurpose(),
+            dp.getNote(),
+            dp.getWebsite()
+        );
+    }
+    
     public void delete(UUID id){
         if(!dataProcessorRepository.existsById(id)){
             throw new NoSuchElementException("DataProcessor with id " + id + " is not found");

@@ -36,6 +36,14 @@ public class DataProcessorController {
         return ResponseEntity.ok(service.getAll());
     }
 
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<DataProcessorDTO.StandardDataProcessorResponse> getById(
+        @PathVariable UUID id
+    ) {
+        return ResponseEntity.ok(service.getById(id));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id){
         service.delete(id);
