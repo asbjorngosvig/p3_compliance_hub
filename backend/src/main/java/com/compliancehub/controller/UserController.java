@@ -58,8 +58,8 @@ public class UserController {
                 .path("/")
                 .maxAge(24 * 60 * 60)
                 .sameSite("None")
+                .domain("compliancehub.osc-fr1.scalingo.io")
                 .build();
-
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body("Login successful");

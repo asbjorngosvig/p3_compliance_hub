@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class DPAService {
@@ -88,16 +90,28 @@ public class DPAService {
 
 
 
+    public DPA_DTO.GetAllResponse getAll() {
+        List<DPA> allDPAs = repository.findAll();
 
-//    public DPA_DTO.GetAllResponse getAll() {
-//        List<DPA> allDPA = repository.findAll();
-//
-//        List<DPA_DTO.DPAResponse> dpaResonses = allDPA.stream().map(dpa->
-//             new DPA_DTO.DPAResponse(dpa.getDPAId(), dpa.getViolations(), dpa.getCustomerName(), dpa.getProductName())
-//        ).toList();
-//
-//        return new DPA_DTO.GetAllResponse(dpaResonses, (long) allDPA.size(), "Date created", "Ascending");
-//    }
+        List<DPA_DTO.StandardDPAResponse> dpaResponses = allDPAs.stream()
+                .map(dpa -> new DPA_DTO.StandardDPAResponse(
+                        dpa.getId(),
+                        dpa.getViolations(),
+                        dpa.getRequirements(),
+                        dpa.getCommunicationStrats(),
+                        dpa.getCustomerName(),
+                        dpa.getProductName(),
+                        dpa.getCreatedDate(),
+                        dpa.getFileUrl()
+                ))
+                .toList();
+
+        return new DPA_DTO.GetAllResponse(dpaResponses, (long) allDPAs.size());
+    }
+    public void delete(UUID id) {
+        repository.deleteById(id);
+    }
+
 
     public RequirementsEvaluator getReqEvaluator(Requirement requirement) {
         switch (requirement.getReqEvaluator()) {

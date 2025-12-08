@@ -33,6 +33,9 @@ public class DPA_DTO {
     public record CreateResponse(
         StandardDPAResponse createdDPA
     ){}
-
+    public record GetAllResponse(
+            List<StandardDPAResponse> dpas,
+            long totalCount
+    ){}
 
 }

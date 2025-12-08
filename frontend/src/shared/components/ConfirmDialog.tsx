@@ -5,6 +5,7 @@ type ConfirmOptions = {
     message?: string;
     confirmText?: string;
     cancelText?: string;
+    type?: "success" | "danger" | "info";
 };
 
 type ConfirmContextValue = {
@@ -40,6 +41,13 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
         setResolver(null);
     };
 
+    const confirmColor =
+        options?.type === "success"
+            ? "bg-[#88AA30] hover:bg-[#BAD377]"
+            : options?.type === "danger"
+                ? "bg-red-600 hover:bg-red-700"
+                : "bg-blue-600 hover:bg-blue-700";
+
     return (
         <ConfirmContext.Provider value={{ confirm }}>
             {children}
@@ -56,18 +64,20 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
                         </p>
 
                         <div className="flex justify-end gap-3">
-                            <button
-                                onClick={() => handleClose(false)}
-                                className="px-4 py-2 text-sm rounded-md bg-gray-100 hover:bg-gray-200"
-                            >
-                                {options.cancelText ?? "Cancel"}
-                            </button>
+                            {options.cancelText && (
+                                <button
+                                    onClick={() => handleClose(false)}
+                                    className="px-4 py-2 text-sm rounded-md bg-gray-100 hover:bg-gray-200"
+                                >
+                                    {options.cancelText}
+                                </button>
+                            )}
 
                             <button
                                 onClick={() => handleClose(true)}
-                                className="px-4 py-2 text-sm rounded-md bg-red-600 text-white hover:bg-red-700"
+                                className={`px-4 py-2 text-sm rounded-md text-white ${confirmColor}`}
                             >
-                                {options.confirmText ?? "Delete"}
+                                {options.confirmText ?? "OK"}
                             </button>
                         </div>
                     </div>

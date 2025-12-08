@@ -1,6 +1,4 @@
 package com.compliancehub.controller;
-
-// 1. Make sure this import matches the package where you put the DataProcessorDTO class
 import com.compliancehub.dto.DataProcessorDTO;
 import com.compliancehub.service.DataProcessorService;
 import jakarta.validation.Valid;
