@@ -11,7 +11,7 @@ const USE_MOCK = false; // set to false when the API works
 const buildMockDataProcessor = (idFromRoute?: string): IDataProcessor => ({
     id: idFromRoute ?? "mock-dp-id",
     name: "Mock Cloud Provider",
-    processing_locations: ["EU (Frankfurt)", "EU (Paris)"],
+    processingLocations: ["EU (Frankfurt)", "EU (Paris)"],
     service: "Cloud hosting and exam platform infrastructure",
     purpose: "Host exam platform workloads and associated student data.",
     note: "Sub-processors include Mock Storage Inc. and Mock Analytics GmbH.",
@@ -90,7 +90,7 @@ const DataProcessorDetails: React.FC = () => {
         );
     }
 
-    const locations = dp.processing_locations || [];
+    const locations = dp.processingLocations || [];
     const locationsCount = locations.length;
 
     return (
