@@ -78,6 +78,4 @@ public class UserController {
         response.addHeader("Set-Cookie",cookie.toString());
         return ResponseEntity.ok("Logged out");
     }
-
-
 }

@@ -1,6 +1,8 @@
 package com.compliancehub.service;
 
+import com.compliancehub.dto.ActionDTO;
 import com.compliancehub.dto.DPA_DTO;
+import com.compliancehub.dto.ViolationDTO;
 import com.compliancehub.model.*;
 import com.compliancehub.model.CommunicationStrategy;
 import com.compliancehub.repository.DPARepository;
@@ -10,11 +12,7 @@ import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvalua
 import com.compliancehub.strategy.RequirementsEvaluator.RequirementsEvaluator;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class DPAService {
@@ -31,7 +29,7 @@ public class DPAService {
 
         return new DPA_DTO.StandardDPAResponse(
                 dpa.getId(),
-                dpa.getViolations(),
+                createViolationDTOFromDPA(dpa),
                 dpa.getCustomerName(),
                 dpa.getProductName(),
                 dpa.getCreatedDate(),
@@ -91,7 +89,7 @@ public class DPAService {
         return new DPA_DTO.CreateResponse(
             new DPA_DTO.StandardDPAResponse(
                 savedDPA.getId(),
-                savedDPA.getViolations(),
+                createViolationDTOFromDPA(savedDPA),
                 savedDPA.getCustomerName(),
                 savedDPA.getProductName(),
                 savedDPA.getCreatedDate(),
@@ -106,10 +104,12 @@ public class DPAService {
     public DPA_DTO.GetAllResponse getAll() {
         List<DPA> allDPAs = repository.findAll();
 
+
         List<DPA_DTO.StandardDPAResponse> dpaResponses = allDPAs.stream()
-                .map(dpa -> new DPA_DTO.StandardDPAResponse(
-                        dpa.getId(),
-                        dpa.getViolations(),
+                .map(dpa ->
+
+                        new DPA_DTO.StandardDPAResponse(
+                        dpa.getId(), createViolationDTOFromDPA(dpa),
                         dpa.getCustomerName(),
                         dpa.getProductName(),
                         dpa.getCreatedDate(),
@@ -119,6 +119,22 @@ public class DPAService {
 
         return new DPA_DTO.GetAllResponse(dpaResponses, (long) allDPAs.size());
     }
+
+    private List<ViolationDTO.standardResponse> createViolationDTOFromDPA(DPA dpa) {
+        List<ViolationDTO.standardResponse> violationDTOs = new ArrayList<>();
+
+        for (Violation violation : dpa.getViolations()) {
+            List<ActionDTO.standardResponse> actionDTO = new ArrayList<>();
+
+            for (Action action : violation.getActions()) {
+                actionDTO.add(new ActionDTO.standardResponse(action.getDescription(), action.getActionId()));
+            }
+            violationDTOs.add(new ViolationDTO.standardResponse(violation.getDescription(),violation.getViolationId(),actionDTO));
+        }
+
+        return violationDTOs;
+    }
+
     public void delete(UUID id) {
         repository.deleteById(id);
     }

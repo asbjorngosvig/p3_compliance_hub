@@ -23,7 +23,7 @@ public class DPA_DTO {
 
     public record StandardDPAResponse(
         UUID id,
-        List<Violation> violations, // violations have actions
+        List<ViolationDTO.standardResponse> violations, // violations have actions
         String customerName,
         String productName,
         LocalDateTime createdDate,
