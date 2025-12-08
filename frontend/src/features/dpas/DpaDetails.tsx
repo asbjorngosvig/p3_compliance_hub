@@ -7,7 +7,7 @@ import { Button } from "../../shared/components/Buttons.tsx";
 import type { IDPA, IViolation } from "../../shared/types/dpa.types.ts";
 
 // Sæt til true for mock example of false for rigtig data
-const USE_MOCK = true;
+const USE_MOCK = false;
 
 const buildMockDpa = (idFromRoute?: string): IDPA => ({
     id: idFromRoute ?? "mock-dpa-id",
