@@ -18,6 +18,7 @@ export default function AddDataProcessor() {
     const [service, setService] = useState("");
     const [website, setWebsite] = useState("");
     const [note, setNote] = useState("");
+    const [locationError, setLocationError] = useState<string | null>(null);
 
     const navigate = useNavigate();
 
@@ -49,21 +50,43 @@ export default function AddDataProcessor() {
     };
 
     // Fetches processing locations based on what the user has written so far. Is called by the 'onchange' input.
-    const fetchLocationsList = async (location: String) => {
+    const fetchLocationsList = async (val: string) => {
         try {
-            let res = await locationsService.get("/"+location);
+            const res = await locationsService.get("/" + val);
             setFetchedLocations(Array.from(res.data));
-        } catch (err) {
-            alert("Error getting locations");
+        } catch {
+            setFetchedLocations([]);
         }
-    }
+    };
+
+    const handleLocationEnter = (e: any) => {
+        if (e.key !== "Enter") return;
+
+        e.preventDefault();
+        setLocationError(null);
+
+        if (fetchedLocations.length === 0) {
+            setLocationError("No such location found.");
+            return;
+        }
+
+        const loc = fetchedLocations[0];
+
+        if (processingLocations.includes(loc)) {
+            setLocationError("Location already selected.");
+            return;
+        }
+
+        setProcessingLocations((prev) => [...prev, loc]);
+        setLocation("");
+    };
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         handleCreate();
     };
 
-     return (
+    return (
         <div className="px-8 py-6">
             <h1 className="text-3xl font-bold text-gray-900">Add Data Processor</h1>
 
@@ -87,75 +110,54 @@ export default function AddDataProcessor() {
                 </div>
 
 
-          {/* Hosting Country */}
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">
-              Processing locations Country
-            </label>
-            <input
-              type="text"
-              list="processingLocations"
-              value={location}
-              onChange={(e) => {
-                setLocation(e.target.value);
-                fetchLocationsList(e.target.value);
-              }}
-              onClick={() => fetchLocationsList("")}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  if (fetchedLocations.length === 0) {
-                    alert("No such location");
-                    return;
-                  }
-                  let loc = fetchedLocations[0];
-                  if (processingLocations.includes(loc)) {
-                    alert("Location already selected");
-                    return;
-                  }
-                  e.preventDefault();
-                  if (loc.trim().length > 0) {
-                    setProcessingLocations((prev) => [...prev, loc]);
-                    setLocation(""); // clear input
-                  }
-                }
-              }}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-            />
-            {/* Laver en dropdown ud fra alle de fetchede locations fra backend*/}
-            <datalist id="processingLocations">
-              {fetchedLocations.map((loc, i) => (
-                <option key={i} value={loc}></option>
-              ))}
-            </datalist>
+                {/* Processing Locations */}
+                <div className="space-y-1">
+                    <label className="block text-sm font-medium text-gray-700">
+                        Processing Locations Country
+                    </label>
+                    <input
+                        type="text"
+                        list="processingLocations"
+                        value={location}
+                        onChange={(e) => {
+                            setLocation(e.target.value);
+                            fetchLocationsList(e.target.value);
+                        }}
+                        onClick={() => fetchLocationsList("")}
+                        onKeyDown={handleLocationEnter}
+                        placeholder="Type to search locations..."
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    />
+                    <datalist id="processingLocations">
+                        {fetchedLocations.map((loc, i) => (
+                            <option key={i} value={loc} />
+                        ))}
+                    </datalist>
 
-            {/* Shows all currently selected processingLocations*/}
-            {processingLocations.map((loc) => (
-              <p // Hover effects and logic for deleting a selected processor by clicking it
-                onMouseEnter={(e) => {
-                  if (e.target instanceof HTMLParagraphElement)
-                    e.target.style.textDecoration = "line-through";
-                }}
-                onMouseOut={(e) => {
-                  if (e.target instanceof HTMLParagraphElement)
-                    e.target.style.textDecoration = "none";
-                }}
-                onMouseOver={(e) => {
-                  if (e.target instanceof HTMLParagraphElement)
-                    e.target.style.cursor = "pointer";
-                }}
-                //Filters out the clicked location. Works as a deletion
-                onClick={() =>
-                  setProcessingLocations(
-                    processingLocations.filter((loc1) => loc1 !== loc)
-                  )
-                }
-              >
-                {loc}
-              </p>
-            ))}
-          </div>
+                    {locationError && (
+                        <p className="text-xs text-red-600">{locationError}</p>
+                    )}
 
-          {/* Purpose */}
+                    {processingLocations.length > 0 && (
+                        <div className="mt-2 flex flex-wrap gap-2">
+                            {processingLocations.map((loc, index) => (
+                                <span
+                                    key={index}
+                                    onClick={() =>
+                                        setProcessingLocations(
+                                            processingLocations.filter((l) => l !== loc)
+                                        )
+                                    }
+                                    className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-700 cursor-pointer hover:bg-slate-200 hover:line-through transition"
+                                >
+                                    {loc}
+                                </span>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* Purpose */}
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-gray-700">
                         Purpose
