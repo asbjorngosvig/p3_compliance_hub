@@ -2,7 +2,7 @@ package com.compliancehub.dto;
 
 public class ActionDTO {
     public record standardResponse(
-            String message,
+            String description,
             java.util.UUID id
     ){}
 }
