@@ -75,8 +75,8 @@ public class Locations {
         locations.add("COCOS (KEELING) ISLANDS");
         locations.add("COLOMBIA");
         locations.add("COMOROS");
-        locations.add("CONGO");
-        locations.add("CONGO, THE DEMOCRATIC REPUBLIC OF THE");
+        locations.add("CONGO (DRC)");
+        locations.add("REPUBLIC OF CONGO");
         locations.add("COOK ISLANDS");
         locations.add("COSTA RICA");
         locations.add("CÔTE D'IVOIRE");
@@ -129,7 +129,7 @@ public class Locations {
         locations.add("ICELAND");
         locations.add("INDIA");
         locations.add("INDONESIA");
-        locations.add("IRAN, ISLAMIC REPUBLIC OF");
+        locations.add("IRAN");
         locations.add("IRAQ");
         locations.add("IRELAND");
         locations.add("ISLE OF MAN");
@@ -142,11 +142,11 @@ public class Locations {
         locations.add("KAZAKHSTAN");
         locations.add("KENYA");
         locations.add("KIRIBATI");
-        locations.add("KOREA, DEMOCRATIC PEOPLE'S REPUBLIC OF");
-        locations.add("KOREA, REPUBLIC OF");
+        locations.add("KOREA");
+        locations.add("KOREA");
         locations.add("KUWAIT");
         locations.add("KYRGYZSTAN");
-        locations.add("LAO PEOPLE'S DEMOCRATIC REPUBLIC");
+        locations.add("LAOS");
         locations.add("LATVIA");
         locations.add("LEBANON");
         locations.add("LESOTHO");
@@ -156,7 +156,7 @@ public class Locations {
         locations.add("LITHUANIA");
         locations.add("LUXEMBOURG");
         locations.add("MACAO");
-        locations.add("MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF");
+        locations.add("MACEDONIA");
         locations.add("MADAGASCAR");
         locations.add("MALAWI");
         locations.add("MALAYSIA");
@@ -169,8 +169,8 @@ public class Locations {
         locations.add("MAURITIUS");
         locations.add("MAYOTTE");
         locations.add("MEXICO");
-        locations.add("MICRONESIA, FEDERATED STATES OF");
-        locations.add("MOLDOVA, REPUBLIC OF");
+        locations.add("MICRONESIA");
+        locations.add("MOLDOVA");
         locations.add("MONACO");
         locations.add("MONGOLIA");
         locations.add("MONTENEGRO");
@@ -194,7 +194,7 @@ public class Locations {
         locations.add("OMAN");
         locations.add("PAKISTAN");
         locations.add("PALAU");
-        locations.add("PALESTINE, STATE OF");
+        locations.add("PALESTINE");
         locations.add("PANAMA");
         locations.add("PAPUA NEW GUINEA");
         locations.add("PARAGUAY");
@@ -210,7 +210,7 @@ public class Locations {
         locations.add("RUSSIAN FEDERATION");
         locations.add("RWANDA");
         locations.add("SAINT BARTHÉLEMY");
-        locations.add("SAINT HELENA, ASCENSION AND TRISTAN DA CUNHA");
+        locations.add("SAINT HELENA");
         locations.add("SAINT KITTS AND NEVIS");
         locations.add("SAINT LUCIA");
         locations.add("SAINT MARTIN (FRENCH PART)");
@@ -242,9 +242,9 @@ public class Locations {
         locations.add("SWEDEN");
         locations.add("SWITZERLAND");
         locations.add("SYRIAN ARAB REPUBLIC");
-        locations.add("TAIWAN, PROVINCE OF CHINA");
+        locations.add("TAIWAN");
         locations.add("TAJIKISTAN");
-        locations.add("TANZANIA, UNITED REPUBLIC OF");
+        locations.add("TANZANIA");
         locations.add("THAILAND");
         locations.add("TIMOR-LESTE");
         locations.add("TOGO");
@@ -265,9 +265,9 @@ public class Locations {
         locations.add("URUGUAY");
         locations.add("UZBEKISTAN");
         locations.add("VANUATU");
-        locations.add("VENEZUELA, BOLIVARIAN REPUBLIC OF");
+        locations.add("VENEZUELA");
         locations.add("VIET NAM");
-        locations.add("VIRGIN ISLANDS, BRITISH");
+        locations.add("VIRGIN ISLANDS");
         locations.add("VIRGIN ISLANDS, U.S.");
         locations.add("WALLIS AND FUTUNA");
         locations.add("WESTERN SAHARA");
