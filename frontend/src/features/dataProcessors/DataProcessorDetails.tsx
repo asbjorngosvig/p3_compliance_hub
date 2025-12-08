@@ -6,7 +6,7 @@ import { dataProcessorService } from "../../shared/services/DataProcessorService
 import type { IDataProcessor } from "../../shared/types/IDataProcessor.ts";
 
 // Sæt til true for at bruge mock data og false for rigtig data
-const USE_MOCK = true; // set to false when the API works
+const USE_MOCK = false; // set to false when the API works
 
 const buildMockDataProcessor = (idFromRoute?: string): IDataProcessor => ({
     id: idFromRoute ?? "mock-dp-id",
