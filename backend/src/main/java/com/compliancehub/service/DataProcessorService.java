@@ -86,13 +86,14 @@ public class DataProcessorService {
             dp.getNote(),
             dp.getWebsite()
         );
-
+    }
+    
     public List<DataProcessor> getAllEntities() {
         List<DataProcessor> allDataProcessors = dataProcessorRepository.findAll();
         return allDataProcessors;
 
     }
-    
+
     public void delete(UUID id){
         if(!dataProcessorRepository.existsById(id)){
             throw new NoSuchElementException("DataProcessor with id " + id + " is not found");
