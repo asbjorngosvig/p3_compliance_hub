@@ -72,9 +72,9 @@ public class DPAService {
         // Important: SKAL STÅ "allowedLocations"
         attributes = new HashMap<>();
         attributes.put("allowedLocations", req.allowedProcessingLocations());
+        requirement1.setAttributes(attributes);
         requirement1.setReqEvaluator("ProcessingLocationEvaluator"); // Navnet på evaluator class
         requirement1.setDpa(newDPA);
-
         newDPA.addRequirement(requirement1);
 
         for (DataProcessor dp : dataProcessorService.getAllEntities()) {
