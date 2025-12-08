@@ -17,7 +17,7 @@ public class MockProcessingLocationsRequirement {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("allowedLocations", List.of(Locations.EU));
-        req.setReqEvaluator("ProcessingLocationsEvaluator");
+        req.setReqEvaluator("ProcessingLocationEvaluator");
         req.setAttributes(attributes);
         return req;
     }
@@ -28,7 +28,7 @@ public class MockProcessingLocationsRequirement {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("allowedLocations", List.of("INVALID_LOCATIONS"));
-        req.setReqEvaluator("ProcessingLocationsEvaluator");
+        req.setReqEvaluator("ProcessingLocationEvaluator");
         req.setAttributes(attributes);
         return req;
     }
