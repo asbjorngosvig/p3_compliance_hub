@@ -20,6 +20,7 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
@@ -40,11 +41,11 @@ public class SecurityConfig {
 
         // do not use /api since it expects it here
         return http
-            .csrf(AbstractHttpConfigurer::disable)
-            .cors(Customizer.withDefaults())
-            .authorizeHttpRequests(request -> request
-                    .requestMatchers("/users/login","/users/register", "/api/users/login", "/api/users/register").permitAll() //Does not req auth for these 2// endpoints register should be removed later
-                    .anyRequest().authenticated())
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(c -> c.configurationSource(configurationSource()))
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("/users/login","/users/register", "/api/users/login", "/api/users/register").permitAll() //Does not req auth for these 2// endpoints register should be removed later
+                        .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .httpBasic(Customizer.withDefaults()) //rest api access
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -53,7 +54,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public CorsFilter corsFilter() {
+    public UrlBasedCorsConfigurationSource configurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.setAllowedOriginPatterns(List.of("http://localhost:5173","http://compliancehub-alpha.vercel.app","https://compliancehub-alpha.vercel.app"));
@@ -62,7 +63,7 @@ public class SecurityConfig {
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source); // ensures CORS runs early
+        return  source; // ensures CORS runs early
     }
 
     @Bean
