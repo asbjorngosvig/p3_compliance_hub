@@ -17,7 +17,7 @@ const Dpaform: React.FC = () => {
     const [fetchedLocations, setFetchedLocations] = useState<string[]>([]);
     const [location, setLocation] = useState("");
     const [needWrittenAprooval, setNeedWrittenAprooval] = useState(false);
-    const [daysOfNotice, setDaysOfNotice] = useState(0);
+    const [daysOfNotice, setDaysOfNotice] = useState<string>("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [locationError, setLocationError] = useState<string | null>(null);
@@ -27,24 +27,37 @@ const Dpaform: React.FC = () => {
         setError(null);
         setIsSubmitting(true);
 
+        // Required checks
+        if (processingLocations.length === 0) {
+            setError("Please select at least one processing location.");
+            setIsSubmitting(false);
+            return;
+        }
+
+        if (daysOfNotice === "" || Number(daysOfNotice) < 0) {
+            setError("Days of notice is required and must be a non-negative number.");
+            setIsSubmitting(false);
+            return;
+        }
+
         try {
             const requestData: CreateDPARequest = {
                 allowedProcessingLocations: processingLocations,
                 needWrittenAprooval,
-                daysOfNotice,
+                daysOfNotice: Number(daysOfNotice),
                 customerName,
                 productName,
                 fileUrl,
             };
 
-            await dpaService.create(requestData);
+            const response = await dpaService.create(requestData);
 
+            // OPTIONAL: show success confirmation
             await confirm({
-                title: "DPA Created Successfully",
-                message: "Your new DPA has been added.",
+                title: "Success!",
+                message: "The DPA was created successfully.",
                 confirmText: "OK",
-                type: "success",
-                cancelText: undefined,
+                type: "success"
             });
 
             navigate(-1);
@@ -54,6 +67,7 @@ const Dpaform: React.FC = () => {
             setIsSubmitting(false);
         }
     };
+
 
     const fetchLocationsList = async (val: string) => {
         try {
@@ -108,14 +122,14 @@ const Dpaform: React.FC = () => {
                         onChange={(e) => setCustomerName(e.target.value)}
                         required
                         placeholder="e.g. AAU"
-                        className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition focus:bg-white focus:ring-2 focus:ring-slate-200"
+                        className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition focus:bg-white focus:ring-2 focus:ring-slate-200 placeholder:text-slate-400"
                     />
                 </div>
 
                 {/* Product Name */}
                 <div className="space-y-1">
                     <label className="block text-sm font-medium text-slate-700">
-                        Product/Service Name <span className="text-red-500">*</span>
+                        Type of Service <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text"
@@ -123,7 +137,7 @@ const Dpaform: React.FC = () => {
                         onChange={(e) => setProductName(e.target.value)}
                         required
                         placeholder="e.g. Exam Management Platform"
-                        className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition focus:bg-white focus:ring-2 focus:ring-slate-200"
+                        className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition focus:bg-white focus:ring-2 focus:ring-slate-200 placeholder:text-slate-400"
                     />
                 </div>
 
@@ -138,7 +152,7 @@ const Dpaform: React.FC = () => {
                         onChange={(e) => setFileUrl(e.target.value)}
                         required
                         placeholder="e.g. https://www.example.com/dpa.pdf"
-                        className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition focus:bg-white focus:ring-2 focus:ring-slate-200"
+                        className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition focus:bg-white focus:ring-2 focus:ring-slate-200 placeholder:text-slate-400"
                     />
                 </div>
 
@@ -158,7 +172,7 @@ const Dpaform: React.FC = () => {
                         onClick={() => fetchLocationsList("")}
                         onKeyDown={handleLocationEnter}
                         placeholder="Type to search locations..."
-                        className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition focus:bg-white focus:ring-2 focus:ring-slate-200"
+                        className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition focus:bg-white focus:ring-2 focus:ring-slate-200 placeholder:text-slate-400"
                     />
                     <datalist id="processingLocations">
                         {fetchedLocations.map((loc, i) => (
@@ -203,19 +217,25 @@ const Dpaform: React.FC = () => {
                 </div>
 
                 {/* Days of Notice */}
-                <div className="space-y-1">
-                    <label className="block text-sm font-medium text-slate-700">
-                        Days of Notice
-                    </label>
-                    <input
-                        type="number"
-                        min="0"
-                        value={daysOfNotice}
-                        onChange={(e) => setDaysOfNotice(parseInt(e.target.value) || 0)}
-                        placeholder="e.g. 30"
-                        className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition focus:bg-white focus:ring-2 focus:ring-slate-200"
-                    />
-                </div>
+                <input
+                    type="number"
+                    min="0"
+                    value={daysOfNotice}
+                    onChange={(e) => {
+                        const v = e.target.value;
+                        // allow empty input
+                        if (v === "") {
+                            setDaysOfNotice("");
+                            return;
+                        }
+                        // allow only positive integers
+                        if (/^\d+$/.test(v)) {
+                            setDaysOfNotice(v);
+                        }
+                    }}
+                    placeholder="e.g. 30"
+                    className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition focus:bg-white focus:ring-2 focus:ring-slate-200 placeholder:text-slate-400"
+                />
 
                 {/* Bottom buttons */}
                 <div className="mt-6 flex justify-between">

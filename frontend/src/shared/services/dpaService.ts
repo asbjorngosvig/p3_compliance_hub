@@ -11,6 +11,10 @@ export interface CreateDPAResponse {
 }
 
 export const dpaService = {
+    async getById(id: string): Promise<IDPA> {
+        const response = await instance.get<IDPA>(`/dpa/${id}`);
+        return response.data;
+    },
     async getAll(): Promise<GetAllDPAsResponse> {
         const response = await instance.get<GetAllDPAsResponse>("/dpa/");
         return response.data;
@@ -24,4 +28,5 @@ export const dpaService = {
     async delete(id: string): Promise<void> {
         await instance.delete(`/dpa/${id}`);
     },
+
 };
