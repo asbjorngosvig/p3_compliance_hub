@@ -1,6 +1,7 @@
 package com.compliancehub.service;
 
 import com.compliancehub.dto.DataProcessorDTO;
+import com.compliancehub.model.DPA;
 import com.compliancehub.model.DataProcessor;
 import com.compliancehub.repository.DataProcessorRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,9 +11,14 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-@RequiredArgsConstructor
 public class DataProcessorService {
     private final DataProcessorRepository dataProcessorRepository;
+    private final DPAService dpaService;
+
+    public DataProcessorService(DataProcessorRepository dataProcessorRepository, DPAService dpaService) {
+        this.dataProcessorRepository = dataProcessorRepository;
+        this.dpaService = dpaService;
+    }
 
     //Create new data processor
     public DataProcessorDTO.CreateResponse create(DataProcessorDTO.CreateRequest req) {
@@ -25,6 +31,12 @@ public class DataProcessorService {
         newDP.setProcessingLocations(req.processingLocations());
 
         DataProcessor savedDP = dataProcessorRepository.save(newDP);
+
+        // evaluate for new violations
+        List<DPA> dpaList = dpaService.getAllEntities();
+        for (DPA dpa : dpaList) {
+            dpaService.evaluateAllRequirements(dpa, savedDP);
+        }
 
         return new DataProcessorDTO.CreateResponse(
             new DataProcessorDTO.StandardDataProcessorResponse(
@@ -87,12 +99,7 @@ public class DataProcessorService {
             dp.getWebsite()
         );
     }
-    
-    public List<DataProcessor> getAllEntities() {
-        List<DataProcessor> allDataProcessors = dataProcessorRepository.findAll();
-        return allDataProcessors;
 
-    }
 
     public void delete(UUID id){
         if(!dataProcessorRepository.existsById(id)){

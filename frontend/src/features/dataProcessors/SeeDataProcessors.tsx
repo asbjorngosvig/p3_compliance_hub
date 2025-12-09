@@ -17,13 +17,10 @@ const SeeDataProcessors: React.FC = () => {
     const confirm = useConfirm();
     const navigate = useNavigate();
 
-    // Fetch data from API when component mounts
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await dataProcessorService.getAll();
-
-                // backend returns { allDataProcessors: [...] }
                 setDataProcessors(response.data.allDataProcessors);
             } catch (error) {
                 console.error("Failed to fetch data processors:", error);
@@ -59,14 +56,12 @@ const SeeDataProcessors: React.FC = () => {
 
         try {
             await dataProcessorService.deleteById(dp.id);
-
             setDataProcessors((prev) => prev.filter((x) => x.id !== dp.id));
         } catch (error) {
             console.error("Failed to delete:", error);
         }
     };
 
-    // Filtered based on search input
     const filteredProcessors = dataProcessors.filter((dp) =>
         dp.name.toLowerCase().includes(search.toLowerCase()),
     );
@@ -118,38 +113,28 @@ const SeeDataProcessors: React.FC = () => {
                     {filteredProcessors.map((dp) => (
                         <article
                             key={dp.id}
-                            className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white px-5 py-4 shadow-sm"
+                            className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white px-5 py-4 shadow-sm hover:bg-gray-50 cursor-pointer"
+                            onClick={() => dp.id && navigate(`/dataprocessors/${dp.id}`)}
                         >
                             <div className="flex flex-col gap-1">
                                 <span className="text-sm font-semibold text-gray-900">
                                     {dp.name}
                                 </span>
-
                                 <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500">
-                                    
-                                    {/* Processing Locations (MODIFIED) */}
                                     <span className="inline-flex items-center rounded-full bg-gray-50 px-2.5 py-1">
                                         <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-green-500" />
-
-                                        {(() => {
-                                            const locations =
-                                                dp.processingLocations ||
-                                                (dp as any).processingLocations ||
-                                                [];
-
-                                            if (!Array.isArray(locations) || locations.length === 0)
-                                                return "Processing Locations: Unknown";
-
-                                            const first = locations[0];
-                                            const extra = locations.length - 1;
-
-                                            return extra > 0
-                                                ? `Processing Locations: ${first} + ${extra}`
-                                                : `Processing Locations: ${first}`;
-                                        })()}
+                                        Processing Locations:{" "}
+                                        {(dp as any).processingLocations ||
+                                            dp.processingLocations ||
+                                            "Unknown"}
                                     </span>
 
-            
+                                    <span className="inline-flex items-center rounded-full bg-gray-50 px-2.5 py-1">
+                                        <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-blue-500" />
+                                        {dp.service ? dp.service.length : 0} DPA
+                                        {dp.service?.length !== 1 && "s"}
+                                    </span>
+
                                 </div>
                             </div>
 
@@ -157,16 +142,21 @@ const SeeDataProcessors: React.FC = () => {
                                 <Button
                                     variant="neutral"
                                     className="flex items-center gap-1 text-xs"
-                                    onClick={() => dp.id && navigate(`/dataprocessors/${dp.id}`)}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        if (dp.id) navigate(`/dataprocessors/${dp.id}`);
+                                    }}
                                 >
                                     <DocumentMagnifyingGlassIcon className="h-4 w-4" />
                                     View
                                 </Button>
-
                                 <Button
                                     variant="neutral"
                                     className="flex items-center gap-1 text-xs"
-                                    onClick={() => handleDelete(dp)}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleDelete(dp);
+                                    }}
                                 >
                                     <TrashIcon className="h-4 w-4" />
                                     Delete
