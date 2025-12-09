@@ -1,4 +1,4 @@
-import api from "../api/api";
+import { instance } from "./axiosClient";
 import type { IDPA, CreateDPARequest } from "../types/dpa.types";
 
 export interface GetAllDPAsResponse {
@@ -12,21 +12,21 @@ export interface CreateDPAResponse {
 
 export const dpaService = {
     async getById(id: string): Promise<IDPA> {
-        const response = await api.get<IDPA>(`api/dpa/${id}`);
+        const response = await instance.get<IDPA>(`/dpa/${id}`);
         return response.data;
     },
     async getAll(): Promise<GetAllDPAsResponse> {
-        const response = await api.get<GetAllDPAsResponse>("api/dpa/");
+        const response = await instance.get<GetAllDPAsResponse>("/dpa/");
         return response.data;
     },
 
     async create(data: CreateDPARequest): Promise<CreateDPAResponse> {
-        const response = await api.post<CreateDPAResponse>("api/dpa/", data);
+        const response = await instance.post<CreateDPAResponse>("/dpa/", data);
         return response.data;
     },
 
     async delete(id: string): Promise<void> {
-        await api.delete(`api/dpa/${id}`);
+        await instance.delete(`/dpa/${id}`);
     },
 
 };

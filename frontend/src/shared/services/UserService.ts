@@ -1,4 +1,4 @@
-import api from "../api/api";
+ import {instance} from "./axiosClient";
  import type {IUserData} from "../types/IUserData";
 
 
@@ -11,19 +11,19 @@ import api from "../api/api";
  */
 
  const getAll = () =>
- api.get<IUserData[]>("api/users");
+ instance.get<IUserData[]>("/users");
 
  const get = (id: number) =>
- api.get<IUserData>(`api/users/${id}`);
+ instance.get<IUserData>(`/users/${id}`);
 
  const create = (user: IUserData) =>
- api.post<IUserData>("api/users", user);
+ instance.post<IUserData>("/users", user);
 
  const update = (id: number, user: IUserData) =>
- api.put<IUserData>(`api/users/${id}`, user);
+ instance.put<IUserData>(`/users/${id}`, user);
 
  const remove = (id: number) =>
- api.delete(`api/users/${id}`);
+ instance.delete(`/users/${id}`);
 
  export const UserService = {
  getAll,
