@@ -2,11 +2,13 @@ package com.compliancehub.service;
 
 import com.compliancehub.dto.ActionDTO;
 import com.compliancehub.dto.DPA_DTO;
+import com.compliancehub.dto.DataProcessorDTO;
 import com.compliancehub.dto.ViolationDTO;
 import com.compliancehub.model.*;
 import com.compliancehub.model.CommunicationStrategy;
 import com.compliancehub.repository.DPARepository;
 
+import com.compliancehub.repository.DataProcessorRepository;
 import com.compliancehub.strategy.CommunicationStrategy.*;
 import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
 import com.compliancehub.strategy.RequirementsEvaluator.RequirementsEvaluator;
@@ -17,12 +19,13 @@ import java.util.*;
 @Service
 public class DPAService {
     private final DPARepository repository;
-    private final DataProcessorService dataProcessorService;
+    private final DataProcessorRepository dataProcessorRepository;
 
-    public DPAService(DPARepository repository, DataProcessorService dataProcessorService){
+    public DPAService(DPARepository repository, DataProcessorRepository dataProcessorRepository){
         this.repository = repository;
-        this.dataProcessorService = dataProcessorService;
+        this.dataProcessorRepository = dataProcessorRepository;
     }
+
     public DPA_DTO.StandardDPAResponse getById(UUID id) {
         DPA dpa = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("DPA not found with id: " + id));
@@ -75,7 +78,8 @@ public class DPAService {
         requirement1.setDpa(newDPA);
         newDPA.addRequirement(requirement1);
 
-        for (DataProcessor dp : dataProcessorService.getAllEntities()) {
+        List<DataProcessor> dataProcessorList = dataProcessorRepository.findAll();
+        for (DataProcessor dp : dataProcessorList) {
             evaluateAllRequirements(newDPA, dp);
         }
 
@@ -99,8 +103,6 @@ public class DPAService {
     }
 
 
-
-
     public DPA_DTO.GetAllResponse getAll() {
         List<DPA> allDPAs = repository.findAll();
 
@@ -118,6 +120,11 @@ public class DPAService {
                 .toList();
 
         return new DPA_DTO.GetAllResponse(dpaResponses, (long) allDPAs.size());
+    }
+
+    public List<DPA> getAllEntities() {
+        List<DPA> allDPAs = repository.findAll();
+        return allDPAs;
     }
 
     private List<ViolationDTO.standardResponse> createViolationDTOFromDPA(DPA dpa) {
@@ -152,6 +159,7 @@ public class DPAService {
         for (Requirement req : dpa.getRequirements()) {
             RequirementsEvaluator evaluator = getReqEvaluator(req);
             evaluator.evaluate(dpa, dataProcessor); // will also create violations and append to DPA;
+            repository.save(dpa);
         }
     }
 

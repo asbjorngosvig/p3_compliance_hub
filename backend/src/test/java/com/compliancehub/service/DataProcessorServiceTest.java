@@ -25,6 +25,9 @@ class DataProcessorServiceTest {
     @Mock
     private DataProcessorRepository dataProcessorRepository;
 
+    @Mock
+    private DPAService dpaService;
+
     @InjectMocks
     private DataProcessorService dataProcessorService;
 
