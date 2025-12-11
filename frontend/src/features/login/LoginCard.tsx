@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Button} from '../../shared/components/Buttons.tsx'
 import {authService} from "../../shared/services/AuthService.ts";
 import {useNavigate} from "react-router-dom";
@@ -10,7 +10,18 @@ export default function LoginCard() {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
+    useEffect(()=>{
+        checkIfLoggedIn();
+    })
 
+    const checkIfLoggedIn = async () => {
+        try {
+            await authService.checkIfLoggedIn();
+            navigate("/dashboard")
+        } catch {
+
+        }
+    }
 
     const handleLogin = async () => {
         try {

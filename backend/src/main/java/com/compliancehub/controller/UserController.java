@@ -34,6 +34,11 @@ public class UserController {
         return ResponseEntity.ok(userDTO);
     }
 
+    @GetMapping()
+    private ResponseEntity<String> checkIfLoggedIn() {
+        return ResponseEntity.ok("User is signed in");
+    }
+
     @GetMapping("/email/{email}")
     private ResponseEntity<UserDTO.UserResponse> getUserByEmail(@PathVariable String email) {
         UserDTO.UserResponse userDTO = service.getByEmail(email);
