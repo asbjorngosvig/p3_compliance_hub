@@ -2,21 +2,27 @@ import {useState} from "react";
 import {Button} from '../../shared/components/Buttons.tsx'
 import {authService} from "../../shared/services/AuthService.ts";
 import {useNavigate} from "react-router-dom";
+import { Loader } from "../../shared/components/Loader.tsx";
+import Login from "./Login.tsx";
 
 export default function LoginCard() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
 
 
     const handleLogin = async () => {
         try {
+            setIsLoading(true);
             await authService.login({"username": email, password});
             navigate("dashboard");
         } catch (err) {
             alert("Invalid email or password");
             console.error(err);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -62,7 +68,7 @@ export default function LoginCard() {
                 </div>
                 <div className="flex flex-col space-y-1">
                 <Button variant={"primary"} onClick={(e) => { e.preventDefault(); handleLogin(); }} >
-                    Login
+                    {(isLoading ? <Loader/> : "Login" )}
                 </Button>
                 </div>
             </div>
