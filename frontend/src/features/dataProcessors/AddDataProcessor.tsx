@@ -6,6 +6,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { dataProcessorService } from "../../shared/services/DataProcessorService";
 import { locationsService } from "../../shared/services/LocationsService";
 import { useConfirm } from "../../shared/components/ConfirmDialog.tsx";
+import Loader from "../../shared/components/Loader.tsx";
 
 
 export default function AddDataProcessor() {
@@ -251,7 +252,7 @@ export default function AddDataProcessor() {
                         disabled={isSubmitting}
                         className="rounded-lg bg-[#7BA043] px-6 py-2 text-sm font-medium text-white shadow-sm hover:brightness-110 disabled:opacity-50"
                     >
-                        {isSubmitting ? "Creating..." : "Add Data Processor"}
+                        {isSubmitting ? <Loader/> : "Add Data Processor"}
                     </button>
                 </div>
             </form>

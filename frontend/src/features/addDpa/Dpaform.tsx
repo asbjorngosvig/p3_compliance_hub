@@ -5,6 +5,7 @@ import { dpaService } from "../../shared/services/dpaService";
 import { locationsService } from "../../shared/services/LocationsService";
 import type { CreateDPARequest } from "../../shared/types/dpa.types";
 import { useConfirm} from "../../shared/components/ConfirmDialog.tsx";
+import Loader from "../../shared/components/Loader.tsx";
 
 const Dpaform: React.FC = () => {
     const navigate = useNavigate();
@@ -273,7 +274,7 @@ const Dpaform: React.FC = () => {
                         disabled={isSubmitting}
                         className="rounded-lg bg-[#7BA043] px-6 py-2 text-sm font-medium text-white shadow-sm transition hover:brightness-110 disabled:opacity-50"
                     >
-                        {isSubmitting ? "Creating..." : "Add DPA"}
+                        {isSubmitting ? <Loader/> : "Add DPA"}
                     </button>
                 </div>
             </form>
