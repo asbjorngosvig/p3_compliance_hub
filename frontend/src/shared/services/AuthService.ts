@@ -12,6 +12,11 @@ const register = async (data: IRegisterData) => {
     return res.data;
 };
 
+const checkIfLoggedIn = async () => {
+    const res = await instance.get<IAuthResponse>("/users");
+    return res.data;
+};
+
 const logout = async () => {
     const res = await instance.post<IAuthResponse>("/users/logout");
 
@@ -26,6 +31,7 @@ const isAuthenticated = () => {
 export const authService = {
     login,
     register,
+    checkIfLoggedIn,
     logout,
     isAuthenticated,
 };

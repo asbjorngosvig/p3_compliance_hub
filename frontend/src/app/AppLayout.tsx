@@ -1,15 +1,28 @@
-import { Outlet, useMatches } from "react-router-dom";
+import { Outlet, useMatches, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Sidebar from "../shared/components/Sidebar";
+import { authService } from "../shared/services/AuthService";
 
 export default function AppLayout() {
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
     const matches = useMatches();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const last = matches[matches.length - 1];
         document.title = (last?.handle as any)?.title ?? "ComplianceHub";
+
+
+        login();
+
     }, [matches]);
+    async function login(){
+        try {
+            await authService.checkIfLoggedIn();
+        } catch {
+            navigate("/") // navigate back to login, if not logged in
+        }
+    }
 
     return (
         // Parent flex container: Sidebar is a sibling (left column), main fills remaining space
