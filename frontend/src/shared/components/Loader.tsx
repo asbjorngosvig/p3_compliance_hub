@@ -1,5 +1,7 @@
 export function Loader() {
   return (
+
+    // loader copied from https://www.material-tailwind.com/docs/html/spinner
     <div className="grid place-items-center">
       <svg
         className="text-gray-300 animate-spin"
