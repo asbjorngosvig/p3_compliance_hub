@@ -33,14 +33,12 @@ public class DataProcessorController {
 
     @GetMapping
     public ResponseEntity<DataProcessorDTO.GetAllResponse> getAll(){
-        return ResponseEntity.ok(service.getAll());
+        return ResponseEntity.ok(service.getAllSorted());
     }
 
     
     @GetMapping("/{id}")
-    public ResponseEntity<DataProcessorDTO.StandardDataProcessorResponse> getById(
-        @PathVariable UUID id
-    ) {
+    public ResponseEntity<DataProcessorDTO.StandardDataProcessorResponse> getById(@PathVariable UUID id) {
         return ResponseEntity.ok(service.getById(id));
     }
 

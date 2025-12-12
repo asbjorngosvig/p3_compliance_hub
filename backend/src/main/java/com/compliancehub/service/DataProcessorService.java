@@ -51,7 +51,7 @@ public class DataProcessorService {
     }
 
     //Get All Data Processors
-    public DataProcessorDTO.GetAllResponse getAll(){
+    public DataProcessorDTO.GetAllResponse getAllSorted(){
         List<DataProcessorDTO.StandardDataProcessorResponse> allDataProcessors = dataProcessorRepository
             // Hent alle DataProcessors fra DB, sorteret alfabetisk
                 .findAll(Sort.by("name").ascending())
