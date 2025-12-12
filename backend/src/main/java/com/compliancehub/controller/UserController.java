@@ -2,10 +2,8 @@ package com.compliancehub.controller;
 
 import com.compliancehub.dto.user.UserDTO;
 import com.compliancehub.dto.user.UserLoginDTO;
-import com.compliancehub.model.User;
 import com.compliancehub.service.UserService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

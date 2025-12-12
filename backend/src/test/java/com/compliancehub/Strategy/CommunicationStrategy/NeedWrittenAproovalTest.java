@@ -2,7 +2,6 @@ package com.compliancehub.Strategy.CommunicationStrategy;
 
 import com.compliancehub.model.Action;
 import com.compliancehub.model.DPA;
-import com.compliancehub.strategy.CommunicationStrategy.NeedEmailNotice;
 import com.compliancehub.strategy.CommunicationStrategy.NeedWrittenApproval;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

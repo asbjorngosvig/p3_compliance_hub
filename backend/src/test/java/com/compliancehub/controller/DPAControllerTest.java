@@ -1,8 +1,6 @@
 package com.compliancehub.controller;
 
 import com.compliancehub.dto.DPA_DTO;
-import com.compliancehub.model.Requirement;
-import com.compliancehub.model.CommunicationStrategy;
 import com.compliancehub.service.DPAService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +17,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
