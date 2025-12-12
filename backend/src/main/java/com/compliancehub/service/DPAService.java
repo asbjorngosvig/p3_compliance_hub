@@ -11,7 +11,7 @@ import com.compliancehub.repository.DataProcessorRepository;
 import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
 import com.compliancehub.strategy.RequirementsEvaluator.IRequirementsEvaluator;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.dao.DataRetrievalFailureException;
+
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -157,7 +157,7 @@ public class DPAService {
             IRequirementsEvaluator evaluator = getReqEvaluator(req);
             evaluator.evaluate(dpa, dataProcessor); // will also create violations and append to DPA;
         }
-        repository.save(dpa);
+            repository.save(dpa);
     }
 
 }
