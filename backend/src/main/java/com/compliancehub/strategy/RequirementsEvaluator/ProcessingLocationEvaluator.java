@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.*;
 
 @Data
-public class ProcessingLocationEvaluator implements RequirementsEvaluator {
+public class ProcessingLocationEvaluator implements IRequirementsEvaluator {
     // Initialiser listen for at undgå NullPointerException
     private List<String> allowedLocations = new ArrayList<>();
 

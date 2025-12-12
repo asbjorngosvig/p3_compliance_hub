@@ -3,11 +3,10 @@ package com.compliancehub.strategy.RequirementsEvaluator;
 
 import com.compliancehub.model.DPA;
 import com.compliancehub.model.DataProcessor;
-import com.compliancehub.model.Requirement;
 
 import java.util.Map;
 
-public interface RequirementsEvaluator {
+public interface IRequirementsEvaluator {
 
 
     /**

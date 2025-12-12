@@ -2,16 +2,14 @@ package com.compliancehub.service;
 
 import com.compliancehub.dto.ActionDTO;
 import com.compliancehub.dto.DPA_DTO;
-import com.compliancehub.dto.DataProcessorDTO;
 import com.compliancehub.dto.ViolationDTO;
 import com.compliancehub.model.*;
 import com.compliancehub.model.CommunicationStrategy;
 import com.compliancehub.repository.DPARepository;
 
 import com.compliancehub.repository.DataProcessorRepository;
-import com.compliancehub.strategy.CommunicationStrategy.*;
 import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
-import com.compliancehub.strategy.RequirementsEvaluator.RequirementsEvaluator;
+import com.compliancehub.strategy.RequirementsEvaluator.IRequirementsEvaluator;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -147,7 +145,7 @@ public class DPAService {
     }
 
 
-    public RequirementsEvaluator getReqEvaluator(Requirement requirement) {
+    public IRequirementsEvaluator getReqEvaluator(Requirement requirement) {
         switch (requirement.getReqEvaluator()) {
             case "ProcessingLocationEvaluator": return new ProcessingLocationEvaluator(requirement.getAttributes());
             // todo: Add more Evaluators
@@ -157,7 +155,7 @@ public class DPAService {
 
     public void evaluateAllRequirements(DPA dpa, DataProcessor dataProcessor) {
         for (Requirement req : dpa.getRequirements()) {
-            RequirementsEvaluator evaluator = getReqEvaluator(req);
+            IRequirementsEvaluator evaluator = getReqEvaluator(req);
             evaluator.evaluate(dpa, dataProcessor); // will also create violations and append to DPA;
             repository.save(dpa);
         }
