@@ -10,6 +10,7 @@ import com.compliancehub.repository.DPARepository;
 import com.compliancehub.repository.DataProcessorRepository;
 import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
 import com.compliancehub.strategy.RequirementsEvaluator.IRequirementsEvaluator;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -44,6 +45,7 @@ public class DPAService {
         newDPA.setProductName(req.productName());
         newDPA.setFileUrl(req.fileUrl());
 
+        // adds the need written aprooval strategy
         if (req.needWrittenAprooval()) {
             CommunicationStrategy strat = new CommunicationStrategy();
             strat.setDpa(newDPA);
@@ -54,39 +56,41 @@ public class DPAService {
         // Adds the period of notice strategy
         CommunicationStrategy strat = new CommunicationStrategy();
         strat.setDpa(newDPA);
-
         // todo: find en måde at bruge email istedet for navn her...
         Map<String, Object> attributes = new HashMap<>();
-
         attributes.put("email", req.customerName());
         strat.setAttributes(attributes);
-
         strat.setStrategy("DaysOfNotice"); // Navnet på strategi class
         newDPA.addCommunicationStrategy(strat);
 
 
         /* set the processing locations requirement fields */
         Requirement requirement1 = new Requirement();
-
-        // Important: SKAL STÅ "allowedLocations"
-        attributes = new HashMap<>();
+        attributes = new HashMap<>(); // Important: SKAL STÅ "allowedLocations"
         attributes.put("allowedLocations", req.allowedProcessingLocations());
         requirement1.setAttributes(attributes);
         requirement1.setReqEvaluator("ProcessingLocationEvaluator"); // Navnet på evaluator class
         requirement1.setDpa(newDPA);
         newDPA.addRequirement(requirement1);
 
-        List<DataProcessor> dataProcessorList = dataProcessorRepository.findAll();
+
+        List<DataProcessor> dataProcessorList;
+        try {
+            dataProcessorList = dataProcessorRepository.findAll();
+        } catch (RuntimeException e) {
+            throw new DataRetrievalFailureException(e.getMessage());
+        }
+
         for (DataProcessor dp : dataProcessorList) {
             evaluateAllRequirements(newDPA, dp);
         }
 
-        // todo: logic for parsing requirements
-        // todo: logic for parsing communication strategies
-
-        // todo: logic for generating actions and violations
-
-        DPA savedDPA = repository.save(newDPA);
+        DPA savedDPA;
+        try {
+             savedDPA = repository.save(newDPA);
+        } catch (RuntimeException e) {
+            throw new DataRetrievalFailureException(e.getMessage());
+        }
 
         return new DPA_DTO.CreateResponse(
             new DPA_DTO.StandardDPAResponse(
@@ -117,12 +121,15 @@ public class DPAService {
                 ))
                 .toList();
 
-        return new DPA_DTO.GetAllResponse(dpaResponses, (long) allDPAs.size());
+        return new DPA_DTO.GetAllResponse(dpaResponses, allDPAs.size());
     }
 
     public List<DPA> getAllEntities() {
-        List<DPA> allDPAs = repository.findAll();
-        return allDPAs;
+        try {
+            return repository.findAll();
+        } catch (RuntimeException e) {
+            throw new DataRetrievalFailureException("Error fetching all DPA", e);
+        }
     }
 
     private List<ViolationDTO.standardResponse> createViolationDTOFromDPA(DPA dpa) {
@@ -141,7 +148,11 @@ public class DPAService {
     }
 
     public void delete(UUID id) {
-        repository.deleteById(id);
+        try {
+            repository.deleteById(id);
+        } catch (RuntimeException e) {
+            throw new NoSuchElementException("Error deleting DPA with id "+ id, e);
+        }
     }
 
 
@@ -149,7 +160,7 @@ public class DPAService {
         switch (requirement.getReqEvaluator()) {
             case "ProcessingLocationEvaluator": return new ProcessingLocationEvaluator(requirement.getAttributes());
             // todo: Add more Evaluators
-            default: throw new RuntimeException("Error getting requirement evaluator "+requirement.getReqEvaluator());
+            default: throw new InputMismatchException("Error getting requirement evaluator "+requirement.getReqEvaluator());
         }
     }
 
@@ -157,7 +168,11 @@ public class DPAService {
         for (Requirement req : dpa.getRequirements()) {
             IRequirementsEvaluator evaluator = getReqEvaluator(req);
             evaluator.evaluate(dpa, dataProcessor); // will also create violations and append to DPA;
+        }
+        try {
             repository.save(dpa);
+        } catch(RuntimeException e ) {
+            throw new DataRetrievalFailureException("Error saving DPA after evaluating requirements", e);
         }
     }
 
