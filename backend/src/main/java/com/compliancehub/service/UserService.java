@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -80,7 +81,7 @@ public class UserService {
     }
 
 
-    public String verify(UserLoginDTO userLoginDTO) {
+    public String login(UserLoginDTO userLoginDTO) {
 
         String token;
         authenticationManager.authenticate(
@@ -93,14 +94,13 @@ public class UserService {
         Optional<User> optionalUser = userRepository.findByEmail(userLoginDTO.username());
 
         // make sure that user exists before returning
-
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
 
             token = jwtService.generateToken(user.getEmail(), user.getEmail(), user.getRole());
             return token;
         } else {
-            throw new InputMismatchException("Invalid credentials");
+            throw new NoSuchElementException("Invalid credentials");
         }
     }
 }

@@ -32,8 +32,8 @@ public class UserController {
         return ResponseEntity.ok(userDTO);
     }
 
-    @GetMapping()
-    private ResponseEntity<String> checkIfLoggedIn() {
+    @GetMapping
+    private ResponseEntity<String> verify() { // just checks if user is signed in
         return ResponseEntity.ok("User is signed in");
     }
 
@@ -53,7 +53,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginDTO userDTO){
-        String token = service.verify(userDTO);
+        String token = service.login(userDTO);
 
         ResponseCookie cookie = ResponseCookie.from("jwt", token)
                 .httpOnly(true)

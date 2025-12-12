@@ -69,7 +69,7 @@ class UserServiceTest {
     }
 
     @Test
-    void verifyTest(){
+    void loginTest(){
         UUID id = UUID.randomUUID();
         UserLoginDTO loginDTO = new UserLoginDTO("Test@test.com", "SecretPassword");
 
@@ -84,7 +84,7 @@ class UserServiceTest {
         when(userRepository.findByEmail(loginDTO.username())).thenReturn(Optional.of(testUser));
         when(jwtService.generateToken(testUser.getEmail(), testUser.getEmail(), testUser.getRole())).thenReturn("jwtToken");
 
-        String token = userService.verify(loginDTO);
+        String token = userService.login(loginDTO);
 
         assertEquals("jwtToken", token);
 
