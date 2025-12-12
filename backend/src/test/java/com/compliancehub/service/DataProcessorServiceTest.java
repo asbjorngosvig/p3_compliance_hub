@@ -68,7 +68,7 @@ class DataProcessorServiceTest {
                 .thenReturn(List.of(dp1, dp2));
         when(dataProcessorRepository.count()).thenReturn(2L);
 
-        DataProcessorDTO.GetAllResponse response = dataProcessorService.getAll();
+        DataProcessorDTO.GetAllResponse response = dataProcessorService.getAllSorted();
 
         assertEquals(2, response.allDataProcessors().size());
         assertEquals("A", response.allDataProcessors().get(0).name());

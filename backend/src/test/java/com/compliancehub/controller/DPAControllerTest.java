@@ -1,8 +1,8 @@
 package com.compliancehub.controller;
 
 import com.compliancehub.dto.DPA_DTO;
-import com.compliancehub.model.Requirement;
-import com.compliancehub.model.CommunicationStrategy;
+import com.compliancehub.mockClasses.MockDPA;
+import com.compliancehub.model.DPA;
 import com.compliancehub.service.DPAService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,13 +19,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-// import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -87,40 +85,28 @@ class DPAControllerTest {
             .andExpect(jsonPath("$.createdDPA.customerName").value("Test Customer"));
     }
 
-    // --- UDKOMMENTERET TEST (Venter på implementering af GetAll) ---
-    /*
+
     @Test
     void getAll_shouldReturnListOfDPA() throws Exception {
-        UUID id1 = UUID.randomUUID();
-        UUID id2 = UUID.randomUUID();
+        DPA DPA1 = MockDPA.getMock();
+        DPA1.setCustomerName("customer1");
 
-        List<Violation> violations = new ArrayList<>();
+        DPA DPA2 = MockDPA.getMock();
+        DPA2.setCustomerName("customer2");
 
-        // PROBLEMET HER: DPA_DTO.DPAResponse findes ikke i din nuværende DTO
-        // Du skal oprette en record i DPA_DTO der hedder 'GetAllResponse' og 'DPAResponse'
-        // før denne test kan køre.
+        DPA_DTO.StandardDPAResponse DTO1 = new DPA_DTO.StandardDPAResponse(DPA1.getId(), new ArrayList<>(), DPA1.getCustomerName(), DPA1.getProductName(), DPA1.getCreatedDate(),DPA1.getFileUrl());
+        DPA_DTO.StandardDPAResponse DTO2 = new DPA_DTO.StandardDPAResponse(DPA2.getId(), new ArrayList<>(), DPA2.getCustomerName(), DPA2.getProductName(), DPA2.getCreatedDate(), DPA2.getFileUrl());
 
-        // DPA_DTO.DPAResponse dpa1 = new DPA_DTO.DPAResponse(
-        //         id1, violations,"customer1", "product1"
-        // );
+        DPA_DTO.GetAllResponse getAllResponse = new DPA_DTO.GetAllResponse(List.of(DTO1, DTO2), 2L);
 
-        // DPA_DTO.DPAResponse dpa2 = new DPA_DTO.DPAResponse(
-        //         id2, violations,"customer2", "product2"
-        // );
-
-        // DPA_DTO.GetAllResponse getAllResponse = new DPA_DTO.GetAllResponse(
-        //         List.of(dpa1, dpa2), 2L, "Date created", "Ascending"
-        // );
-
-        // when(dpaService.getAll()).thenReturn(getAllResponse);
-
-        // mockMvc.perform(get("/dpa/"))
-        //         .andExpect(status().isOk())
-        //         .andExpect(jsonPath("$.allDPA.length()").value(2))
-        //         .andExpect(jsonPath("$.allDPA[0].customerName").value("customer1"))
-        //         .andExpect(jsonPath("$.allDPA[1].customerName").value("customer2"))
-        //         .andExpect(jsonPath("$.totalCount").value(2));
+        when(dpaService.getAll()).thenReturn(getAllResponse);
+        mockMvc.perform(get("/dpa/"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.dpas.length()").value(2))
+                .andExpect(jsonPath("$.dpas[0].customerName").value("customer1"))
+                .andExpect(jsonPath("$.dpas[1].customerName").value("customer2"))
+                .andExpect(jsonPath("$.totalCount").value(2));
     }
-    */
+
 
 }

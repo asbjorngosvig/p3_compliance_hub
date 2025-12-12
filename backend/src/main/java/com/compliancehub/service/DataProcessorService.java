@@ -4,7 +4,6 @@ import com.compliancehub.dto.DataProcessorDTO;
 import com.compliancehub.model.DPA;
 import com.compliancehub.model.DataProcessor;
 import com.compliancehub.repository.DataProcessorRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +51,7 @@ public class DataProcessorService {
     }
 
     //Get All Data Processors
-    public DataProcessorDTO.GetAllResponse getAll(){
+    public DataProcessorDTO.GetAllResponse getAllSorted(){
         List<DataProcessorDTO.StandardDataProcessorResponse> allDataProcessors = dataProcessorRepository
             // Hent alle DataProcessors fra DB, sorteret alfabetisk
                 .findAll(Sort.by("name").ascending())

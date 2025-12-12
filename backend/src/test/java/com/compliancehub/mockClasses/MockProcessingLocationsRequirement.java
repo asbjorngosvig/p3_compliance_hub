@@ -4,7 +4,6 @@ import com.compliancehub.model.DPA;
 import com.compliancehub.model.Requirement;
 import com.compliancehub.utils.Locations;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

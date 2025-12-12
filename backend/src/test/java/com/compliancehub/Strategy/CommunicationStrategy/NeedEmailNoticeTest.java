@@ -2,15 +2,12 @@ package com.compliancehub.Strategy.CommunicationStrategy;
 
 
 import com.compliancehub.model.Action;
-import com.compliancehub.model.CommunicationStrategy;
 import com.compliancehub.model.DPA;
-import com.compliancehub.model.Requirement;
 import com.compliancehub.strategy.CommunicationStrategy.NeedEmailNotice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;

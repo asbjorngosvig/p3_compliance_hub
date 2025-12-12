@@ -12,7 +12,7 @@ import java.util.Map;
 @Getter
 @Setter
 @NoArgsConstructor
-public class NeedWrittenApproval implements CommunicationStrategy {
+public class NeedWrittenApproval implements ICommunicationStrategy {
     private String email;
 
     public NeedWrittenApproval(Map<String, Object> attributes) {

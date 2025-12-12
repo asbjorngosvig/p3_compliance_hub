@@ -5,13 +5,8 @@ import com.compliancehub.model.DataProcessor;
 import com.compliancehub.model.Requirement;
 import com.compliancehub.model.Violation;
 import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.HashMap;

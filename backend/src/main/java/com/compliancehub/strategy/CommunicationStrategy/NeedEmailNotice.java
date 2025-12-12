@@ -12,7 +12,7 @@ import java.util.Map;
 @Getter
 @Setter
 @NoArgsConstructor
-public class NeedEmailNotice implements CommunicationStrategy {
+public class NeedEmailNotice implements ICommunicationStrategy {
     private String email;
     private int daysOfNotice = -1;
 

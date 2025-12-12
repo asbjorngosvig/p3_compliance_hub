@@ -88,7 +88,7 @@ class DataProcessorControllerTest {
             List.of(dp1, dp2), 2L, "Alphabetical", "Ascending"
         );
 
-        when(service.getAll()).thenReturn(getAllResponse);
+        when(service.getAllSorted()).thenReturn(getAllResponse);
 
         mockMvc.perform(get("/dataprocessors"))
             .andExpect(status().isOk())
