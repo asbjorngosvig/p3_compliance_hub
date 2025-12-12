@@ -6,7 +6,6 @@ import com.compliancehub.model.Admin;
 import com.compliancehub.model.User;
 import com.compliancehub.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,16 +20,17 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private JWTService jwtService;
-
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(12);
+
+    public UserService(UserRepository userRepository, JWTService jwtService, AuthenticationManager authenticationManager) {
+        this.userRepository = userRepository;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
+    }
 
     public UserDTO.UserResponse registerUser(UserDTO.CreateRequest createRequest) {
         User user = new Admin();
