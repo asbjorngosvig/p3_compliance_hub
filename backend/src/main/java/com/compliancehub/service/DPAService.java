@@ -10,6 +10,7 @@ import com.compliancehub.repository.DPARepository;
 import com.compliancehub.repository.DataProcessorRepository;
 import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
 import com.compliancehub.strategy.RequirementsEvaluator.IRequirementsEvaluator;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class DPAService {
 
     public DPA_DTO.StandardDPAResponse getById(UUID id) {
         DPA dpa = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("DPA not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("DPA not found with id: " + id));
 
         return new DPA_DTO.StandardDPAResponse(
                 dpa.getId(),
@@ -75,22 +76,15 @@ public class DPAService {
 
 
         List<DataProcessor> dataProcessorList;
-        try {
-            dataProcessorList = dataProcessorRepository.findAll();
-        } catch (RuntimeException e) {
-            throw new DataRetrievalFailureException(e.getMessage());
-        }
+
+        dataProcessorList = dataProcessorRepository.findAll();
 
         for (DataProcessor dp : dataProcessorList) {
             evaluateAllRequirements(newDPA, dp);
         }
 
         DPA savedDPA;
-        try {
-             savedDPA = repository.save(newDPA);
-        } catch (RuntimeException e) {
-            throw new DataRetrievalFailureException(e.getMessage());
-        }
+        savedDPA = repository.save(newDPA);
 
         return new DPA_DTO.CreateResponse(
             new DPA_DTO.StandardDPAResponse(
@@ -125,11 +119,7 @@ public class DPAService {
     }
 
     public List<DPA> getAllEntities() {
-        try {
-            return repository.findAll();
-        } catch (RuntimeException e) {
-            throw new DataRetrievalFailureException("Error fetching all DPA", e);
-        }
+        return repository.findAll();
     }
 
     private List<ViolationDTO.standardResponse> createViolationDTOFromDPA(DPA dpa) {
@@ -148,18 +138,16 @@ public class DPAService {
     }
 
     public void delete(UUID id) {
-        try {
-            repository.deleteById(id);
-        } catch (RuntimeException e) {
-            throw new NoSuchElementException("Error deleting DPA with id "+ id, e);
-        }
+        repository.deleteById(id);
     }
 
 
     public IRequirementsEvaluator getReqEvaluator(Requirement requirement) {
         switch (requirement.getReqEvaluator()) {
             case "ProcessingLocationEvaluator": return new ProcessingLocationEvaluator(requirement.getAttributes());
-            // todo: Add more Evaluators
+
+            //  Add more Evaluators
+
             default: throw new InputMismatchException("Error getting requirement evaluator "+requirement.getReqEvaluator());
         }
     }
@@ -169,11 +157,7 @@ public class DPAService {
             IRequirementsEvaluator evaluator = getReqEvaluator(req);
             evaluator.evaluate(dpa, dataProcessor); // will also create violations and append to DPA;
         }
-        try {
-            repository.save(dpa);
-        } catch(RuntimeException e ) {
-            throw new DataRetrievalFailureException("Error saving DPA after evaluating requirements", e);
-        }
+        repository.save(dpa);
     }
 
 }
