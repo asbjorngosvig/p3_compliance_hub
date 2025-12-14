@@ -57,11 +57,10 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
-
         String userEmail;
 
         if (token == null || token.isBlank()) {
-            filterChain.doFilter(request, response);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         } else {
             userEmail = jwtService.extractUserName(token);
@@ -69,7 +68,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         if (userEmail == null || userEmail.isBlank()) {
-            filterChain.doFilter(request, response);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
@@ -77,7 +76,12 @@ public class JwtFilter extends OncePerRequestFilter {
 
             UserDetails userDetails = applicationContext.getBean(MyUserDetailsService.class).loadUserByUsername(userEmail);
 
-            if (jwtService.validateToken(token, userDetails)){
+            if (!jwtService.validateToken(token, userDetails)) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            }
+
+            else{
                 UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetails(request));

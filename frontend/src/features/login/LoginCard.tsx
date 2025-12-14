@@ -27,7 +27,7 @@ export default function LoginCard() {
         try {
             setIsLoading(true);
             await authService.login({"username": email, password});
-            navigate("dashboard");
+            navigate("/dashboard");
         } catch (err) {
             alert("Invalid email or password");
             console.error(err);
