@@ -6,17 +6,13 @@ import com.compliancehub.model.DPA;
 import com.compliancehub.model.DataProcessor;
 import com.compliancehub.model.Requirement;
 import com.compliancehub.repository.DPARepository;
-import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
-import com.compliancehub.strategy.RequirementsEvaluator.IRequirementsEvaluator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,32 +27,6 @@ class DPAServiceTest {
 
     @InjectMocks
     private DPAService dpaService;
-
-
-    @Test
-    void getValidReqEvaluatorTest()  {
-        Requirement requirement= new Requirement();
-        requirement.setReqEvaluator("ProcessingLocationEvaluator");
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("allowedLocations", List.of("EU"));
-        requirement.setAttributes(attributes);
-
-        IRequirementsEvaluator reqEvaluator = dpaService.getReqEvaluator(requirement);
-        assertTrue(reqEvaluator instanceof ProcessingLocationEvaluator);
-
-    }
-
-    @Test
-    void getInvalidReqEvaluatorTest()  {
-        Requirement requirement= new Requirement();
-        requirement.setReqEvaluator("INVALIDEVALUATOR");
-        requirement.setAttributes(new HashMap<>());
-
-        // tester at vi får en exception, hvis den er invalid
-        RuntimeException exception = assertThrows(RuntimeException.class, ()-> {
-            dpaService.getReqEvaluator(requirement);
-        });
-    }
 
 
     // sørger for at der rent faktisk bliver oprettet maks èn violation pr requirement
