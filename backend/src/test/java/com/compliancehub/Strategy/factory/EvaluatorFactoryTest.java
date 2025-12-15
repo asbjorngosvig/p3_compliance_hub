@@ -3,10 +3,12 @@ package com.compliancehub.Strategy.factory;
 import com.compliancehub.model.Requirement;
 import com.compliancehub.strategy.RequirementsEvaluator.IRequirementsEvaluator;
 import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
-import com.jayway.jsonpath.internal.filter.EvaluatorFactory;
+import com.compliancehub.strategy.factory.EvaluatorFactory;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class EvaluatorFactoryTest {
 
     public EvaluatorFactory evaluatorFactory;
+
+    @BeforeEach
+    void setUp(){
+        evaluatorFactory = new EvaluatorFactory();
+    }
 
     @Test
     void createShouldReturnCorrectEvaluator() {
@@ -38,7 +45,7 @@ public class EvaluatorFactoryTest {
         req.setAttributes(new HashMap<>());
 
         // tester at vi får en exception, hvis den er invalid
-        RuntimeException exception = assertThrows(RuntimeException.class, ()-> {
+        RuntimeException exception = assertThrows(InputMismatchException.class, ()-> {
             evaluatorFactory.create(req.getReqEvaluator(),req.getAttributes());
         });
     }

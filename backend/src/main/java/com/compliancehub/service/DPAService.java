@@ -5,11 +5,14 @@ import com.compliancehub.dto.DPA_DTO;
 import com.compliancehub.dto.ViolationDTO;
 import com.compliancehub.model.*;
 import com.compliancehub.model.CommunicationStrategy;
-import com.compliancehub.repository.DPARepository;
 
+import com.compliancehub.repository.DPARepository;
 import com.compliancehub.repository.DataProcessorRepository;
+
 import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
 import com.compliancehub.strategy.RequirementsEvaluator.IRequirementsEvaluator;
+import com.compliancehub.strategy.factory.EvaluatorFactory;
+
 import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Service;
@@ -20,10 +23,12 @@ import java.util.*;
 public class DPAService {
     private final DPARepository repository;
     private final DataProcessorRepository dataProcessorRepository;
+    private final EvaluatorFactory evaluatorFactory;
 
-    public DPAService(DPARepository repository, DataProcessorRepository dataProcessorRepository){
+    public DPAService(DPARepository repository, DataProcessorRepository dataProcessorRepository, EvaluatorFactory evaluatorFactory){
         this.repository = repository;
         this.dataProcessorRepository = dataProcessorRepository;
+        this.evaluatorFactory = evaluatorFactory;
     }
 
     public DPA_DTO.StandardDPAResponse getById(UUID id) {
@@ -138,19 +143,13 @@ public class DPAService {
     }
 
 
-    public IRequirementsEvaluator getReqEvaluator(Requirement requirement) {
-        switch (requirement.getReqEvaluator()) {
-            case "ProcessingLocationEvaluator": return new ProcessingLocationEvaluator(requirement.getAttributes());
-
-            //  Add more Evaluators
-
-            default: throw new InputMismatchException("Error getting requirement evaluator "+requirement.getReqEvaluator());
-        }
-    }
-
     public void evaluateAllRequirements(DPA dpa, DataProcessor dataProcessor) {
         for (Requirement req : dpa.getRequirements()) {
-            IRequirementsEvaluator evaluator = getReqEvaluator(req);
+            IRequirementsEvaluator evaluator = evaluatorFactory.create(
+                req.getReqEvaluator(),
+                req.getAttributes()
+            );
+
             evaluator.evaluate(dpa, dataProcessor); // will also create violations and append to DPA;
         }
             repository.save(dpa);
