@@ -7,7 +7,7 @@ import com.compliancehub.model.DataProcessor;
 import com.compliancehub.model.Requirement;
 import com.compliancehub.repository.DPARepository;
 import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
-import com.compliancehub.strategy.RequirementsEvaluator.RequirementsEvaluator;
+import com.compliancehub.strategy.RequirementsEvaluator.IRequirementsEvaluator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -41,7 +41,7 @@ class DPAServiceTest {
         attributes.put("allowedLocations", List.of("EU"));
         requirement.setAttributes(attributes);
 
-        RequirementsEvaluator reqEvaluator = dpaService.getReqEvaluator(requirement);
+        IRequirementsEvaluator reqEvaluator = dpaService.getReqEvaluator(requirement);
         assertTrue(reqEvaluator instanceof ProcessingLocationEvaluator);
 
     }

@@ -6,14 +6,13 @@ import com.compliancehub.model.Admin;
 import com.compliancehub.model.User;
 import com.compliancehub.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,16 +20,17 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private JWTService jwtService;
-
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(12);
+
+    public UserService(UserRepository userRepository, JWTService jwtService, AuthenticationManager authenticationManager) {
+        this.userRepository = userRepository;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
+    }
 
     public UserDTO.UserResponse registerUser(UserDTO.CreateRequest createRequest) {
         User user = new Admin();
@@ -81,7 +81,7 @@ public class UserService {
     }
 
 
-    public String verify(UserLoginDTO userLoginDTO) {
+    public String login(UserLoginDTO userLoginDTO) {
 
         String token;
         authenticationManager.authenticate(
@@ -94,14 +94,13 @@ public class UserService {
         Optional<User> optionalUser = userRepository.findByEmail(userLoginDTO.username());
 
         // make sure that user exists before returning
-
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
 
             token = jwtService.generateToken(user.getEmail(), user.getEmail(), user.getRole());
             return token;
         } else {
-            throw new InputMismatchException("Invalid credentials");
+            throw new NoSuchElementException("Invalid credentials");
         }
     }
 }

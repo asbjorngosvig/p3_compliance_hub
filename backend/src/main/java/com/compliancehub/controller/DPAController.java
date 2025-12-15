@@ -21,7 +21,6 @@ public class DPAController {
     @PostMapping("/")
     public ResponseEntity<DPA_DTO.CreateResponse> create(
         @RequestBody DPA_DTO.CreateRequest req) {
-
         DPA_DTO.CreateResponse createResponse = service.create(req);
 
         // Good practice: Return the location header
@@ -33,8 +32,9 @@ public class DPAController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         service.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().build();    
     }
+    
     @GetMapping("/")
     public ResponseEntity<DPA_DTO.GetAllResponse> getAll() {
         return ResponseEntity.ok(service.getAll());
@@ -42,8 +42,7 @@ public class DPAController {
 
     @GetMapping("/{id}")
     public ResponseEntity<DPA_DTO.StandardDPAResponse> getById(@PathVariable UUID id) {
-        DPA_DTO.StandardDPAResponse dpa = service.getById(id);
-        return ResponseEntity.ok(dpa);
+        return ResponseEntity.ok(service.getById(id));
     }
 
 }

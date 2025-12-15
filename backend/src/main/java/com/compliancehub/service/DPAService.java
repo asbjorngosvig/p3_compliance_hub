@@ -2,16 +2,16 @@ package com.compliancehub.service;
 
 import com.compliancehub.dto.ActionDTO;
 import com.compliancehub.dto.DPA_DTO;
-import com.compliancehub.dto.DataProcessorDTO;
 import com.compliancehub.dto.ViolationDTO;
 import com.compliancehub.model.*;
 import com.compliancehub.model.CommunicationStrategy;
 import com.compliancehub.repository.DPARepository;
 
 import com.compliancehub.repository.DataProcessorRepository;
-import com.compliancehub.strategy.CommunicationStrategy.*;
 import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
-import com.compliancehub.strategy.RequirementsEvaluator.RequirementsEvaluator;
+import com.compliancehub.strategy.RequirementsEvaluator.IRequirementsEvaluator;
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -28,7 +28,7 @@ public class DPAService {
 
     public DPA_DTO.StandardDPAResponse getById(UUID id) {
         DPA dpa = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("DPA not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("DPA not found with id: " + id));
 
         return new DPA_DTO.StandardDPAResponse(
                 dpa.getId(),
@@ -46,6 +46,7 @@ public class DPAService {
         newDPA.setProductName(req.productName());
         newDPA.setFileUrl(req.fileUrl());
 
+        // adds the need written aprooval strategy
         if (req.needWrittenAprooval()) {
             CommunicationStrategy strat = new CommunicationStrategy();
             strat.setDpa(newDPA);
@@ -56,37 +57,29 @@ public class DPAService {
         // Adds the period of notice strategy
         CommunicationStrategy strat = new CommunicationStrategy();
         strat.setDpa(newDPA);
-
         // todo: find en måde at bruge email istedet for navn her...
         Map<String, Object> attributes = new HashMap<>();
-
         attributes.put("email", req.customerName());
         strat.setAttributes(attributes);
-
         strat.setStrategy("DaysOfNotice"); // Navnet på strategi class
         newDPA.addCommunicationStrategy(strat);
 
 
         /* set the processing locations requirement fields */
         Requirement requirement1 = new Requirement();
-
-        // Important: SKAL STÅ "allowedLocations"
-        attributes = new HashMap<>();
+        attributes = new HashMap<>(); // Important: SKAL STÅ "allowedLocations"
         attributes.put("allowedLocations", req.allowedProcessingLocations());
         requirement1.setAttributes(attributes);
         requirement1.setReqEvaluator("ProcessingLocationEvaluator"); // Navnet på evaluator class
         requirement1.setDpa(newDPA);
         newDPA.addRequirement(requirement1);
 
+
         List<DataProcessor> dataProcessorList = dataProcessorRepository.findAll();
+
         for (DataProcessor dp : dataProcessorList) {
             evaluateAllRequirements(newDPA, dp);
         }
-
-        // todo: logic for parsing requirements
-        // todo: logic for parsing communication strategies
-
-        // todo: logic for generating actions and violations
 
         DPA savedDPA = repository.save(newDPA);
 
@@ -109,7 +102,6 @@ public class DPAService {
 
         List<DPA_DTO.StandardDPAResponse> dpaResponses = allDPAs.stream()
                 .map(dpa ->
-
                         new DPA_DTO.StandardDPAResponse(
                         dpa.getId(), createViolationDTOFromDPA(dpa),
                         dpa.getCustomerName(),
@@ -119,12 +111,11 @@ public class DPAService {
                 ))
                 .toList();
 
-        return new DPA_DTO.GetAllResponse(dpaResponses, (long) allDPAs.size());
+        return new DPA_DTO.GetAllResponse(dpaResponses, allDPAs.size());
     }
 
     public List<DPA> getAllEntities() {
-        List<DPA> allDPAs = repository.findAll();
-        return allDPAs;
+        return repository.findAll();
     }
 
     private List<ViolationDTO.standardResponse> createViolationDTOFromDPA(DPA dpa) {
@@ -147,20 +138,22 @@ public class DPAService {
     }
 
 
-    public RequirementsEvaluator getReqEvaluator(Requirement requirement) {
+    public IRequirementsEvaluator getReqEvaluator(Requirement requirement) {
         switch (requirement.getReqEvaluator()) {
             case "ProcessingLocationEvaluator": return new ProcessingLocationEvaluator(requirement.getAttributes());
-            // todo: Add more Evaluators
-            default: throw new RuntimeException("Error getting requirement evaluator "+requirement.getReqEvaluator());
+
+            //  Add more Evaluators
+
+            default: throw new InputMismatchException("Error getting requirement evaluator "+requirement.getReqEvaluator());
         }
     }
 
     public void evaluateAllRequirements(DPA dpa, DataProcessor dataProcessor) {
         for (Requirement req : dpa.getRequirements()) {
-            RequirementsEvaluator evaluator = getReqEvaluator(req);
+            IRequirementsEvaluator evaluator = getReqEvaluator(req);
             evaluator.evaluate(dpa, dataProcessor); // will also create violations and append to DPA;
-            repository.save(dpa);
         }
+            repository.save(dpa);
     }
 
 }

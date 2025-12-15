@@ -2,10 +2,8 @@ package com.compliancehub.controller;
 
 import com.compliancehub.dto.user.UserDTO;
 import com.compliancehub.dto.user.UserLoginDTO;
-import com.compliancehub.model.User;
 import com.compliancehub.service.UserService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -34,8 +32,8 @@ public class UserController {
         return ResponseEntity.ok(userDTO);
     }
 
-    @GetMapping()
-    private ResponseEntity<String> checkIfLoggedIn() {
+    @GetMapping
+    private ResponseEntity<String> verify() { // just checks if user is signed in
         return ResponseEntity.ok("User is signed in");
     }
 
@@ -55,7 +53,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginDTO userDTO){
-        String token = service.verify(userDTO);
+        String token = service.login(userDTO);
 
         ResponseCookie cookie = ResponseCookie.from("jwt", token)
                 .httpOnly(true)

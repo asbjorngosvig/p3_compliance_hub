@@ -1,13 +1,9 @@
 package com.compliancehub.dto;
 
-import com.compliancehub.model.CommunicationStrategy;
-import com.compliancehub.model.Requirement;
-import com.compliancehub.model.Violation;
 import org.hibernate.validator.constraints.URL;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public class DPA_DTO {
