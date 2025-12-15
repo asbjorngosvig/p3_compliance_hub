@@ -5,6 +5,9 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { dpaService } from "../../shared/services/dpaService.ts";
 import { Button } from "../../shared/components/Buttons.tsx";
 import type { IDPA, IViolation } from "../../shared/types/dpa.types.ts";
+import { TrashIcon } from "@heroicons/react/24/outline";
+import { useConfirm } from "../../shared/components/ConfirmDialog.tsx";
+
 
 // Sæt til true for mock example of false for rigtig data
 const USE_MOCK = false;
@@ -53,6 +56,7 @@ const severityBadgeClasses = (severity?: string) => {
 const DpaDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const confirm = useConfirm();
 
     const [dpa, setDpa] = useState<IDPA | null>(null);
     const [loading, setLoading] = useState(true);
@@ -125,6 +129,28 @@ const DpaDetails: React.FC = () => {
             </div>
         );
     }
+
+    const handleDelete = async () => {
+        if (!dpa) return;
+
+        const ok = await confirm({
+            title: "Delete DPA",
+            message: `Are you sure you want to delete "${dpa.customerName}"? This action cannot be undone.`,
+            confirmText: "Delete",
+            cancelText: "Cancel",
+            type: "danger",
+        });
+
+        if (!ok) return;
+
+        try {
+            await dpaService.delete(dpa.id);
+            navigate("/dpas");
+        } catch (err) {
+            console.error("Failed to delete DPA:", err);
+            setError("Failed to delete DPA. Please try again.");
+        }
+    };
 
     const created = dpa.createdDate ? new Date(dpa.createdDate) : null;
     const violationsCount = dpa.violations?.length ?? 0;
@@ -253,13 +279,22 @@ const DpaDetails: React.FC = () => {
                     </dl>
                 </div>
 
-                <div>
+                <div className="flex gap-2">
                     <Button
                         variant="tertiary"
                         className="flex items-center gap-1 text-xs"
                         onClick={() => navigate(-1)}>
                         <ArrowLeftIcon className="h-4 w-4" />
                         Back
+                    </Button>
+
+                    <Button
+                        variant="tertiary"
+                        className="flex items-center gap-1 text-xs"
+                        onClick={handleDelete}
+                    >
+                        <TrashIcon className={"h-4 w-4"}/>
+                        Delete
                     </Button>
                 </div>
             </div>
