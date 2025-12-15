@@ -14,6 +14,8 @@ import com.compliancehub.strategy.factory.EvaluatorFactory;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -21,8 +23,8 @@ import java.util.*;
 @Service
 public class DPAService {
     private final DPARepository repository;
-    private final DataProcessorRepository dataProcessorRepository;
     private final EvaluatorFactory evaluatorFactory;
+    private final DataProcessorRepository dataProcessorRepository;
 
     public DPAService(DPARepository repository, DataProcessorRepository dataProcessorRepository, EvaluatorFactory evaluatorFactory){
         this.repository = repository;
@@ -32,34 +34,37 @@ public class DPAService {
 
     public DPA_DTO.StandardDPAResponse getById(UUID id) {
         DPA dpa = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("DPA not found with id: " + id));
+            .orElseThrow(() -> new EntityNotFoundException("DPA not found with id: " + id));
 
         return new DPA_DTO.StandardDPAResponse(
-                dpa.getId(),
-                createViolationDTOFromDPA(dpa),
-                dpa.getCustomerName(),
-                dpa.getProductName(),
-                dpa.getCreatedDate(),
-                dpa.getFileUrl()
+            dpa.getId(),
+            createViolationDTOFromDPA(dpa),
+            dpa.getCustomerName(),
+            dpa.getProductName(),
+            dpa.getCreatedDate(),
+            dpa.getFileUrl()
         );
     }
 
     public DPA_DTO.CreateResponse create(DPA_DTO.CreateRequest req){
-        //builder pattern til at bygge DPA
+        //1: byg en DPA vha. builder pattern
         DPA dpa = new DPABuilder(req.customerName(), req.productName(), req.fileUrl())
             .withWrittenApproval(req.needWrittenApproval())
             .withNoticePeriod(req.daysOfNotice())
             .withLocationRequirement(req.allowedProcessingLocations())
             .build();
 
-        //tjekker alle Data processors mod DPA'ens reqs
-        List<DataProcessor> dataProcessorList = dataProcessorRepository.findAll();
-        for (DataProcessor dp : dataProcessorList) {
-            evaluateAllRequirements(dpa, dp);
-        }
-
+        //2: gem DPA'en
         DPA savedDPA = repository.save(dpa);
 
+        //3: Tjek for violations
+        //tjekker alle DPA's reqs mod alle eksisterende DP'er
+        List<DataProcessor> processors = dataProcessorRepository.findAll();
+        for (DataProcessor dp : processors) {
+            this.evaluateAllRequirements(dpa, dp);
+        }
+
+        //4: returnér ny DPA
         return new DPA_DTO.CreateResponse(
             new DPA_DTO.StandardDPAResponse(
                 savedDPA.getId(),
