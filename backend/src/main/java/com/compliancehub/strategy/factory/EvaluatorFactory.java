@@ -1,6 +1,5 @@
 package com.compliancehub.strategy.factory;
 
-import com.compliancehub.model.Requirement;
 import com.compliancehub.strategy.RequirementsEvaluator.IRequirementsEvaluator;
 import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
 import org.springframework.stereotype.Component;

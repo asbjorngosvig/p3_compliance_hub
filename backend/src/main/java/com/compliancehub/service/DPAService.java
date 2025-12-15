@@ -9,7 +9,6 @@ import com.compliancehub.model.CommunicationStrategy;
 import com.compliancehub.repository.DPARepository;
 import com.compliancehub.repository.DataProcessorRepository;
 
-import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
 import com.compliancehub.strategy.RequirementsEvaluator.IRequirementsEvaluator;
 import com.compliancehub.strategy.factory.EvaluatorFactory;
 
@@ -152,7 +151,7 @@ public class DPAService {
 
             evaluator.evaluate(dpa, dataProcessor); // will also create violations and append to DPA;
         }
-            repository.save(dpa);
+        repository.save(dpa);
     }
 
 }
