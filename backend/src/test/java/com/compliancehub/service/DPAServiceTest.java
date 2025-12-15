@@ -6,6 +6,10 @@ import com.compliancehub.model.DPA;
 import com.compliancehub.model.DataProcessor;
 import com.compliancehub.model.Requirement;
 import com.compliancehub.repository.DPARepository;
+import com.compliancehub.repository.DataProcessorRepository;
+import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
+import com.compliancehub.strategy.factory.EvaluatorFactory;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,6 +20,8 @@ import java.util.List;
 
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 
 //fra jUnit5. init mocks så det ik skal gøres længere nede
@@ -24,6 +30,12 @@ class DPAServiceTest {
 
     @Mock
     private DPARepository dpaRepository;
+
+    @Mock
+    private EvaluatorFactory evaluatorFactory = new EvaluatorFactory();
+
+    @Mock
+    private DataProcessorRepository dataProcessorRepository;
 
     @InjectMocks
     private DPAService dpaService;
@@ -35,9 +47,11 @@ class DPAServiceTest {
         DPA dpa = MockDPA.getMock();
         DataProcessor dataProcessor = MockDataProcessor.getMock();
 
-        Requirement requirement = MockProcessingLocationsRequirement.getMockWithValidLocations(dpa);
+        Requirement req = MockProcessingLocationsRequirement.getMockWithValidLocations(dpa);
 
-        dpa.setRequirements(List.of(requirement));
+        dpa.setRequirements(List.of(req));
+
+        when(evaluatorFactory.create(any(), any())).thenReturn(new ProcessingLocationEvaluator(req.getAttributes()));
 
         dpaService.evaluateAllRequirements(dpa, dataProcessor);
 
@@ -54,12 +68,16 @@ class DPAServiceTest {
         DPA dpa = MockDPA.getMock();
         DataProcessor dataProcessor = MockDataProcessor.getMock();
 
-        Requirement requirement = MockProcessingLocationsRequirement.getMockWithInvalidLocations(dpa);
+        Requirement req = MockProcessingLocationsRequirement.getMockWithInvalidLocations(dpa);
 
-        dpa.setRequirements(List.of(requirement));
+        dpa.setRequirements(List.of(req));
+
+        when(evaluatorFactory.create(any(), any())).thenReturn(new ProcessingLocationEvaluator(req.getAttributes()));
+
+        List<String> allowedLocations = (List<String>) req.getAttributes().get("allowedLocations");
 
         // sørger for at DataProcessor har præcis samme locations som processing locations som requirement
-        dataProcessor.setProcessingLocations((List<String>) requirement.getAttributes().get("allowedLocations"));
+        dataProcessor.setProcessingLocations(allowedLocations);
 
         dpaService.evaluateAllRequirements(dpa, dataProcessor);
 
@@ -72,4 +90,3 @@ class DPAServiceTest {
 
 
 }
-
