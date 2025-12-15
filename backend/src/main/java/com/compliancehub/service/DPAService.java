@@ -51,14 +51,6 @@ public class DPAService {
         newDPA.setProductName(req.productName());
         newDPA.setFileUrl(req.fileUrl());
 
-        // adds the need written aprooval strategy
-        if (req.needWrittenAprooval()) {
-            CommunicationStrategy strat = new CommunicationStrategy();
-            strat.setDpa(newDPA);
-            strat.setStrategy("NeedWrittenAprooval"); // Navnet på strategi class
-            newDPA.addCommunicationStrategy(strat);
-        }
-
         // Adds the period of notice strategy
         CommunicationStrategy strat = new CommunicationStrategy();
         strat.setDpa(newDPA);

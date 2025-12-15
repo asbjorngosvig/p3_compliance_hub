@@ -17,7 +17,7 @@ const Dpaform: React.FC = () => {
     const [processingLocations, setProcessingLocations] = useState<string[]>([]);
     const [fetchedLocations, setFetchedLocations] = useState<string[]>([]);
     const [location, setLocation] = useState("");
-    const [needWrittenAprooval, setNeedWrittenAprooval] = useState(false);
+    const [needWrittenApproval, setNeedWrittenApproval] = useState(false);
     const [daysOfNotice, setDaysOfNotice] = useState<string>("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -44,7 +44,7 @@ const Dpaform: React.FC = () => {
         try {
             const requestData: CreateDPARequest = {
                 allowedProcessingLocations: processingLocations,
-                needWrittenAprooval,
+                needWrittenApproval,
                 daysOfNotice: Number(daysOfNotice),
                 customerName,
                 productName,
@@ -248,8 +248,8 @@ const Dpaform: React.FC = () => {
                 <div className="flex items-center space-x-2">
                     <input
                         type="checkbox"
-                        checked={needWrittenAprooval}
-                        onChange={(e) => setNeedWrittenAprooval(e.target.checked)}
+                        checked={needWrittenApproval}
+                        onChange={(e) => setNeedWrittenApproval(e.target.checked)}
                         className="h-4 w-4 rounded border-slate-300 text-[#7BA043]"
                     />
                     <span className="text-sm font-medium text-slate-700">

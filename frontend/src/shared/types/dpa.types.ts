@@ -44,7 +44,7 @@ export interface DpaRow {
 // Request payload for creating a DPA
 export interface CreateDPARequest {
     allowedProcessingLocations: string[];
-    needWrittenAprooval: boolean;
+    needWrittenApproval: boolean;
     daysOfNotice: number;
     customerName: string;
     productName: string;
