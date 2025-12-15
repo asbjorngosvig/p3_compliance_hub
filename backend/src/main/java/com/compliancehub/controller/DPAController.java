@@ -30,10 +30,11 @@ public class DPAController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable UUID id) {
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
         service.delete(id);
-        return ResponseEntity.ok("Successfully deleted DPA");
+        return ResponseEntity.noContent().build();    
     }
+    
     @GetMapping("/")
     public ResponseEntity<DPA_DTO.GetAllResponse> getAll() {
         return ResponseEntity.ok(service.getAll());
