@@ -1,4 +1,5 @@
 package com.compliancehub.service;
+import com.compliancehub.dto.ViolationDTO;
 import com.compliancehub.mockClasses.MockDPA;
 import com.compliancehub.mockClasses.MockDataProcessor;
 import com.compliancehub.mockClasses.MockProcessingLocationsRequirement;
@@ -14,6 +15,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,7 +101,26 @@ class DPAServiceTest {
 
     }
 
+    @Test
+    void createViolationsDTOTest() {
+        Object dpa = MockDPA.getMock();
+        Method[] methods = DPAService.class.getDeclaredMethods();
 
+        for (Method m : methods) {
+            if (m.getName().equals("createViolationDTOFromDPA")) {
+                m.setAccessible(true);
+
+                try {
+                    List<ViolationDTO.standardResponse> dto = (List<ViolationDTO.standardResponse>) m.invoke(dpaService, dpa);
+                } catch (InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+    }
 
 
 }
