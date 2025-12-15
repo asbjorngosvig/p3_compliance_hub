@@ -57,11 +57,11 @@ public class UserController {
 
         ResponseCookie cookie = ResponseCookie.from("jwt", token)
                 .httpOnly(true)
-                .secure(true)
+                .secure(false)
                 .path("/")
                 .maxAge(24 * 60 * 60)
-                .sameSite("None")
-                .domain("compliancehub.osc-fr1.scalingo.io")
+                .sameSite("Lax")
+                //.domain("compliancehub.osc-fr1.scalingo.io")
                 .build();
 
         return ResponseEntity.ok()
@@ -73,11 +73,11 @@ public class UserController {
     public ResponseEntity<?> logout(HttpServletResponse response) {
         ResponseCookie cookie = ResponseCookie.from("jwt", "")
                 .httpOnly(true)
-                .secure(true)
+                .secure(false)
                 .path("/")
                 .maxAge(0)
-                .sameSite("None")
-                .domain("compliancehub.osc-fr1.scalingo.io")
+                .sameSite("Lax")
+               // .domain("compliancehub.osc-fr1.scalingo.io")
                 .build();
 
         response.addHeader("Set-Cookie",cookie.toString());

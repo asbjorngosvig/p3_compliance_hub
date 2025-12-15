@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(c -> c.configurationSource(configurationSource()))
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/users/login", "/api/users/login").permitAll() //Does not req auth for these 2// endpoints register should be removed later
+                        .requestMatchers("/users/login", "/api/users/login", "/users/register", "/api/users/register").permitAll() //Does not req auth for these 2// endpoints register should be removed later
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .httpBasic(Customizer.withDefaults()) //rest api access
