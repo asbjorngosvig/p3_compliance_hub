@@ -30,7 +30,7 @@ public class DPAController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<void> delete(@PathVariable UUID id) {
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
         service.delete(id);
             return ResponseEntity.noContent().build();    
     }
