@@ -75,16 +75,13 @@ public class DPAService {
         newDPA.addRequirement(requirement1);
 
 
-        List<DataProcessor> dataProcessorList;
-
-        dataProcessorList = dataProcessorRepository.findAll();
+        List<DataProcessor> dataProcessorList = dataProcessorRepository.findAll();
 
         for (DataProcessor dp : dataProcessorList) {
             evaluateAllRequirements(newDPA, dp);
         }
 
-        DPA savedDPA;
-        savedDPA = repository.save(newDPA);
+        DPA savedDPA = repository.save(newDPA);
 
         return new DPA_DTO.CreateResponse(
             new DPA_DTO.StandardDPAResponse(
@@ -105,7 +102,6 @@ public class DPAService {
 
         List<DPA_DTO.StandardDPAResponse> dpaResponses = allDPAs.stream()
                 .map(dpa ->
-
                         new DPA_DTO.StandardDPAResponse(
                         dpa.getId(), createViolationDTOFromDPA(dpa),
                         dpa.getCustomerName(),
