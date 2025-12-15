@@ -9,17 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 public class DPABuilder {
-    /*
-    1) set customer name
-    2) set product name
-    3) set file URL
-    4) set comm strats (kun nogen gange. også alle typer både måden at få info på og hvornår man skal ha den)
-    5) set requirements
-    6) return dpa
-
-    herefter fikser service eller observer at lave violations
-     */
-
     private DPA dpa;
 
     public DPABuilder (String customerName, String productName, String url){
@@ -67,5 +56,9 @@ public class DPABuilder {
         this.dpa.addRequirement(r);
 
         return this;
+    }
+
+    public DPA build(){
+        return this.dpa;
     }
 }
