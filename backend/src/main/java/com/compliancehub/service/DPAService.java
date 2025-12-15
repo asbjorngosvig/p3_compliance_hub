@@ -124,7 +124,7 @@ public class DPAService {
 
             evaluator.evaluate(dpa, dataProcessor); // will also create violations and append to DPA;
         }
-            repository.save(dpa);
+        repository.save(dpa);
     }
 
 }
