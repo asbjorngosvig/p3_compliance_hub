@@ -9,6 +9,7 @@ const S = (el: ReactElement) => (
 const Dashboard              = lazy(() => import("../../features/dashboard/Dashboard"));
 const DataProcessors         = lazy(() => import("../../features/dataProcessors/SeeDataProcessors"));
 const AddDataProcessor       = lazy(() => import("../../features/dataProcessors/AddDataProcessor"));
+const EditDataProcessor      = lazy(() => import("../../features/dataProcessors/EditDataProcessor"));
 const DataProcessorDetails   = lazy(() => import("../../features/dataProcessors/DataProcessorDetails"));
 const Employees              = lazy(() => import("../../features/employees/Employees"));
 const AddDpa                 = lazy(() => import("../../features/addDpa/AddDpa"));
@@ -31,6 +32,7 @@ export const router = createBrowserRouter(
                 { path: "dataprocessors",     element: S(<DataProcessors />),   handle: { title: "Data Processors" } },
                 { path: "dataprocessors/add", element: S(<AddDataProcessor />), handle: { title: "Add Data Processor" } },
                 { path: "dataprocessors/:id",     element: S(<DataProcessorDetails />), handle: { title: "Data Processor Details" } },
+                { path: "dataprocessors/:id/edit", element: S(<EditDataProcessor />), handle: { title: "Edit Data Processor" } },
                 { path: "employees",          element: S(<Employees />),        handle: { title: "Employees" } },
                 { path: "adddpa",             element: S(<AddDpa />),           handle: { title: "Add DPA" } },
 

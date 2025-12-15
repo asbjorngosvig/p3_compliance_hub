@@ -4,6 +4,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { Button } from "../../shared/components/Buttons.tsx";
 import { dataProcessorService } from "../../shared/services/DataProcessorService.ts";
 import type { IDataProcessor } from "../../shared/types/IDataProcessor.ts";
+import { PencilIcon } from "@heroicons/react/24/outline";
 
 // Sæt til true for at bruge mock data og false for rigtig data
 const USE_MOCK = false; // set to false when the API works
@@ -207,13 +208,22 @@ const DataProcessorDetails: React.FC = () => {
                     </dl>
                 </div>
 
-                <div>
+                <div className="flex gap-2">
                     <Button
                         variant="tertiary"
                         className="flex items-center gap-1 text-xs"
                         onClick={() => navigate(-1)}>
                         <ArrowLeftIcon className="h-4 w-4" />
                         Back
+                    </Button>
+
+                    <Button
+                        variant="tertiary"
+                        className="flex items-center gap-1 text-xs"
+                        onClick={() => navigate(`/dataprocessors/${dp.id}/edit`)}
+                    >
+                        <PencilIcon className="h-4 w-4" />
+                        Edit
                     </Button>
                 </div>
             </div>
