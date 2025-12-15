@@ -9,7 +9,7 @@ import java.util.UUID;
 public class DPA_DTO {
     public record CreateRequest(
         List<String> allowedProcessingLocations,
-        boolean needWrittenAprooval,
+        boolean needWrittenApproval,
         Integer daysOfNotice,
         String customerName,
         String productName,

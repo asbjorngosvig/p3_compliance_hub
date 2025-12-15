@@ -10,7 +10,7 @@ public class MockDPA {
         mockDPA.setCustomerName("AAU Copenhagen");
         mockDPA.setFileUrl("https://example.com");
         mockDPA.setProductName("UniFlow");
-        // mockDPA.setCommunicationStrats(NeedWrittenAprooval, EmailNotice);
+        // mockDPA.setCommunicationStrats(NeedWrittenApproval, EmailNotice);
         return mockDPA;
     }
 }

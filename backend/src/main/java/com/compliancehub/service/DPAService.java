@@ -4,11 +4,11 @@ import com.compliancehub.dto.ActionDTO;
 import com.compliancehub.dto.DPA_DTO;
 import com.compliancehub.dto.ViolationDTO;
 import com.compliancehub.model.*;
-import com.compliancehub.model.CommunicationStrategy;
 
 import com.compliancehub.repository.DPARepository;
 import com.compliancehub.repository.DataProcessorRepository;
 
+import com.compliancehub.service.builder.DPABuilder;
 import com.compliancehub.strategy.RequirementsEvaluator.IRequirementsEvaluator;
 import com.compliancehub.strategy.factory.EvaluatorFactory;
 
@@ -45,47 +45,20 @@ public class DPAService {
     }
 
     public DPA_DTO.CreateResponse create(DPA_DTO.CreateRequest req){
-        DPA newDPA = new DPA();
-        newDPA.setCustomerName(req.customerName());
-        newDPA.setProductName(req.productName());
-        newDPA.setFileUrl(req.fileUrl());
+        //builder pattern til at bygge DPA
+        DPA dpa = new DPABuilder(req.customerName(), req.productName(), req.fileUrl())
+            .withWrittenApproval(req.needWrittenApproval())
+            .withNoticePeriod(req.daysOfNotice())
+            .withLocationRequirement(req.allowedProcessingLocations())
+            .build();
 
-        // adds the need written aprooval strategy
-        if (req.needWrittenAprooval()) {
-            CommunicationStrategy strat = new CommunicationStrategy();
-            strat.setDpa(newDPA);
-            strat.setStrategy("NeedWrittenAprooval"); // Navnet på strategi class
-            newDPA.addCommunicationStrategy(strat);
-        }
-
-        // Adds the period of notice strategy
-        CommunicationStrategy strat = new CommunicationStrategy();
-        strat.setDpa(newDPA);
-        // todo: find en måde at bruge email istedet for navn her...
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("email", req.customerName());
-        strat.setAttributes(attributes);
-        strat.setStrategy("DaysOfNotice"); // Navnet på strategi class
-        newDPA.addCommunicationStrategy(strat);
-
-
-        /* set the processing locations requirement fields */
-        Requirement requirement1 = new Requirement();
-        attributes = new HashMap<>(); // Important: SKAL STÅ "allowedLocations"
-        attributes.put("allowedLocations", req.allowedProcessingLocations());
-        requirement1.setAttributes(attributes);
-        requirement1.setReqEvaluator("ProcessingLocationEvaluator"); // Navnet på evaluator class
-        requirement1.setDpa(newDPA);
-        newDPA.addRequirement(requirement1);
-
-
+        //tjekker alle Data processors mod DPA'ens reqs
         List<DataProcessor> dataProcessorList = dataProcessorRepository.findAll();
-
         for (DataProcessor dp : dataProcessorList) {
-            evaluateAllRequirements(newDPA, dp);
+            evaluateAllRequirements(dpa, dp);
         }
 
-        DPA savedDPA = repository.save(newDPA);
+        DPA savedDPA = repository.save(dpa);
 
         return new DPA_DTO.CreateResponse(
             new DPA_DTO.StandardDPAResponse(
