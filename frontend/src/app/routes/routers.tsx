@@ -26,11 +26,6 @@ export const router = createBrowserRouter(
             handle: { title: "Login" },
         },
         {
-            path: "login",
-            element: S(<Login />),
-            handle: { title: "Login" },
-        },
-        {
             element: <AppLayout />,
             children: [
                 { path: "dashboard",          element: S(<Dashboard />),        handle: { title: "Home" } },
