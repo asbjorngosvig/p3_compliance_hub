@@ -1,4 +1,4 @@
-import { instance } from "./axiosClient";
+import api from "../api/api";
 import type {
     IDataProcessor,
     IDataProcessorGetAllResponse,
@@ -10,19 +10,19 @@ const update = (id: string, data: Partial<IDataProcessor>) => {
 };
 
 const create = (data: IDataProcessor) => {
-    return instance.post<IDataProcessorCreateResponse>("/dataprocessors", data);
+    return api.post<IDataProcessorCreateResponse>("api/dataprocessors", data);
 };
 
 const getAll = () => {
-    return instance.get<IDataProcessorGetAllResponse>("/dataprocessors");
+    return api.get<IDataProcessorGetAllResponse>("api/dataprocessors");
 };
 
 const getById = (id: string) => {
-    return instance.get<IDataProcessor>(`/dataprocessors/${id}`);
+    return api.get<IDataProcessor>(`api/dataprocessors/${id}`);
 };
 
 const deleteById = (id: string) => {
-    return instance.delete(`/dataprocessors/${id}`);
+    return api.delete(`api/dataprocessors/${id}`);
 };
 
 export const dataProcessorService = {
