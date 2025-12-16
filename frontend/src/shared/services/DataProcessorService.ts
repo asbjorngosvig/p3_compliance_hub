@@ -6,7 +6,7 @@ import type {
 } from "../types/IDataProcessor";
 
 const update = (id: string, data: Partial<IDataProcessor>) => {
-    return instance.put<IDataProcessorCreateResponse>(`/dataprocessors/${id}`, data);
+    return api.put<IDataProcessorCreateResponse>(`/dataprocessors/${id}`, data);
 };
 
 const create = (data: IDataProcessor) => {
