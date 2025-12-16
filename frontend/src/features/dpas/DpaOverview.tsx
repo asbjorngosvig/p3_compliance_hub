@@ -11,7 +11,7 @@ import type {
     DpaAction,
 } from "../../shared/types/dpa.types.ts";
 import { useNavigate } from "react-router-dom";
-import { OverviewHeader } from "../../shared/components/OverviewHeader.tsx";
+import { OverviewHeader } from "../dashboard/OverviewHeader.tsx";
 
 type SortKey = "name" | "status" | "priority" | "action" | "timeframe";
 
