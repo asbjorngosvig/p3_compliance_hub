@@ -49,6 +49,41 @@ public class DataProcessorService {
             )
         );
     }
+    //update data processor
+    public DataProcessorDTO.UpdateResponse update(
+            UUID id,
+            DataProcessorDTO.UpdateRequest req
+    ) {
+        DataProcessor dp = dataProcessorRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException(
+                        "DataProcessor with id " + id + " is not found"
+                ));
+
+        dp.setName(req.name());
+        dp.setService(req.service());
+        dp.setPurpose(req.purpose());
+        dp.setNote(req.note());
+        dp.setWebsite(req.website());
+        dp.setProcessingLocations(req.processingLocations());
+
+        DataProcessor updated = dataProcessorRepository.save(dp);
+
+        for (DPA dpa : dpaService.getAllEntities()) {
+            dpaService.evaluateAllRequirements(dpa, updated);
+        }
+
+        return new DataProcessorDTO.UpdateResponse(
+                new DataProcessorDTO.StandardDataProcessorResponse(
+                        updated.getId(),
+                        updated.getName(),
+                        updated.getProcessingLocations(),
+                        updated.getService(),
+                        updated.getPurpose(),
+                        updated.getNote(),
+                        updated.getWebsite()
+                )
+        );
+    }
 
     //Get All Data Processors
     public DataProcessorDTO.GetAllResponse getAllSorted(){

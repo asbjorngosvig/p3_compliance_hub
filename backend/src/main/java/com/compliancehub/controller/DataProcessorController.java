@@ -47,4 +47,12 @@ public class DataProcessorController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<DataProcessorDTO.UpdateResponse> update(
+            @PathVariable UUID id,
+            @Valid @RequestBody DataProcessorDTO.UpdateRequest req
+    ) {
+        return ResponseEntity.ok(service.update(id, req));
+    }
 }
