@@ -13,16 +13,16 @@ export default function AppLayout() {
         document.title = (last?.handle as any)?.title ?? "ComplianceHub";
 
 
-        login();
+//        login();
 
     }, [matches]);
-    async function login(){
-        try {
-            await authService.checkIfLoggedIn();
-        } catch {
-            navigate("/") // navigate back to login, if not logged in
-        }
-    }
+//    async function login(){
+//        try {
+//            await authService.checkIfLoggedIn();
+//        } catch {
+//            navigate("/") // navigate back to login, if not logged in
+//        }
+//    }
 
     return (
         // Parent flex container: Sidebar is a sibling (left column), main fills remaining space
