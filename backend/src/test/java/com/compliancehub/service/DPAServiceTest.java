@@ -2,10 +2,7 @@ package com.compliancehub.service;
 import com.compliancehub.mockClasses.MockDPA;
 import com.compliancehub.mockClasses.MockDataProcessor;
 import com.compliancehub.mockClasses.MockProcessingLocationsRequirement;
-import com.compliancehub.model.DPA;
-import com.compliancehub.model.DataProcessor;
-import com.compliancehub.model.Requirement;
-import com.compliancehub.model.Violation;
+import com.compliancehub.model.*;
 import com.compliancehub.repository.DPARepository;
 import com.compliancehub.repository.DataProcessorRepository;
 
@@ -14,7 +11,6 @@ import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvalua
 import com.compliancehub.strategy.factory.CommunicationStrategyFactory;
 import com.compliancehub.strategy.factory.EvaluatorFactory;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -66,6 +62,9 @@ class DPAServiceTest {
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("daysOfNotice", 30);
         attributes.put("email", "test@mail.com");
+        CommunicationStrategy communicationStrategy = new CommunicationStrategy();
+        communicationStrategy.setStrategy("NeedEmailNotice");;
+        dpa.addCommunicationStrategy(communicationStrategy);
 
         when(strategyFactory.create(any(), any())).thenReturn(new NeedEmailNotice(attributes));
 
@@ -80,6 +79,8 @@ class DPAServiceTest {
         for (Violation violation : dpa.getViolations()) {
             assertEquals(1,violation.getActions().size());
         }
+
+
     }
 
     // sørger for at der IKKE bliver oprettet en violation hvis der ikke er fejl

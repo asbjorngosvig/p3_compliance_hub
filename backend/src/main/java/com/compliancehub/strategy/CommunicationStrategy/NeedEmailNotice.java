@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Map;
 
 @Getter
@@ -37,7 +38,9 @@ public class NeedEmailNotice implements ICommunicationStrategy {
 
     @Override
     public void parseAttributes(Map<String, Object> attributes) {
-        if(attributes == null) return;
+        if(attributes == null) {
+            throw new InputMismatchException("Attributes are null");
+        };
 
         this.email = (String) attributes.get("email");
 
@@ -46,7 +49,7 @@ public class NeedEmailNotice implements ICommunicationStrategy {
         }
 
         if (email == null || daysOfNotice == -1) {
-            throw new RuntimeException("Error parsing attributes for communication strategy: Missing email or daysOfNotice");
+            throw new InputMismatchException("Error parsing attributes for communication strategy: Missing email or daysOfNotice");
         }
     }
 }

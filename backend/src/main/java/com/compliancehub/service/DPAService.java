@@ -136,7 +136,7 @@ public class DPAService {
         for (Violation violation : dpa.getViolations()) {
             for (CommunicationStrategy strat : dpa.getCommunicationStrats()) {
                 ICommunicationStrategy strategy = strategyFactory.create(strat.getStrategy(), strat.getAttributes());
-                strategy.createAction(dpa);
+                violation.addAction(strategy.createAction(dpa));
             }
         }
 
