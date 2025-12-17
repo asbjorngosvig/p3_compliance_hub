@@ -116,14 +116,14 @@ class ComplianceServiceTest {
     }
 
     @Test
-    void performComplianceCheckDPA_ViolationsNotGenerated() {
+    void performComplianceCheckDP_ViolationsNotGenerated() {
         DPA dpa = MockDPA.getMock();
         DataProcessor dataProcessor = MockDataProcessor.getMock();
 
         Requirement req = MockProcessingLocationsRequirement.getMockWithValidLocations(dpa);
         dpa.addRequirement(req);
 
-        when(dataProcessorRepository.findAll()).thenReturn(List.of(dataProcessor));
+        when(dpaRepository.findAll()).thenReturn(List.of(dpa));
         when(complianceCheckerFactory.create(any(), any())).thenReturn(new ProcessingLocationComplianceChecker(req.getAttributes()));
 
         Map<String, Object> attributes = new HashMap<>();
@@ -137,13 +137,13 @@ class ComplianceServiceTest {
         List<String> allowedLocations = (List<String>) req.getAttributes().get("allowedLocations");
         dataProcessor.setProcessingLocations(allowedLocations);
 
-        complianceService.performComplianceCheckDPA(dpa);
+        complianceService.performComplianceCheckDP(dataProcessor);
 
         assertTrue(dpa.getViolations().isEmpty());
     }
 
     @Test
-    void performComplianceCheckDPA_ViolationsGenerated() {
+    void performComplianceCheckDP_ViolationsGenerated() {
         DPA dpa = MockDPA.getMock();
         DataProcessor dataProcessor = MockDataProcessor.getMock();
 
@@ -151,7 +151,7 @@ class ComplianceServiceTest {
 
         dpa.setRequirements(List.of(req));
 
-        when(dataProcessorRepository.findAll()).thenReturn(List.of(dataProcessor));
+        when(dpaRepository.findAll()).thenReturn(List.of(dpa));
         when(complianceCheckerFactory.create(any(), any())).thenReturn(new ProcessingLocationComplianceChecker(req.getAttributes()));
 
         Map<String, Object> attributes = new HashMap<>();
@@ -169,7 +169,7 @@ class ComplianceServiceTest {
         List<String> allowedLocations = List.of("EU");
         dataProcessor.setProcessingLocations(allowedLocations);
 
-        complianceService.performComplianceCheckDPA(dpa);
+        complianceService.performComplianceCheckDP(dataProcessor);
 
         // make sure violations are generated
         assertFalse(dpa.getViolations().isEmpty());
