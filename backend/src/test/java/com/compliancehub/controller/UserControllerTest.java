@@ -2,9 +2,9 @@ package com.compliancehub.controller;
 /*package com.compliancehub.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import com.compliancehub.model.Admin;
-import com.compliancehub.model.User;
-import com.compliancehub.repository.UserRepository;
+import com.compliancehub.user_manager.Admin;
+import com.compliancehub.user_manager.User;
+import com.compliancehub.user_manager.UserRepository;
 
 
 import org.junit.jupiter.api.BeforeEach;

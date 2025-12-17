@@ -1,5 +1,6 @@
 package com.compliancehub.service;
 
+import com.compliancehub.shared.security.JWTService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.Test;

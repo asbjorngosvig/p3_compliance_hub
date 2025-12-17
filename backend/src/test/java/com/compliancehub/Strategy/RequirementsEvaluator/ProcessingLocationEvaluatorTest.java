@@ -1,10 +1,10 @@
 package com.compliancehub.Strategy.RequirementsEvaluator;
 
-import com.compliancehub.model.DPA;
-import com.compliancehub.model.DataProcessor;
-import com.compliancehub.model.Requirement;
-import com.compliancehub.model.Violation;
-import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
+import com.compliancehub.dpa_manager.DPA;
+import com.compliancehub.data_processor_manager.DataProcessor;
+import com.compliancehub.dpa_manager.Requirement;
+import com.compliancehub.compliance_engine.model.Violation;
+import com.compliancehub.compliance_engine.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

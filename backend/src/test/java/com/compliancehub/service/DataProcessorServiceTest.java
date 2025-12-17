@@ -1,8 +1,10 @@
 package com.compliancehub.service;
 
-import com.compliancehub.dto.DataProcessorDTO;
-import com.compliancehub.model.DataProcessor;
-import com.compliancehub.repository.DataProcessorRepository;
+import com.compliancehub.data_processor_manager.DataProcessorService;
+import com.compliancehub.dpa_manager.DPAService;
+import com.compliancehub.data_processor_manager.DataProcessorDTO;
+import com.compliancehub.data_processor_manager.DataProcessor;
+import com.compliancehub.data_processor_manager.DataProcessorRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
