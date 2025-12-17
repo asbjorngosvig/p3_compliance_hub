@@ -1,6 +1,7 @@
 package com.compliancehub.data_processor_manager;
 
-import com.compliancehub.dpa_manager.DPAService;
+import com.compliancehub.compliance_engine.service.ComplianceService;
+import com.compliancehub.mockClasses.MockDataProcessor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,35 +23,29 @@ class DataProcessorServiceTest {
 
     @Mock
     private DataProcessorRepository dataProcessorRepository;
-
     @Mock
-    private DPAService dpaService;
-
+    private ComplianceService complianceService;
     @InjectMocks
     private DataProcessorService dataProcessorService;
 
     @Test
     void create_shouldReturnCreatedDataProcessor() {
-        UUID id = UUID.randomUUID();
+        DataProcessor dp = MockDataProcessor.getMock();
         DataProcessorDTO.CreateRequest request = new DataProcessorDTO.CreateRequest(
-                "Test DP", List.of("Loc1"), "Service", "Purpose", "Note", "https://example.com"
+                dp.getName(), dp.getProcessingLocations(), dp.getService(), dp.getPurpose(), dp.getNote(),dp.getWebsite()
         );
 
-        DataProcessor saved = new DataProcessor();
-        saved.setId(id);
-        saved.setName(request.name());
-        saved.setProcessingLocations(request.processingLocations());
-        saved.setService(request.service());
-        saved.setPurpose(request.purpose());
-        saved.setNote(request.note());
-        saved.setWebsite(request.website());
 
-        when(dataProcessorRepository.save(any(DataProcessor.class))).thenReturn(saved);
+
+        when(dataProcessorRepository.save(any(DataProcessor.class))).thenReturn(dp);
+
+
 
         DataProcessorDTO.CreateResponse response = dataProcessorService.create(request);
 
-        assertEquals(id, response.createdDataProcessor().id());
-        assertEquals("Test DP", response.createdDataProcessor().name());
+        assertEquals(dp.getId(), response.createdDataProcessor().id());
+        assertEquals(dp.getName(), response.createdDataProcessor().name());
+        assertEquals(dp.getWebsite(), response.createdDataProcessor().website());
 
         verify(dataProcessorRepository, times(1)).save(any(DataProcessor.class));
     }
