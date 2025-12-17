@@ -49,10 +49,9 @@ public class DataProcessorService {
     //update data processor
     public DataProcessorDTO.CreateResponse update(UUID id, DataProcessorDTO.CreateRequest req) {
         //1. tjek om den findes først
-        DataProcessor dp = dataProcessorRepository.findById(id)
-            .orElseThrow(() -> new NoSuchElementException(
-                "DataProcessor with id " + id + " is not found"
-            ));
+        if (!dataProcessorRepository.existsById(id)) {
+            throw new NoSuchElementException("DataProcessor with id " + id + " is not found");
+        }
 
         //2: herefter slet gamle
         dataProcessorRepository.deleteById(id);
