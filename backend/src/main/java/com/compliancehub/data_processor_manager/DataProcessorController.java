@@ -47,9 +47,9 @@ public class DataProcessorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DataProcessorDTO.CreateResponse> update(
-        @PathVariable UUID id,
-        @Valid @RequestBody DataProcessorDTO.CreateRequest req
+    public ResponseEntity<DataProcessorDTO.UpdateResponse> update(
+            @PathVariable UUID id,
+            @Valid @RequestBody DataProcessorDTO.UpdateRequest req
     ) {
         return ResponseEntity.ok(service.update(id, req));
     }
