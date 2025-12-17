@@ -1,9 +1,10 @@
 package com.compliancehub.controller;
 
-import com.compliancehub.dto.DPA_DTO;
+import com.compliancehub.dpa_manager.DPAController;
+import com.compliancehub.dpa_manager.DPA_DTO;
 import com.compliancehub.mockClasses.MockDPA;
-import com.compliancehub.model.DPA;
-import com.compliancehub.service.DPAService;
+import com.compliancehub.dpa_manager.DPA;
+import com.compliancehub.dpa_manager.DPAService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,7 +1,7 @@
 package com.compliancehub.mockClasses;
 
-import com.compliancehub.model.DataProcessor;
-import com.compliancehub.utils.Locations;
+import com.compliancehub.data_processor_manager.DataProcessor;
+import com.compliancehub.shared.utils.Locations;
 
 import java.util.ArrayList;
 

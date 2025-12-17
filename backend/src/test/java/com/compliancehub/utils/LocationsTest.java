@@ -1,5 +1,6 @@
 package com.compliancehub.utils;
 
+import com.compliancehub.shared.utils.Locations;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

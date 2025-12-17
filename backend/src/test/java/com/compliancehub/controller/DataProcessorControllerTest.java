@@ -1,7 +1,8 @@
 package com.compliancehub.controller;
 
-import com.compliancehub.dto.DataProcessorDTO;
-import com.compliancehub.service.DataProcessorService;
+import com.compliancehub.data_processor_manager.DataProcessorController;
+import com.compliancehub.data_processor_manager.DataProcessorDTO;
+import com.compliancehub.data_processor_manager.DataProcessorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

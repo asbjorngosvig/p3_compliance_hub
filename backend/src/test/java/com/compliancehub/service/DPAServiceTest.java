@@ -1,15 +1,20 @@
 package com.compliancehub.service;
+import com.compliancehub.compliance_engine.strategy.CommunicationStrategy.NeedEmailNotice;
+import com.compliancehub.dpa_manager.Requirement;
+import com.compliancehub.compliance_engine.model.Violation;
+import com.compliancehub.compliance_engine.model.CommunicationStrategy;
+import com.compliancehub.data_processor_manager.DataProcessor;
+import com.compliancehub.dpa_manager.DPA;
+import com.compliancehub.dpa_manager.DPAService;
 import com.compliancehub.mockClasses.MockDPA;
 import com.compliancehub.mockClasses.MockDataProcessor;
 import com.compliancehub.mockClasses.MockProcessingLocationsRequirement;
-import com.compliancehub.model.*;
-import com.compliancehub.repository.DPARepository;
-import com.compliancehub.repository.DataProcessorRepository;
+import com.compliancehub.dpa_manager.DPARepository;
+import com.compliancehub.data_processor_manager.DataProcessorRepository;
 
-import com.compliancehub.strategy.CommunicationStrategy.NeedEmailNotice;
-import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
-import com.compliancehub.strategy.factory.CommunicationStrategyFactory;
-import com.compliancehub.strategy.factory.EvaluatorFactory;
+import com.compliancehub.compliance_engine.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
+import com.compliancehub.compliance_engine.service.factory.CommunicationStrategyFactory;
+import com.compliancehub.compliance_engine.service.factory.EvaluatorFactory;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

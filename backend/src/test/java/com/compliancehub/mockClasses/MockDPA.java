@@ -1,6 +1,6 @@
 package com.compliancehub.mockClasses;
 
-import com.compliancehub.model.DPA;
+import com.compliancehub.dpa_manager.DPA;
 
 public class MockDPA {
 

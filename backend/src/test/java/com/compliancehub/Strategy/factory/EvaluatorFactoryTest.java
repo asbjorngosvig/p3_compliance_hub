@@ -1,9 +1,9 @@
 package com.compliancehub.Strategy.factory;
 
-import com.compliancehub.model.Requirement;
-import com.compliancehub.strategy.RequirementsEvaluator.IRequirementsEvaluator;
-import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
-import com.compliancehub.strategy.factory.EvaluatorFactory;
+import com.compliancehub.dpa_manager.Requirement;
+import com.compliancehub.compliance_engine.strategy.RequirementsEvaluator.IRequirementsEvaluator;
+import com.compliancehub.compliance_engine.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
+import com.compliancehub.compliance_engine.service.factory.EvaluatorFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
