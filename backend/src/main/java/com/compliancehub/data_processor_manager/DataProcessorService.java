@@ -1,7 +1,6 @@
 package com.compliancehub.data_processor_manager;
 
-import com.compliancehub.dpa_manager.DPAService;
-import com.compliancehub.dpa_manager.DPA;
+import com.compliancehub.compliance_engine.service.ComplianceService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -10,15 +9,16 @@ import java.util.*;
 @Service
 public class DataProcessorService {
     private final DataProcessorRepository dataProcessorRepository;
-    private final DPAService dpaService;
+    private final ComplianceService complianceService;
 
-    public DataProcessorService(DataProcessorRepository dataProcessorRepository, DPAService dpaService) {
+    public DataProcessorService(DataProcessorRepository dataProcessorRepository, ComplianceService complianceService) {
         this.dataProcessorRepository = dataProcessorRepository;
-        this.dpaService = dpaService;
+        this.complianceService = complianceService;
     }
 
     //Create new data processor
     public DataProcessorDTO.CreateResponse create(DataProcessorDTO.CreateRequest req) {
+        //1: bygger ny DP
         DataProcessor newDP = new DataProcessor();
         newDP.setName(req.name());
         newDP.setService(req.service());
@@ -27,60 +27,37 @@ public class DataProcessorService {
         newDP.setWebsite(req.website());
         newDP.setProcessingLocations(req.processingLocations());
 
-        DataProcessor savedDP = dataProcessorRepository.save(newDP);
+        //2: tjekker compliance
+        complianceService.performComplianceCheckDP(newDP);
 
-        // evaluate for new violations
-        List<DPA> dpaList = dpaService.getAllEntities();
-        for (DPA dpa : dpaList) {
-            dpaService.evaluateAllRequirements(dpa, savedDP);
-        }
+        //3: gemmer i databasen
+        dataProcessorRepository.save(newDP);
 
+        //4: returnerer ny DP til frontend
         return new DataProcessorDTO.CreateResponse(
             new DataProcessorDTO.StandardDataProcessorResponse(
-                savedDP.getId(),
-                savedDP.getName(),
-                savedDP.getProcessingLocations(),
-                savedDP.getService(),
-                savedDP.getPurpose(),
-                savedDP.getNote(),
-                savedDP.getWebsite()
+                newDP.getId(),
+                newDP.getName(),
+                newDP.getProcessingLocations(),
+                newDP.getService(),
+                newDP.getPurpose(),
+                newDP.getNote(),
+                newDP.getWebsite()
             )
         );
     }
     //update data processor
-    public DataProcessorDTO.UpdateResponse update(
-            UUID id,
-            DataProcessorDTO.UpdateRequest req
-    ) {
-        DataProcessor dp = dataProcessorRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException(
-                        "DataProcessor with id " + id + " is not found"
-                ));
-
-        dp.setName(req.name());
-        dp.setService(req.service());
-        dp.setPurpose(req.purpose());
-        dp.setNote(req.note());
-        dp.setWebsite(req.website());
-        dp.setProcessingLocations(req.processingLocations());
-
-        DataProcessor updated = dataProcessorRepository.save(dp);
-
-        for (DPA dpa : dpaService.getAllEntities()) {
-            dpaService.evaluateAllRequirements(dpa, updated);
+    public DataProcessorDTO.CreateResponse update(UUID id, DataProcessorDTO.CreateRequest req) {
+        //1. tjek om den findes først
+        if (!dataProcessorRepository.existsById(id)) {
+            throw new NoSuchElementException("DataProcessor with id " + id + " is not found");
         }
 
-        return new DataProcessorDTO.UpdateResponse(
-                new DataProcessorDTO.StandardDataProcessorResponse(
-                        updated.getId(),
-                        updated.getName(),
-                        updated.getProcessingLocations(),
-                        updated.getService(),
-                        updated.getPurpose(),
-                        updated.getNote(),
-                        updated.getWebsite()
-                )
-        );
+        //2: herefter slet gamle
+        dataProcessorRepository.deleteById(id);
+
+        //3: og generér ny create respons
+        return this.create(req);
     }
 
     //Get All Data Processors
