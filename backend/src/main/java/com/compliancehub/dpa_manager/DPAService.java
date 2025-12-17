@@ -3,15 +3,9 @@ package com.compliancehub.dpa_manager;
 import com.compliancehub.compliance_engine.model.Action;
 import com.compliancehub.compliance_engine.model.Violation;
 import com.compliancehub.compliance_engine.service.ComplianceService;
-import com.compliancehub.data_processor_manager.DataProcessor;
 import com.compliancehub.compliance_engine.dto.ActionDTO;
 import com.compliancehub.compliance_engine.dto.ViolationDTO;
-
-import com.compliancehub.data_processor_manager.DataProcessorRepository;
-
 import com.compliancehub.dpa_manager.builder.DPABuilder;
-import com.compliancehub.compliance_engine.service.factory.CommunicationStrategyFactory;
-import com.compliancehub.compliance_engine.service.factory.ComplianceCheckerFactory;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -22,14 +16,10 @@ import java.util.*;
 @Service
 public class DPAService {
     private final DPARepository repository;
-    private final ComplianceCheckerFactory complianceCheckerFactory;
-    private final CommunicationStrategyFactory strategyFactory;
     private final ComplianceService complianceService;
 
-    public DPAService(DPARepository repository, ComplianceCheckerFactory complianceCheckerFactory, CommunicationStrategyFactory strategyFactory, ComplianceService complianceService){
+    public DPAService(DPARepository repository, ComplianceService complianceService){
         this.repository = repository;
-        this.complianceCheckerFactory = complianceCheckerFactory;
-        this.strategyFactory = strategyFactory;
         this.complianceService = complianceService;
     }
 

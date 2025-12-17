@@ -1,7 +1,5 @@
-package com.compliancehub.Strategy.factory;
+package com.compliancehub.compliance_engine.service.factory;
 
-
-import com.compliancehub.compliance_engine.service.factory.CommunicationStrategyFactory;
 
 import com.compliancehub.compliance_engine.strategy.CommunicationActionGenerator.NeedEmailNotice;
 import org.junit.jupiter.api.BeforeEach;

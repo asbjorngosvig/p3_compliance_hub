@@ -3,7 +3,6 @@ package com.compliancehub.dpa_manager.builder;
 
 import com.compliancehub.dpa_manager.DPA;
 
-import com.compliancehub.dpa_manager.builder.DPABuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

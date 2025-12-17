@@ -23,7 +23,6 @@ public class ProcessingLocationComplianceChecker implements IRequirementsComplia
         // gets locations with all EEA, EU, NA so on... countries
         List<String> DPLocations = extractSpecialLocations(dataProcessor.getProcessingLocations());
         List<String> DPALocations = extractSpecialLocations(allowedLocations);
-
         // Safety check: Hvis dataProcessor eller allowedLocations er tomme, stop.
         if (DPLocations.isEmpty() || DPALocations.isEmpty()) {
             return;
