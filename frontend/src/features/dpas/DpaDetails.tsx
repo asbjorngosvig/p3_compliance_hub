@@ -9,7 +9,7 @@ import { useConfirm } from "../../shared/components/ConfirmDialog.tsx";
 
 
 // Sæt til true for mock example of false for rigtig data
-const USE_MOCK = false;
+const USE_MOCK = true;
 
 const buildMockDpa = (idFromRoute?: string): IDPA => ({
     id: idFromRoute ?? "mock-dpa-id",
