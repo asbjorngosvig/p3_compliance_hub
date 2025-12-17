@@ -4,7 +4,6 @@ import com.compliancehub.dpa_manager.DPA;
 import com.compliancehub.dpa_manager.Requirement;
 import com.compliancehub.shared.utils.Locations;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +15,7 @@ public class MockProcessingLocationsRequirement {
         req.setDpa(dpa);
 
         Map<String, Object> attributes = new HashMap<>();
-        List<String> eu = new ArrayList<>(Locations.EU);
-        attributes.put("allowedLocations", eu);
+        attributes.put("allowedLocations", List.of(Locations.EU));
         req.setReqEvaluator("ProcessingLocationEvaluator");
         req.setAttributes(attributes);
         return req;

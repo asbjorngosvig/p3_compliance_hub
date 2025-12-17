@@ -16,7 +16,6 @@ export default function AppLayout() {
         login();
 
     }, [matches]);
-    
     async function login(){
         try {
             await authService.checkIfLoggedIn();
