@@ -5,18 +5,25 @@ import com.compliancehub.mockClasses.MockProcessingLocationsRequirement;
 import com.compliancehub.model.DPA;
 import com.compliancehub.model.DataProcessor;
 import com.compliancehub.model.Requirement;
+import com.compliancehub.model.Violation;
 import com.compliancehub.repository.DPARepository;
 import com.compliancehub.repository.DataProcessorRepository;
+
+import com.compliancehub.strategy.CommunicationStrategy.NeedEmailNotice;
 import com.compliancehub.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
+import com.compliancehub.strategy.factory.CommunicationStrategyFactory;
 import com.compliancehub.strategy.factory.EvaluatorFactory;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,6 +40,9 @@ class DPAServiceTest {
 
     @Mock
     private EvaluatorFactory evaluatorFactory = new EvaluatorFactory();
+
+    @Mock
+    private CommunicationStrategyFactory strategyFactory = new CommunicationStrategyFactory();
 
     @Mock
     private DataProcessorRepository dataProcessorRepository;
@@ -53,6 +63,12 @@ class DPAServiceTest {
 
         when(evaluatorFactory.create(any(), any())).thenReturn(new ProcessingLocationEvaluator(req.getAttributes()));
 
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("daysOfNotice", 30);
+        attributes.put("email", "test@mail.com");
+
+        when(strategyFactory.create(any(), any())).thenReturn(new NeedEmailNotice(attributes));
+
         dpaService.evaluateAllRequirements(dpa, dataProcessor);
 
         // sørger for at der er genereret violation efter evaluering
@@ -60,6 +76,10 @@ class DPAServiceTest {
 
         // sørger for at der er genereret max 1 violation pr requirement
         assertTrue(dpa.getViolations().size() <= dpa.getRequirements().size());
+
+        for (Violation violation : dpa.getViolations()) {
+            assertEquals(1,violation.getActions().size());
+        }
     }
 
     // sørger for at der IKKE bliver oprettet en violation hvis der ikke er fejl
