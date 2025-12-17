@@ -47,38 +47,18 @@ public class DataProcessorService {
         );
     }
     //update data processor
-    public DataProcessorDTO.UpdateResponse update(
-        UUID id,
-        DataProcessorDTO.UpdateRequest req
-    ) {
+    public DataProcessorDTO.CreateResponse update(UUID id, DataProcessorDTO.CreateRequest req) {
+        //1. tjek om den findes først
         DataProcessor dp = dataProcessorRepository.findById(id)
             .orElseThrow(() -> new NoSuchElementException(
                 "DataProcessor with id " + id + " is not found"
             ));
 
-        dp.setName(req.name());
-        dp.setService(req.service());
-        dp.setPurpose(req.purpose());
-        dp.setNote(req.note());
-        dp.setWebsite(req.website());
-        dp.setProcessingLocations(req.processingLocations());
+        //2: herefter slet gamle
+        dataProcessorRepository.deleteById(id);
 
-        //skal fikses
-        complianceService.performComplianceCheckDP(dp);
-
-        DataProcessor updated = dataProcessorRepository.save(dp);
-
-        return new DataProcessorDTO.UpdateResponse(
-            new DataProcessorDTO.StandardDataProcessorResponse(
-                updated.getId(),
-                updated.getName(),
-                updated.getProcessingLocations(),
-                updated.getService(),
-                updated.getPurpose(),
-                updated.getNote(),
-                updated.getWebsite()
-            )
-        );
+        //3: og generér ny create respons
+        return this.create(req);
     }
 
     //Get All Data Processors

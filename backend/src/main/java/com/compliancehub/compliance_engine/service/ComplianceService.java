@@ -45,7 +45,7 @@ public class ComplianceService {
             generateViolationActions(dpa);
         }
     }
-    
+
     private void detectRequirementViolations(DPA dpa, DataProcessor dp) {
         for (Requirement req : dpa.getRequirements()) {
             IRequirementsComplianceChecker checker = complianceCheckerFactory.create(
