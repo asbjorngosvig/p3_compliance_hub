@@ -9,59 +9,6 @@ import { OverviewHeader } from "../dashboard/OverviewHeader.tsx";
 
 type SortKey = "name" | "status" | "priority" | "action" | "timeframe";
 
-const USE_MOCK = true;
-
-const buildMockDpas = (): IDPA[] => [
-  {
-    id: "mock-1",
-    customerName: "Mock University",
-    productName: "Mock Exam Platform",
-    createdDate: new Date().toISOString(),
-    fileUrl: "https://example.com/mock-dpa.pdf",
-    violations: [
-      {
-        id: "v-1",
-        description: "Retention exceeds contractual limit.",
-        actions: [
-          { id: "a-1", description: "You need written approval from Aarhus University (dpo@au.dk) before changing data processor" },
-          { id: "a-2", description: "Request updated retention policy in writing." },
-        ],
-      },
-    ],
-  },
-  {
-    id: "mock-2",
-    customerName: "Mock Municipality",
-    productName: "Mock HR System",
-    createdDate: new Date().toISOString(),
-    fileUrl: "https://example.com/mock-dpa-2.pdf",
-    violations: [],
-  },
-  {
-    id: "mock-3",
-    customerName: "Mock Hospital",
-    productName: "Mock Patient Portal",
-    createdDate: new Date().toISOString(),
-    fileUrl: "https://example.com/mock-dpa-3.pdf",
-    violations: [
-      {
-        id: "v-2",
-        description: "Sub-processor list missing providers.",
-        actions: [{ id: "a-3", description: "You need to notify legal@au.dk 30 days before switching data processor" }],
-      },
-      {
-        id: "v-3",
-        description: "Logging policy misalignment.",
-        actions: [
-          { id: "a-4", description: "Align logging configuration with policy." },
-          { id: "a-5", description: "Document the logging changes." },
-          { id: "a-6", description: "Schedule follow-up review." },
-        ],
-      },
-    ],
-  },
-];
-
 const statusBadgeClasses: Record<DpaStatus, string> = {
   Compliant: "bg-emerald-100 text-emerald-700",
   Violation: "bg-red-100 text-red-700",
@@ -75,39 +22,31 @@ const timeframeBadgeClasses = (timeframe: string) => {
 };
 
 const simplifyActionText = (description: string): string => {
-    const actionDescription = description.toLowerCase();
+  const d = description.toLowerCase();
 
-    if (actionDescription.includes("written approval")) {
-        return "Get written approval";
-    } 
-    
-    if (actionDescription.includes("notify") || actionDescription.includes("email")) {
-        return "Contact";
-    }
+  if (d.includes("written approval")) return "Get written approval";
+  if (d.includes("notify") || d.includes("email")) return "Contact";
 
-    return "Action required";
-}
+  return "Action required";
+};
 
 // Helper function to convert backend DPA to frontend DpaRow
 const mapDPAtoDpaRow = (dpa: IDPA): DpaRow => {
   const violations = dpa.violations ?? [];
 
-// Collect short action labels across all violations
-const actionLabels = violations
-  .flatMap((v) => v.actions ?? [])
-  .map((a) => simplifyActionText(a.description));
+  const actionLabels = violations
+    .flatMap((v) => v.actions ?? [])
+    .map((a) => simplifyActionText(a.description));
 
-// Deduplicate
-const uniqueActions = Array.from(new Set(actionLabels));
+  const uniqueActions = Array.from(new Set(actionLabels));
 
-let actionText = "None";
-if (uniqueActions.length === 1) {
-  actionText = uniqueActions[0];
-} else if (uniqueActions.length > 1) {
-  actionText = uniqueActions[0] + (" + " + (uniqueActions.length - 1));
-}
+  let actionText = "None";
+  if (uniqueActions.length === 1) {
+    actionText = uniqueActions[0];
+  } else if (uniqueActions.length > 1) {
+    actionText = `${uniqueActions[0]} +${uniqueActions.length - 1}`;
+  }
 
-  // Status/priority/timeframe without severity/requirements
   let status: DpaStatus = "Compliant";
   let priority: DpaPriority = "None";
   let timeframe = "None";
@@ -143,22 +82,16 @@ const DpaOverview: React.FC = () => {
   const confirm = useConfirm();
   const navigate = useNavigate();
 
-  // Fetch DPAs from backend (or mock)
   useEffect(() => {
     const fetchDPAs = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        if (USE_MOCK) {
-          const mock = buildMockDpas();
-          const mapped = mock.map(mapDPAtoDpaRow);
-          setDpas(mapped);
-          return;
-        }
-
         const response = await dpaService.getAll();
+        // Adjust this line if your API shape differs
         const mappedDpas = response.dpas.map(mapDPAtoDpaRow);
+
         setDpas(mappedDpas);
       } catch (err) {
         console.error("Failed to fetch DPAs:", err);
@@ -204,12 +137,6 @@ const DpaOverview: React.FC = () => {
 
     if (!ok) return;
 
-    // Mock delete: just remove locally
-    if (USE_MOCK) {
-      setDpas((prev) => prev.filter((d) => d.id !== id));
-      return;
-    }
-
     try {
       await dpaService.delete(id);
       setDpas((prev) => prev.filter((d) => d.id !== id));
@@ -236,7 +163,6 @@ const DpaOverview: React.FC = () => {
       />
 
       <section className="mt-6 rounded-2xl bg-white p-4 shadow-sm lg:p-6">
-        {/* Header */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-1 items-center gap-4">
             <h2 className="text-2xl font-semibold tracking-tight">DPAs</h2>
@@ -249,7 +175,7 @@ const DpaOverview: React.FC = () => {
                 placeholder="Search in DPAs"
                 className="w-full rounded-full border border-slate-200 bg-slate-50 px-4 py-2 pr-10 text-sm placeholder:text-slate-400 outline-none transition focus:bg-white focus:ring-2 focus:ring-slate-200"
               />
-              <button className="absolute inset-y-0 right-0 flex items-center pr-4 text-slate-400">
+              <button className="absolute inset-y-0 right-0 flex items-center pr-4 text-slate-400" type="button">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -265,11 +191,9 @@ const DpaOverview: React.FC = () => {
             </div>
           </div>
 
-          {/* Sort button */}
           <div className="relative flex items-center gap-3">
             <span className="text-sm text-slate-500">
               <span className="font-medium text-slate-700">Showing :</span> {showingCount}
-              {USE_MOCK && <span className="ml-2 text-xs text-amber-600">Mock mode</span>}
             </span>
 
             <button
@@ -283,9 +207,7 @@ const DpaOverview: React.FC = () => {
 
             {isFilterOpen && (
               <div className="absolute right-0 top-10 z-20 w-64 rounded-2xl bg-white p-3 shadow-xl border-2 border-[#D4DFE6]">
-                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Sort DPAs
-                </p>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">Sort DPAs</p>
 
                 <div className="space-y-1">
                   {(
@@ -330,14 +252,10 @@ const DpaOverview: React.FC = () => {
           </div>
         </div>
 
-        {/* Error Message */}
         {error && (
-          <div className="mt-4 rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-700">
-            {error}
-          </div>
+          <div className="mt-4 rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-700">{error}</div>
         )}
 
-        {/* TABLE */}
         <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200">
           <div className="max-h-[48vh] overflow-y-auto">
             <table className="min-w-full divide-y divide-slate-200">
