@@ -70,6 +70,13 @@ const SeeDataProcessors: React.FC = () => {
         return <div className="p-8 text-gray-500">Loading data processors...</div>;
     }
 
+    const simplifyProcessingLocations = (locations: string[]) =>
+  locations.length === 0
+    ? "Unknown"
+    : locations.length === 1
+      ? locations[0]
+      : `${locations[0]} +${locations.length - 1}`;
+
     return (
         <div className="flex flex-col gap-6 px-8 py-6">
             {/* Header + Add button */}
@@ -123,10 +130,7 @@ const SeeDataProcessors: React.FC = () => {
                                 <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500">
                                     <span className="inline-flex items-center rounded-full bg-gray-50 px-2.5 py-1">
                                         <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-green-500" />
-                                        Processing Locations:{" "}
-                                        {(dp as any).processingLocations ||
-                                            dp.processingLocations ||
-                                            "Unknown"}
+                                        Processing Locations:{simplifyProcessingLocations(dp.processingLocations)}
                                     </span>
 
 
