@@ -25,7 +25,7 @@ public class DPABuilderTest {
         DPA dpa = dpaBuilder.withWrittenApproval(true).build();
 
 
-        assertTrue(dpa.getCommunicationStrats().getFirst().getStrategy().equals("NeedWrittenApproval"));
+        assertEquals("NeedWrittenApproval", dpa.getCommunicationStrats().getFirst().getStrategy());
     }
 
     @Test
@@ -34,7 +34,7 @@ public class DPABuilderTest {
         DPA dpa = dpaBuilder.withNoticePeriod(30).build();
 
 
-        assertTrue(dpa.getCommunicationStrats().getFirst().getStrategy().equals("DaysOfNotice"));
+        assertEquals("DaysOfNotice", dpa.getCommunicationStrats().getFirst().getStrategy());
         assertEquals(30, dpa.getCommunicationStrats().getFirst().getAttributes().get("daysOfNotice"));
         assertEquals(dpa.getCustomerName(), dpa.getCommunicationStrats().getFirst().getAttributes().get("email"));
     }
@@ -46,7 +46,7 @@ public class DPABuilderTest {
 
         DPA dpa = dpaBuilder.withLocationRequirement(allowedLocations).build();
 
-        assertTrue(dpa.getRequirements().getFirst().getReqEvaluator().equals("ProcessingLocationEvaluator"));
+        assertEquals("ProcessingLocationEvaluator", dpa.getRequirements().getFirst().getReqEvaluator());
 
         assertEquals(allowedLocations, dpa.getRequirements().getFirst().getAttributes().get("allowedLocations"));
     }
