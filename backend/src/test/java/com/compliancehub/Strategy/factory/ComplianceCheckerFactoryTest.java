@@ -1,9 +1,9 @@
 package com.compliancehub.Strategy.factory;
 
 import com.compliancehub.dpa_manager.Requirement;
-import com.compliancehub.compliance_engine.strategy.RequirementsEvaluator.IRequirementsEvaluator;
-import com.compliancehub.compliance_engine.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
-import com.compliancehub.compliance_engine.service.factory.EvaluatorFactory;
+import com.compliancehub.compliance_engine.strategy.RequirementsComplianceChecker.IRequirementsComplianceChecker;
+import com.compliancehub.compliance_engine.strategy.RequirementsComplianceChecker.ProcessingLocationComplianceChecker;
+import com.compliancehub.compliance_engine.service.factory.ComplianceCheckerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,13 +15,13 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class EvaluatorFactoryTest {
+public class ComplianceCheckerFactoryTest {
 
-    public EvaluatorFactory evaluatorFactory;
+    public ComplianceCheckerFactory complianceCheckerFactory;
 
     @BeforeEach
     void setUp(){
-        evaluatorFactory = new EvaluatorFactory();
+        complianceCheckerFactory = new ComplianceCheckerFactory();
     }
 
     @Test
@@ -32,9 +32,9 @@ public class EvaluatorFactoryTest {
         attributes.put("allowedLocations", List.of("EU"));
         req.setAttributes(attributes);
 
-        IRequirementsEvaluator reqEvaluator = evaluatorFactory.create(req.getReqEvaluator(), req.getAttributes());
+        IRequirementsComplianceChecker reqEvaluator = complianceCheckerFactory.create(req.getReqEvaluator(), req.getAttributes());
 
-        assertTrue(reqEvaluator instanceof ProcessingLocationEvaluator);
+        assertTrue(reqEvaluator instanceof ProcessingLocationComplianceChecker);
     }
 
     @Test
@@ -46,7 +46,7 @@ public class EvaluatorFactoryTest {
 
         // tester at vi får en exception, hvis den er invalid
         RuntimeException exception = assertThrows(InputMismatchException.class, ()-> {
-            evaluatorFactory.create(req.getReqEvaluator(),req.getAttributes());
+            complianceCheckerFactory.create(req.getReqEvaluator(),req.getAttributes());
         });
     }
 

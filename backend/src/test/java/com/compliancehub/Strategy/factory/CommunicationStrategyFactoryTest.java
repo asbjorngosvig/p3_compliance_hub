@@ -3,7 +3,7 @@ package com.compliancehub.Strategy.factory;
 
 import com.compliancehub.compliance_engine.service.factory.CommunicationStrategyFactory;
 
-import com.compliancehub.compliance_engine.strategy.CommunicationStrategy.NeedEmailNotice;
+import com.compliancehub.compliance_engine.strategy.CommunicationActionGenerator.NeedEmailNotice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

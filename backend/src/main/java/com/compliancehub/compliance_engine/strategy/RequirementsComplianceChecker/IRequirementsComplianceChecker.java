@@ -1,4 +1,4 @@
-package com.compliancehub.compliance_engine.strategy.RequirementsEvaluator;
+package com.compliancehub.compliance_engine.strategy.RequirementsComplianceChecker;
 
 
 import com.compliancehub.dpa_manager.DPA;
@@ -6,7 +6,7 @@ import com.compliancehub.data_processor_manager.DataProcessor;
 
 import java.util.Map;
 
-public interface IRequirementsEvaluator {
+public interface IRequirementsComplianceChecker {
 
 
     /**
@@ -14,7 +14,7 @@ public interface IRequirementsEvaluator {
      * @param dpa
      * @param dataProcessor
      */
-    void evaluate(DPA dpa, DataProcessor dataProcessor);
+    void detectViolations(DPA dpa, DataProcessor dataProcessor);
 
     /**
      * Skal tage de fields som er i subclassen og lave dem om til et Map<String, Object>.

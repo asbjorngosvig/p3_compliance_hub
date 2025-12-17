@@ -2,7 +2,7 @@ package com.compliancehub.Strategy.CommunicationStrategy;
 
 
 import com.compliancehub.compliance_engine.model.Action;
-import com.compliancehub.compliance_engine.strategy.CommunicationStrategy.NeedEmailNotice;
+import com.compliancehub.compliance_engine.strategy.CommunicationActionGenerator.NeedEmailNotice;
 import com.compliancehub.dpa_manager.DPA;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

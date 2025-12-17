@@ -4,7 +4,7 @@ import com.compliancehub.dpa_manager.DPA;
 import com.compliancehub.data_processor_manager.DataProcessor;
 import com.compliancehub.dpa_manager.Requirement;
 import com.compliancehub.compliance_engine.model.Violation;
-import com.compliancehub.compliance_engine.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
+import com.compliancehub.compliance_engine.strategy.RequirementsComplianceChecker.ProcessingLocationComplianceChecker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ProcessingLocationEvaluatorTest {
 
-    public ProcessingLocationEvaluator evaluator;
+    public ProcessingLocationComplianceChecker evaluator;
     public Map<String, Object> attributes = new HashMap<>();
     public List<String> allowedLocation = new ArrayList<>();
     public DPA dpa = new DPA();
@@ -44,7 +44,7 @@ class ProcessingLocationEvaluatorTest {
         dataProcessor.setName("Microsoft");
         dataProcessor.setProcessingLocations(List.of("EEA", "United States", "Canada"));
 
-        evaluator = new ProcessingLocationEvaluator(attributes);
+        evaluator = new ProcessingLocationComplianceChecker(attributes);
     }
 
     /**
@@ -68,8 +68,8 @@ class ProcessingLocationEvaluatorTest {
      * Tester om der bliver oprettet en violation når DP indeholder canada, og dpa ikke gør
      */
     @Test
-    void evaluateWithInvalidProcessingLocations() {
-        evaluator.evaluate(dpa, dataProcessor);
+    void evaluateComplianceWithInvalidProcessingLocations() {
+        evaluator.detectViolations(dpa, dataProcessor);
         List<Violation> violations = dpa.getViolations();
 
         assertNotNull(violations.getFirst().getDescription());
@@ -80,7 +80,7 @@ class ProcessingLocationEvaluatorTest {
      * Tester om der ikke bliver oprettet en violation når de begge har samme locations
      */
     @Test
-    void evaluateWithValidProcessingLocations() {
+    void evaluateComplianceWithValidProcessingLocations() {
         Requirement requirement = new Requirement();
 
         allowedLocation.add("Canada");
@@ -90,7 +90,7 @@ class ProcessingLocationEvaluatorTest {
         requirement.setAttributes(attributes);
         dpa.setRequirements(List.of(requirement));
 
-        evaluator.evaluate(dpa, dataProcessor);
+        evaluator.detectViolations(dpa, dataProcessor);
 
         assertTrue(dpa.getViolations().isEmpty());
     }

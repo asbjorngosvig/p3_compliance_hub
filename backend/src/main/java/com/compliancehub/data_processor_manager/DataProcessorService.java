@@ -29,7 +29,7 @@ public class DataProcessorService {
 
         DataProcessor savedDP = dataProcessorRepository.save(newDP);
 
-        // evaluate for new violations
+        // detectViolations for new violations
         List<DPA> dpaList = dpaService.getAllEntities();
         for (DPA dpa : dpaList) {
             dpaService.evaluateAllRequirements(dpa, savedDP);

@@ -1,4 +1,4 @@
-package com.compliancehub.compliance_engine.strategy.RequirementsEvaluator;
+package com.compliancehub.compliance_engine.strategy.RequirementsComplianceChecker;
 
 import com.compliancehub.dpa_manager.DPA;
 import com.compliancehub.data_processor_manager.DataProcessor;
@@ -9,16 +9,16 @@ import lombok.Data;
 import java.util.*;
 
 @Data
-public class ProcessingLocationEvaluator implements IRequirementsEvaluator {
+public class ProcessingLocationComplianceChecker implements IRequirementsComplianceChecker {
     // Initialiser listen for at undgå NullPointerException
     private List<String> allowedLocations = new ArrayList<>();
 
-    public ProcessingLocationEvaluator(Map<String, Object> attributes) {
+    public ProcessingLocationComplianceChecker(Map<String, Object> attributes) {
         parseAttributes(attributes);
     }
 
     @Override
-    public void evaluate(DPA dpa, DataProcessor dataProcessor) {
+    public void detectViolations(DPA dpa, DataProcessor dataProcessor) {
 
         // gets locations with all EEA, EU, NA so on... countries
         List<String> DPLocations = extractSpecialLocations(dataProcessor.getProcessingLocations());

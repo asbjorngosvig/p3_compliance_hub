@@ -1,8 +1,8 @@
 package com.compliancehub.compliance_engine.service.factory;
 
-import com.compliancehub.compliance_engine.strategy.CommunicationStrategy.ICommunicationStrategy;
-import com.compliancehub.compliance_engine.strategy.CommunicationStrategy.NeedEmailNotice;
-import com.compliancehub.compliance_engine.strategy.CommunicationStrategy.NeedWrittenApproval;
+import com.compliancehub.compliance_engine.strategy.CommunicationActionGenerator.ICommunicationStrategy;
+import com.compliancehub.compliance_engine.strategy.CommunicationActionGenerator.NeedEmailNotice;
+import com.compliancehub.compliance_engine.strategy.CommunicationActionGenerator.NeedWrittenApproval;
 import org.springframework.stereotype.Component;
 
 import java.util.InputMismatchException;

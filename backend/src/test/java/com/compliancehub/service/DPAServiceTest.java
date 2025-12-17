@@ -1,5 +1,5 @@
 package com.compliancehub.service;
-import com.compliancehub.compliance_engine.strategy.CommunicationStrategy.NeedEmailNotice;
+import com.compliancehub.compliance_engine.strategy.CommunicationActionGenerator.NeedEmailNotice;
 import com.compliancehub.dpa_manager.Requirement;
 import com.compliancehub.compliance_engine.model.Violation;
 import com.compliancehub.compliance_engine.model.CommunicationStrategy;
@@ -12,9 +12,9 @@ import com.compliancehub.mockClasses.MockProcessingLocationsRequirement;
 import com.compliancehub.dpa_manager.DPARepository;
 import com.compliancehub.data_processor_manager.DataProcessorRepository;
 
-import com.compliancehub.compliance_engine.strategy.RequirementsEvaluator.ProcessingLocationEvaluator;
+import com.compliancehub.compliance_engine.strategy.RequirementsComplianceChecker.ProcessingLocationComplianceChecker;
 import com.compliancehub.compliance_engine.service.factory.CommunicationStrategyFactory;
-import com.compliancehub.compliance_engine.service.factory.EvaluatorFactory;
+import com.compliancehub.compliance_engine.service.factory.ComplianceCheckerFactory;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,7 +40,7 @@ class DPAServiceTest {
     private DPARepository dpaRepository;
 
     @Mock
-    private EvaluatorFactory evaluatorFactory = new EvaluatorFactory();
+    private ComplianceCheckerFactory complianceCheckerFactory = new ComplianceCheckerFactory();
 
     @Mock
     private CommunicationStrategyFactory strategyFactory = new CommunicationStrategyFactory();
@@ -62,7 +62,7 @@ class DPAServiceTest {
 
         dpa.setRequirements(List.of(req));
 
-        when(evaluatorFactory.create(any(), any())).thenReturn(new ProcessingLocationEvaluator(req.getAttributes()));
+        when(complianceCheckerFactory.create(any(), any())).thenReturn(new ProcessingLocationComplianceChecker(req.getAttributes()));
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("daysOfNotice", 30);
@@ -98,7 +98,7 @@ class DPAServiceTest {
 
         dpa.setRequirements(List.of(req));
 
-        when(evaluatorFactory.create(any(), any())).thenReturn(new ProcessingLocationEvaluator(req.getAttributes()));
+        when(complianceCheckerFactory.create(any(), any())).thenReturn(new ProcessingLocationComplianceChecker(req.getAttributes()));
 
         List<String> allowedLocations = (List<String>) req.getAttributes().get("allowedLocations");
 

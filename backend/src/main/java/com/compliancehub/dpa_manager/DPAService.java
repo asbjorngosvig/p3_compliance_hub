@@ -2,8 +2,7 @@ package com.compliancehub.dpa_manager;
 
 import com.compliancehub.compliance_engine.model.Action;
 import com.compliancehub.compliance_engine.model.Violation;
-import com.compliancehub.compliance_engine.model.CommunicationStrategy;
-import com.compliancehub.compliance_engine.strategy.CommunicationStrategy.ICommunicationStrategy;
+import com.compliancehub.compliance_engine.service.ComplianceService;
 import com.compliancehub.data_processor_manager.DataProcessor;
 import com.compliancehub.compliance_engine.dto.ActionDTO;
 import com.compliancehub.compliance_engine.dto.ViolationDTO;
@@ -11,9 +10,8 @@ import com.compliancehub.compliance_engine.dto.ViolationDTO;
 import com.compliancehub.data_processor_manager.DataProcessorRepository;
 
 import com.compliancehub.dpa_manager.builder.DPABuilder;
-import com.compliancehub.compliance_engine.strategy.RequirementsEvaluator.IRequirementsEvaluator;
 import com.compliancehub.compliance_engine.service.factory.CommunicationStrategyFactory;
-import com.compliancehub.compliance_engine.service.factory.EvaluatorFactory;
+import com.compliancehub.compliance_engine.service.factory.ComplianceCheckerFactory;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -24,15 +22,17 @@ import java.util.*;
 @Service
 public class DPAService {
     private final DPARepository repository;
-    private final EvaluatorFactory evaluatorFactory;
+    private final ComplianceCheckerFactory complianceCheckerFactory;
     private final CommunicationStrategyFactory strategyFactory;
     private final DataProcessorRepository dataProcessorRepository;
+    private final ComplianceService complianceService;
 
-    public DPAService(DPARepository repository, DataProcessorRepository dataProcessorRepository, EvaluatorFactory evaluatorFactory, CommunicationStrategyFactory strategyFactory){
+    public DPAService(DPARepository repository, DataProcessorRepository dataProcessorRepository, ComplianceCheckerFactory complianceCheckerFactory, CommunicationStrategyFactory strategyFactory, ComplianceService complianceService){
         this.repository = repository;
         this.dataProcessorRepository = dataProcessorRepository;
-        this.evaluatorFactory = evaluatorFactory;
+        this.complianceCheckerFactory = complianceCheckerFactory;
         this.strategyFactory = strategyFactory;
+        this.complianceService = complianceService;
     }
 
     public DPA_DTO.StandardDPAResponse getById(UUID id) {
@@ -62,9 +62,11 @@ public class DPAService {
 
         //3: Tjek for violations
         //tjekker alle DPA's reqs mod alle eksisterende DP'er
-        List<DataProcessor> processors = dataProcessorRepository.findAll();
-        for (DataProcessor dp : processors) {
-            this.evaluateAllRequirements(dpa, dp);
+        List<DataProcessor> dataProcessors = dataProcessorRepository.findAll();
+        for (DataProcessor dp : dataProcessors) {
+            //compliance check + violation and action creation
+            complianceService.performComplianceCheck(dpa, dp);
+            repository.save(dpa);
         }
 
         //4: returnér ny DPA
@@ -121,27 +123,4 @@ public class DPAService {
     public void delete(UUID id) {
         repository.deleteById(id);
     }
-
-
-    public void evaluateAllRequirements(DPA dpa, DataProcessor dataProcessor) {
-        for (Requirement req : dpa.getRequirements()) {
-            IRequirementsEvaluator evaluator = evaluatorFactory.create(
-                    req.getReqEvaluator(),
-                    req.getAttributes()
-            );
-
-            evaluator.evaluate(dpa, dataProcessor); // will also create violations and append to DPA;
-        }
-
-        // creates actions for each violation
-        for (Violation violation : dpa.getViolations()) {
-            for (CommunicationStrategy strat : dpa.getCommunicationStrats()) {
-                ICommunicationStrategy strategy = strategyFactory.create(strat.getStrategy(), strat.getAttributes());
-                violation.addAction(strategy.createAction(dpa));
-            }
-        }
-
-        repository.save(dpa);
-    }
-
 }
