@@ -1,9 +1,8 @@
-package com.compliancehub.Strategy.factory;
+package com.compliancehub.compliance_engine.service.factory;
 
 import com.compliancehub.dpa_manager.Requirement;
 import com.compliancehub.compliance_engine.strategy.RequirementsComplianceChecker.IRequirementsComplianceChecker;
 import com.compliancehub.compliance_engine.strategy.RequirementsComplianceChecker.ProcessingLocationComplianceChecker;
-import com.compliancehub.compliance_engine.service.factory.ComplianceCheckerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

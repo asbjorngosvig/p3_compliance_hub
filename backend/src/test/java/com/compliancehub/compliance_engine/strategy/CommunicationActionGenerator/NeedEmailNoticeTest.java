@@ -1,7 +1,7 @@
-package com.compliancehub.Strategy.CommunicationStrategy;
+package com.compliancehub.compliance_engine.strategy.CommunicationActionGenerator;
+
 
 import com.compliancehub.compliance_engine.model.Action;
-import com.compliancehub.compliance_engine.strategy.CommunicationActionGenerator.NeedWrittenApproval;
 import com.compliancehub.dpa_manager.DPA;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,24 +11,26 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class NeedWrittenApprovalTest {
-
-    NeedWrittenApproval strategy;
+class NeedEmailNoticeTest {
+    NeedEmailNotice strategy;
     DPA dpa = new DPA();
     Map<String, Object> attributes = new HashMap<>();
     String email = "test@test.com";
+    int daysOfNotice = 30;
 
 
     @BeforeEach
     void setup() {
         attributes.put("email", email);
-        strategy = new NeedWrittenApproval(attributes);
+        attributes.put("daysOfNotice", daysOfNotice);
+        strategy = new NeedEmailNotice(attributes);
     }
 
 
     @Test
     void makeSureParsingIsRunWhenInitialized() {
         assertNotNull(strategy.getEmail());
+        assertTrue(strategy.getDaysOfNotice() != -1);
     }
     /**
      * Tester om attributes bliver mappet korrekt

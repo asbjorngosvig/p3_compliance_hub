@@ -1,10 +1,9 @@
-package com.compliancehub.Strategy.RequirementsEvaluator;
+package com.compliancehub.compliance_engine.strategy.RequirementsComplianceChecker;
 
-import com.compliancehub.dpa_manager.DPA;
-import com.compliancehub.data_processor_manager.DataProcessor;
-import com.compliancehub.dpa_manager.Requirement;
 import com.compliancehub.compliance_engine.model.Violation;
-import com.compliancehub.compliance_engine.strategy.RequirementsComplianceChecker.ProcessingLocationComplianceChecker;
+import com.compliancehub.data_processor_manager.DataProcessor;
+import com.compliancehub.dpa_manager.DPA;
+import com.compliancehub.dpa_manager.Requirement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,9 +14,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
-class ProcessingLocationEvaluatorTest {
-
+class ProcessingLocationComplianceCheckerTest {
     public ProcessingLocationComplianceChecker evaluator;
     public Map<String, Object> attributes = new HashMap<>();
     public List<String> allowedLocation = new ArrayList<>();
