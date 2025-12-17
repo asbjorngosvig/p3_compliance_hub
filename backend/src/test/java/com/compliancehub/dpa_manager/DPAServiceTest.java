@@ -1,15 +1,11 @@
-package com.compliancehub.service;
+package com.compliancehub.dpa_manager;
 import com.compliancehub.compliance_engine.strategy.CommunicationActionGenerator.NeedEmailNotice;
-import com.compliancehub.dpa_manager.Requirement;
 import com.compliancehub.compliance_engine.model.Violation;
 import com.compliancehub.compliance_engine.model.CommunicationStrategy;
 import com.compliancehub.data_processor_manager.DataProcessor;
-import com.compliancehub.dpa_manager.DPA;
-import com.compliancehub.dpa_manager.DPAService;
 import com.compliancehub.mockClasses.MockDPA;
 import com.compliancehub.mockClasses.MockDataProcessor;
 import com.compliancehub.mockClasses.MockProcessingLocationsRequirement;
-import com.compliancehub.dpa_manager.DPARepository;
 import com.compliancehub.data_processor_manager.DataProcessorRepository;
 
 import com.compliancehub.compliance_engine.strategy.RequirementsComplianceChecker.ProcessingLocationComplianceChecker;

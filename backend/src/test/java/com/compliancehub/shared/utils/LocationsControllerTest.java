@@ -1,4 +1,4 @@
-package com.compliancehub.controller;
+package com.compliancehub.shared.utils;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

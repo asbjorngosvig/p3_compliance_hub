@@ -1,4 +1,5 @@
-package com.compliancehub.controller;
+package com.compliancehub.dpa_manager;
+
 
 import com.compliancehub.dpa_manager.DPAController;
 import com.compliancehub.dpa_manager.DPA_DTO;
@@ -78,12 +79,12 @@ class DPAControllerTest {
 
         // Act & Assert
         mockMvc.perform(post("/dpa/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(req)))
-            .andExpect(status().isCreated()) // Forventer 201 Created
-            .andExpect(header().string("Location", "/dpa/" + newId)) // Tjekker Location header
-            .andExpect(jsonPath("$.createdDPA.id").value(newId.toString()))
-            .andExpect(jsonPath("$.createdDPA.customerName").value("Test Customer"));
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isCreated()) // Forventer 201 Created
+                .andExpect(header().string("Location", "/dpa/" + newId)) // Tjekker Location header
+                .andExpect(jsonPath("$.createdDPA.id").value(newId.toString()))
+                .andExpect(jsonPath("$.createdDPA.customerName").value("Test Customer"));
     }
 
 
@@ -110,4 +111,3 @@ class DPAControllerTest {
     }
 
 
-}

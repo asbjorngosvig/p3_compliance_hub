@@ -1,4 +1,4 @@
-package com.compliancehub.service.builder;
+package com.compliancehub.dpa_manager.builder;
 
 
 import com.compliancehub.dpa_manager.DPA;

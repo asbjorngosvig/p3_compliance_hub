@@ -1,6 +1,5 @@
-package com.compliancehub.utils;
+package com.compliancehub.shared.utils;
 
-import com.compliancehub.shared.utils.Locations;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,7 +24,7 @@ class LocationsTest {
         assertEquals(true, Locations.groups.get("North America".toUpperCase()).contains("United States".toUpperCase()));
 
         assertEquals(null, Locations.groups.get("North America"));
-        
+
         assertNotEquals(null, Locations.groups.get("NORTH AMERICA"));
 
     }
