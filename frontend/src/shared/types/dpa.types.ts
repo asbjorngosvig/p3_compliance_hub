@@ -3,16 +3,10 @@ export type DpaStatus = "Compliant" | "Violation" | "Pending";
 export type DpaPriority = "None" | "Urgent" | "Important";
 export type DpaAction = "None" | "Terminate" | "Contact";
 
-export interface IAction {
+export interface IViolation {
     id: string;
     description: string;
-}
-
-export interface IViolation {
-    id: string;            
-    description: string;
-    actions: IAction[];
-
+    severity: string;
 }
 
 export interface IRequirement {
@@ -30,7 +24,8 @@ export interface ICommunicationStrategy {
 export interface IDPA {
     id: string;
     violations: IViolation[];
-    communicationStrats?: ICommunicationStrategy[];
+    requirements: IRequirement[];
+    communicationStrats: ICommunicationStrategy[];
     customerName: string;
     productName: string;
     createdDate: string;
@@ -42,7 +37,7 @@ export interface DpaRow {
     name: string;
     status: DpaStatus;
     priority: DpaPriority;
-    action: string;
+    action: DpaAction;
     timeframe: string;
 }
 
