@@ -1,11 +1,7 @@
 package com.compliancehub.dpa_manager;
 
 
-import com.compliancehub.dpa_manager.DPAController;
-import com.compliancehub.dpa_manager.DPA_DTO;
 import com.compliancehub.mockClasses.MockDPA;
-import com.compliancehub.dpa_manager.DPA;
-import com.compliancehub.dpa_manager.DPAService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -96,7 +92,7 @@ class DPAControllerTest {
         DPA DPA2 = MockDPA.getMock();
         DPA2.setCustomerName("customer2");
 
-        DPA_DTO.StandardDPAResponse DTO1 = new DPA_DTO.StandardDPAResponse(DPA1.getId(), new ArrayList<>(), DPA1.getCustomerName(), DPA1.getProductName(), DPA1.getCreatedDate(),DPA1.getFileUrl());
+        DPA_DTO.StandardDPAResponse DTO1 = new DPA_DTO.StandardDPAResponse(DPA1.getId(), new ArrayList<>(), DPA1.getCustomerName(), DPA1.getProductName(), DPA1.getCreatedDate(), DPA1.getFileUrl());
         DPA_DTO.StandardDPAResponse DTO2 = new DPA_DTO.StandardDPAResponse(DPA2.getId(), new ArrayList<>(), DPA2.getCustomerName(), DPA2.getProductName(), DPA2.getCreatedDate(), DPA2.getFileUrl());
 
         DPA_DTO.GetAllResponse getAllResponse = new DPA_DTO.GetAllResponse(List.of(DTO1, DTO2), 2L);
@@ -109,5 +105,5 @@ class DPAControllerTest {
                 .andExpect(jsonPath("$.dpas[1].customerName").value("customer2"))
                 .andExpect(jsonPath("$.totalCount").value(2));
     }
-
+}
 

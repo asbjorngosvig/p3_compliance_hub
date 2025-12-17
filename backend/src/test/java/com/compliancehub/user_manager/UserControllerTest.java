@@ -1,5 +1,6 @@
-package com.compliancehub.controller;
-/*package com.compliancehub.controller;
+package com.compliancehub.user_manager;
+
+/*
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import com.compliancehub.user_manager.Admin;

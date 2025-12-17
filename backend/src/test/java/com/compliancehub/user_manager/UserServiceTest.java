@@ -1,13 +1,9 @@
-package com.compliancehub.service;
+package com.compliancehub.user_manager;
 
 
 import com.compliancehub.shared.security.JWTService;
-import com.compliancehub.user_manager.UserService;
 import com.compliancehub.user_manager.dto.UserDTO;
 import com.compliancehub.user_manager.dto.UserLoginDTO;
-import com.compliancehub.user_manager.Admin;
-import com.compliancehub.user_manager.User;
-import com.compliancehub.user_manager.UserRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
