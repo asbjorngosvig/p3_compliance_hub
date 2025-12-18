@@ -60,7 +60,7 @@ public class UserController {
                 .path("/")
                 .maxAge(24 * 60 * 60)
                 .sameSite("None")
-                //.domain("compliancehub.osc-fr1.scalingo.io")
+                .domain("compliancehub.osc-fr1.scalingo.io")
                 .build();
 
         return ResponseEntity.ok()
@@ -76,7 +76,7 @@ public class UserController {
                 .path("/")
                 .maxAge(0)
                 .sameSite("None")
-                //.domain("compliancehub.osc-fr1.scalingo.io")
+                .domain("compliancehub.osc-fr1.scalingo.io")
                 .build();
 
         response.addHeader("Set-Cookie",cookie.toString());
