@@ -7,7 +7,7 @@ import Loader from "../../shared/components/Loader.tsx";
 import { useDataFetching } from "../../shared/hooks/useDataFetching";
 import { useFormSubmit } from "../../shared/hooks/useFormSubmit";
 import { useLocationAutocomplete } from "../../shared/hooks/useLocationAutocomplete";
-import FormInput from "../../shared/components/FormInput";
+import FormInput from "../../shared/components/form/FormInput.tsx";
 import ErrorMessage from "../../shared/components/ui/ErrorMessage.tsx";
 import LoadingState from "../../shared/components/ui/LoadingState.tsx";
 import LocationTag from "../../shared/components/ui/LocationTag.tsx";
