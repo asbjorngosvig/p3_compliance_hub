@@ -1,4 +1,4 @@
-package com.compliancehub.compliance_engine.strategy.CommunicationActionGenerator;
+package com.compliancehub.compliance_engine.strategy.CommunicationActionStrategy;
 
 import com.compliancehub.compliance_engine.model.Action;
 import com.compliancehub.dpa_manager.DPA;
@@ -13,11 +13,11 @@ import java.util.Map;
 @Getter
 @Setter
 @NoArgsConstructor
-public class NeedEmailNotice implements ICommunicationStrategy {
+public class EmailNoticeStrategy implements IActionStrategy {
     private String email;
     private int daysOfNotice = -1;
 
-    public NeedEmailNotice(Map<String, Object> attributes) {
+    public EmailNoticeStrategy(Map<String, Object> attributes) {
         parseAttributes(attributes);
     }
 

@@ -1,11 +1,11 @@
-package com.compliancehub.compliance_engine.strategy.CommunicationActionGenerator;
+package com.compliancehub.compliance_engine.strategy.CommunicationActionStrategy;
 
 import com.compliancehub.compliance_engine.model.Action;
 import com.compliancehub.dpa_manager.DPA;
 
 import java.util.Map;
 
-public interface ICommunicationStrategy {
+public interface IActionStrategy {
     Action createAction(DPA dpa);
 
     public Map<String, Object> createAttributeMap();
