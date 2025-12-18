@@ -1,13 +1,7 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { Button} from "../../shared/components/ui/Buttons.tsx";
 import { dpaService } from "../../shared/services/dpaService.ts";
-import type {
-    IDPA,
-    DpaRow,
-    DpaStatus,
-    DpaPriority,
-    DpaAction,
-} from "../../shared/types/dpa.types.ts";
+import type { IDPA, DpaRow, DpaStatus, DpaPriority } from "../../shared/types/dpa.types.ts";
 import { useNavigate } from "react-router-dom";
 import { OverviewHeader } from "../dashboard/OverviewHeader.tsx";
 import { useDataFetching } from "../../shared/hooks/useDataFetching";
@@ -20,34 +14,43 @@ import EmptyState from "../../shared/components/ui/EmptyState.tsx";
 import SortDropdown from "../../shared/components/ui/SortDropDown.tsx";
 import StatusBadge from "./StatusBadge.tsx";
 import TimeframeBadge from "./TimeFrameBadge.tsx";
+
 type SortKey = "name" | "status" | "priority" | "action" | "timeframe";
+
+const simplifyActionText = (description: string): string => {
+    const d = description.toLowerCase();
+
+    if (d.includes("written approval")) return "Get written approval";
+    if (d.includes("notify") || d.includes("email")) return "Contact";
+
+    return "Action required";
+};
 
 // Helper function to convert backend DPA to frontend DpaRow
 const mapDPAtoDpaRow = (dpa: IDPA): DpaRow => {
+    const violations = dpa.violations ?? [];
+
+    const actionLabels = violations
+        .flatMap((v) => v.actions ?? [])
+        .map((a) => simplifyActionText(a.description));
+
+    const uniqueActions = Array.from(new Set(actionLabels));
+
+    let actionText = "None";
+    if (uniqueActions.length === 1) {
+        actionText = uniqueActions[0];
+    } else if (uniqueActions.length > 1) {
+        actionText = `${uniqueActions[0]} +${uniqueActions.length - 1}`;
+    }
+
     let status: DpaStatus = "Compliant";
     let priority: DpaPriority = "None";
-    let action: DpaAction = "None";
     let timeframe = "None";
 
-    if (dpa.violations && dpa.violations.length > 0) {
+    if (violations.length > 0) {
         status = "Violation";
-
-        // Determine priority based on violation count
-        // 3+ violations = Urgent, 1-2 violations = Important
-        if (dpa.violations.length >= 3) {
-            priority = "Urgent";
-            action = "Terminate";
-            timeframe = "ASAP";
-        } else {
-            priority = "Important";
-            action = "Contact";
-            timeframe = "1 month";
-        }
-    } else if (dpa.requirements && dpa.requirements.length > 0) {
-        status = "Pending";
         priority = "Important";
-        action = "Contact";
-        timeframe = "2 months";
+        timeframe = uniqueActions.length > 0 ? "ASAP" : "None";
     }
 
     return {
@@ -55,7 +58,7 @@ const mapDPAtoDpaRow = (dpa: IDPA): DpaRow => {
         name: dpa.customerName,
         status,
         priority,
-        action,
+        action: actionText,
         timeframe,
     };
 };
@@ -97,7 +100,7 @@ export default function DpaOverview() {
     const totalDpas = dpas.length;
     const violationsCount = dpas.filter((d) => d.status === "Violation").length;
     const compliantCount = dpas.filter((d) => d.status === "Compliant").length;
-    const toBeContactedCount = dpas.filter((d) => d.action === "Contact").length;
+    const toBeContactedCount = dpas.filter((d) => d.action !== "None").length;
 
     const sortOptions = [
         { key: "name" as const, label: "Name" },
@@ -217,7 +220,7 @@ export default function DpaOverview() {
                                         </td>
 
                                         <td className="px-4 py-3 text-slate-700">
-                                            {dpa.action}
+                                            <span className="line-clamp-2 block">{dpa.action}</span>
                                         </td>
 
                                         <td
