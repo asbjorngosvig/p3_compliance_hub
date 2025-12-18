@@ -2,15 +2,21 @@ import { useNavigate } from "react-router-dom";
 import { TrashIcon, DocumentMagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import type { IDataProcessor } from "../../shared/types/IDataProcessor.ts";
 import { dataProcessorService } from "../../shared/services/DataProcessorService.ts";
-import { Button } from "../../shared/components/ui/Buttons.tsx";
-import { useDataFetching } from "../../shared/hooks/useDataFetching";
-import { useSearch } from "../../shared/hooks/useSearch";
+import { Button} from "../../shared/components/ui/Buttons.tsx";
+import { useDataFetching} from "../../shared/hooks/useDataFetching.ts";
+import { useSearch} from "../../shared/hooks/useSearch.ts";
 import { useDeleteWithConfirm} from "../../shared/hooks/useDeletewithConfirm.ts";
 import SearchInput from "../../shared/components/form/SearchInput.tsx";
 import LoadingState from "../../shared/components/ui/LoadingState.tsx";
 import EmptyState from "../../shared/components/ui/EmptyState.tsx";
 import PageHeader from "../../shared/components/ui/PageHeader.tsx";
-import LocationTag from "../../shared/components/ui/LocationTag.tsx";
+
+const simplifyProcessingLocations = (locations: string[]) =>
+    locations.length === 0
+        ? "Unknown"
+        : locations.length === 1
+            ? locations[0]
+            : `${locations[0]} +${locations.length - 1}`;
 
 export default function SeeDataProcessors() {
     const navigate = useNavigate();
@@ -95,16 +101,10 @@ export default function SeeDataProcessors() {
                                     {dp.name}
                                 </span>
                                 <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500">
-                                    {dp.processingLocations && dp.processingLocations.length > 0 ? (
-                                        <>
-                                            <span className="text-gray-500">Processing Locations:</span>
-                                            {dp.processingLocations.map((loc, idx) => (
-                                                <LocationTag key={idx} location={loc} showDot />
-                                            ))}
-                                        </>
-                                    ) : (
-                                        <span className="text-gray-400">No locations specified</span>
-                                    )}
+                                    <span className="inline-flex items-center rounded-full bg-gray-50 px-2.5 py-1">
+                                        <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-green-500" />
+                                        Processing Locations: {simplifyProcessingLocations(dp.processingLocations)}
+                                    </span>
                                 </div>
                             </div>
 
