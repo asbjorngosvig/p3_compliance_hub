@@ -1,8 +1,8 @@
 package com.compliancehub.dpa_manager.builder;
 
 import com.compliancehub.compliance_engine.model.CommunicationStrategy;
+import com.compliancehub.compliance_engine.model.Requirement;
 import com.compliancehub.dpa_manager.DPA;
-import com.compliancehub.dpa_manager.Requirement;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,46 +18,55 @@ public class DPABuilder {
         this.dpa.setFileUrl(url);
     }
 
-    public DPABuilder withWrittenApproval(boolean needed){
-        if (needed){
-            CommunicationStrategy strat = new CommunicationStrategy();
-            strat.setDpa(this.dpa);
-            strat.setStrategy("NeedWrittenApproval");
-            this.dpa.addCommunicationStrategy(strat);
-        }
-        return this;
-    }
-
-    public DPABuilder withNoticePeriod(int days){
-        CommunicationStrategy s = new CommunicationStrategy();
-        s.setDpa(this.dpa);
-        s.setStrategy("DaysOfNotice");
-
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("email", dpa.getCustomerName());
-        // todo: find en måde at bruge email istedet for navn her...
-        attributes.put("daysOfNotice", days);
-        s.setAttributes(attributes);
-
-        this.dpa.addCommunicationStrategy(s);
-
-        return this;
-    }
-
+    // 1. REQUIREMENTS (Strategy Pattern)
+    // Denne metode bygger et Requirement-objekt med det samme og smider det i listen.
     public DPABuilder withLocationRequirement(List<String> allowedLocations){
         Requirement r = new Requirement();
         r.setDpa(this.dpa);
 
+        // Vi vælger strategien (evaluatoren)
+        r.setReqEvaluator("ProcessingLocationEvaluator");
+
+        // Vi sætter data (attributes)
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("allowedLocations", allowedLocations);
         r.setAttributes(attributes);
 
-        r.setReqEvaluator("ProcessingLocationEvaluator");
         this.dpa.addRequirement(r);
 
         return this;
     }
 
+    // 2. COMMUNICATION STRATEGIES (Strategy Pattern)
+    public DPABuilder withCommunicationRule(boolean writtenApprovalNeeded, int daysOfNotice){
+        CommunicationStrategy strat = new CommunicationStrategy();
+        strat.setDpa(this.dpa);
+
+        // Vælg strategi-navn
+        if (writtenApprovalNeeded) {
+            strat.setStrategy("NeedWrittenApproval");
+        } else {
+            strat.setStrategy("NeedEmailNotice");
+        }
+
+        // Byg attributter (Dataen til strategien)
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("daysOfNotice", daysOfNotice);
+
+        // Hvis det er email, skal vi bruge en modtager (bruger kundenavn)
+        //!!dette skal fikses/updated!!
+        if (!writtenApprovalNeeded) {
+            attributes.put("email", dpa.getCustomerName());
+        }
+
+        strat.setAttributes(attributes);
+
+        this.dpa.addCommunicationStrategy(strat);
+
+        return this;
+    }
+
+    // 3. BUILD
     public DPA build(){
         return this.dpa;
     }

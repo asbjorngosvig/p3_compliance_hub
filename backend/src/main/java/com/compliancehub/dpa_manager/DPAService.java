@@ -39,10 +39,10 @@ public class DPAService {
 
     public DPA_DTO.CreateResponse create(DPA_DTO.CreateRequest req){
         //1: byg en DPA vha. builder pattern
+        //først; requirement strategies. så; comm strategies.
         DPA dpa = new DPABuilder(req.customerName(), req.productName(), req.fileUrl())
-            .withWrittenApproval(req.needWrittenApproval())
-            .withNoticePeriod(req.daysOfNotice())
             .withLocationRequirement(req.allowedProcessingLocations())
+            .withCommunicationRule(req.needWrittenApproval(), req.daysOfNotice())
             .build();
 
         //2: Tjek for violations
