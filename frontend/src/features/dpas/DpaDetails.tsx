@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeftIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { dpaService } from "../../shared/services/dpaService.ts";
-import { Button } from "../../shared/components/ui/Buttons.tsx";
+import { Button} from "../../shared/components/ui/Buttons.tsx";
 import type { IDPA } from "../../shared/types/dpa.types.ts";
 import { useDataFetching } from "../../shared/hooks/useDataFetching";
 import { useDeleteWithConfirm} from "../../shared/hooks/useDeletewithConfirm.ts";
@@ -126,7 +126,6 @@ export default function DpaDetails() {
                                 <ViolationCard
                                     key={v.id ?? index}
                                     index={index + 1}
-                                    severity={v.severity}
                                     description={v.description}
                                 />
                             ))}
@@ -134,7 +133,7 @@ export default function DpaDetails() {
                     )}
                 </div>
 
-                {/* Summary card - Using your DetailsSummaryCard */}
+                {/* Summary card */}
                 <DetailsSummaryCard
                     items={[
                         { label: "Customer", value: dpa.customerName },
