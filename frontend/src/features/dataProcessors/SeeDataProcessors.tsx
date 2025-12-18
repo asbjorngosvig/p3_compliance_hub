@@ -130,7 +130,7 @@ const SeeDataProcessors: React.FC = () => {
                                 <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500">
                                     <span className="inline-flex items-center rounded-full bg-gray-50 px-2.5 py-1">
                                         <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-green-500" />
-                                        Processing Locations:{simplifyProcessingLocations(dp.processingLocations)}
+                                        Processing Locations:{" " + simplifyProcessingLocations(dp.processingLocations)}
                                     </span>
 
 
