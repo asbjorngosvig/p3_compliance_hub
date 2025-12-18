@@ -16,7 +16,7 @@ public class DPAController {
     }
 
     //Create new DPA
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<DPA_DTO.CreateResponse> create(
         @RequestBody DPA_DTO.CreateRequest req) {
         DPA_DTO.CreateResponse createResponse = service.create(req);
@@ -33,7 +33,7 @@ public class DPAController {
         return ResponseEntity.noContent().build();    
     }
     
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<DPA_DTO.GetAllResponse> getAll() {
         return ResponseEntity.ok(service.getAll());
     }

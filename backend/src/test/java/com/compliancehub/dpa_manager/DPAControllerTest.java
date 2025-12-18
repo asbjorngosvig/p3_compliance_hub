@@ -74,7 +74,7 @@ class DPAControllerTest {
         when(dpaService.create(any(DPA_DTO.CreateRequest.class))).thenReturn(createResponse);
 
         // Act & Assert
-        mockMvc.perform(post("/dpa/")
+        mockMvc.perform(post("/dpa")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
                 .andExpect(status().isCreated()) // Forventer 201 Created
@@ -98,7 +98,7 @@ class DPAControllerTest {
         DPA_DTO.GetAllResponse getAllResponse = new DPA_DTO.GetAllResponse(List.of(DTO1, DTO2), 2L);
 
         when(dpaService.getAll()).thenReturn(getAllResponse);
-        mockMvc.perform(get("/dpa/"))
+        mockMvc.perform(get("/dpa"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.dpas.length()").value(2))
                 .andExpect(jsonPath("$.dpas[0].customerName").value("customer1"))
