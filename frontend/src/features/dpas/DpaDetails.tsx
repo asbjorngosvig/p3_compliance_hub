@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { dpaService } from "../../shared/services/dpaService.ts";
-import { Button } from "../../shared/components/ui/Buttons.tsx";
+import { Button} from "../../shared/components/ui/Buttons.tsx";
 import type { IDPA, IViolation } from "../../shared/types/dpa.types.ts";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useConfirm } from "../../shared/components/ConfirmDialog.tsx";
