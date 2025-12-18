@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { TrashIcon, DocumentMagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import type { IDataProcessor } from "../../shared/types/IDataProcessor.ts";
 import { dataProcessorService } from "../../shared/services/DataProcessorService.ts";
-import { Button } from "../../shared/components/Buttons.tsx";
+import { Button } from "../../shared/components/ui/Buttons.tsx";
 import { useDataFetching } from "../../shared/hooks/useDataFetching";
 import { useSearch } from "../../shared/hooks/useSearch";
 import { useDeleteWithConfirm} from "../../shared/hooks/useDeletewithConfirm.ts";

@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeftIcon, PencilIcon } from "@heroicons/react/24/outline";
-import { Button } from "../../shared/components/Buttons.tsx";
+import { Button } from "../../shared/components/ui/Buttons.tsx";
 import { dataProcessorService } from "../../shared/services/DataProcessorService.ts";
 import type { IDataProcessor } from "../../shared/types/IDataProcessor.ts";
 import { useDataFetching } from "../../shared/hooks/useDataFetching";

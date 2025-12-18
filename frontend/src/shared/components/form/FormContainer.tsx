@@ -1,8 +1,8 @@
 import type { ReactNode, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { Button } from "../Buttons";
-import Loader from "../Loader";
+import { Button } from "../ui/Buttons.tsx";
+import Loader from "../ui/Loader.tsx";
 import ErrorMessage from "../ui/ErrorMessage.tsx";
 
 interface FormContainerProps {

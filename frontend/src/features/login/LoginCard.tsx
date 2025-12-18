@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
-import {Button} from '../../shared/components/Buttons.tsx'
+import {Button} from '../../shared/components/ui/Buttons.tsx'
 import {authService} from "../../shared/services/AuthService.ts";
 import {useNavigate} from "react-router-dom";
-import { Loader } from "../../shared/components/Loader.tsx";
+import { Loader } from "../../shared/components/ui/Loader.tsx";
 
 export default function LoginCard() {
     const [email, setEmail] = useState("");

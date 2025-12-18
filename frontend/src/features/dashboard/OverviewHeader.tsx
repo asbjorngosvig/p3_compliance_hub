@@ -1,6 +1,6 @@
 import { OverviewCards } from "./OverviewCards.tsx";
 import type { priorityStatus } from "./OverviewCard.tsx";
-import { Button } from "../../shared/components/Buttons.tsx";
+import { Button } from "../../shared/components/ui/Buttons.tsx";
 import {
     ExclamationTriangleIcon,
     CheckCircleIcon,

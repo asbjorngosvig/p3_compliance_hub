@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { ArrowsUpDownIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useConfirm } from "../../shared/components/ConfirmDialog.tsx";
-import { Button } from "../../shared/components/Buttons.tsx";
+import { Button } from "../../shared/components/ui/Buttons.tsx";
 import { dpaService } from "../../shared/services/dpaService.ts";
 import type {
     IDPA,
