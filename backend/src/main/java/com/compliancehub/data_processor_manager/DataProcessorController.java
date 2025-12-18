@@ -16,7 +16,7 @@ public class DataProcessorController {
         this.service = service;
     }
 
-    @PostMapping
+    @PostMapping ({"", "/"})
     public ResponseEntity<DataProcessorDTO.CreateResponse> create(
         @Valid @RequestBody DataProcessorDTO.CreateRequest req) {
 
@@ -29,7 +29,7 @@ public class DataProcessorController {
     }
 
 
-    @GetMapping
+    @GetMapping ({"", "/"})
     public ResponseEntity<DataProcessorDTO.GetAllResponse> getAll(){
         return ResponseEntity.ok(service.getAllSorted());
     }
