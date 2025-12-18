@@ -16,12 +16,12 @@ export const dpaService = {
         return response.data;
     },
     async getAll(): Promise<GetAllDPAsResponse> {
-        const response = await instance.get<GetAllDPAsResponse>("/dpa/");
+        const response = await instance.get<GetAllDPAsResponse>("/dpa");
         return response.data;
     },
 
     async create(data: CreateDPARequest): Promise<CreateDPAResponse> {
-        const response = await instance.post<CreateDPAResponse>("/dpa/", data);
+        const response = await instance.post<CreateDPAResponse>("/dpa", data);
         return response.data;
     },
 

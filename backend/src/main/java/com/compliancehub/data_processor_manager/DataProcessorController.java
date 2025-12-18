@@ -16,7 +16,7 @@ public class DataProcessorController {
         this.service = service;
     }
 
-    @PostMapping
+    @PostMapping ({"", "/"})
     public ResponseEntity<DataProcessorDTO.CreateResponse> create(
         @Valid @RequestBody DataProcessorDTO.CreateRequest req) {
 
@@ -29,7 +29,7 @@ public class DataProcessorController {
     }
 
 
-    @GetMapping
+    @GetMapping ({"", "/"})
     public ResponseEntity<DataProcessorDTO.GetAllResponse> getAll(){
         return ResponseEntity.ok(service.getAllSorted());
     }
@@ -47,9 +47,9 @@ public class DataProcessorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DataProcessorDTO.UpdateResponse> update(
-            @PathVariable UUID id,
-            @Valid @RequestBody DataProcessorDTO.UpdateRequest req
+    public ResponseEntity<DataProcessorDTO.CreateResponse> update(
+        @PathVariable UUID id,
+        @Valid @RequestBody DataProcessorDTO.CreateRequest req
     ) {
         return ResponseEntity.ok(service.update(id, req));
     }
