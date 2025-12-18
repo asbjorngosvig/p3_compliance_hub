@@ -44,13 +44,12 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         String token = null;
-        String cookieHeader = request.getHeader("Cookie");
+        jakarta.servlet.http.Cookie[] cookies = request.getCookies();
 
-        if (cookieHeader != null) {
-            for (String cookie : cookieHeader.split(";")) {
-                cookie = cookie.trim();
-                if (cookie.startsWith("jwt=")) {
-                    token = cookie.substring(4);
+        if (cookies != null) {
+            for (jakarta.servlet.http.Cookie cookie : cookies) {
+                if ("jwt".equals(cookie.getName())) {
+                    token = cookie.getValue();
                     break;
                 }
             }
