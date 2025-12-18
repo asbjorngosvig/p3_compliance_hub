@@ -54,17 +54,13 @@ public class ProcessingLocationComplianceChecker implements IRequirementsComplia
                 );
 
             // Hvis den allerede findes, så STOP her. Gør ingenting.
-            if (violationAlreadyExists) {
-                return;
-            }
-
+            if (violationAlreadyExists) return;
 
             //hvis vi når hertil laver vi en ny violation
             Violation newViolation = new Violation();
             newViolation.setDpa(dpa);
             newViolation.setDataProcessor(dataProcessor);
             newViolation.setDescription(description);
-            );
 
             // Vigtigt: Brug helper metoden på DPA for at gemme relationen korrekt
             dpa.addViolation(newViolation);

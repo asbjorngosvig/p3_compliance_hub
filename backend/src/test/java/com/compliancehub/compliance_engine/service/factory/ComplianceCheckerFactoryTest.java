@@ -1,6 +1,6 @@
 package com.compliancehub.compliance_engine.service.factory;
 
-import com.compliancehub.dpa_manager.Requirement;
+import com.compliancehub.compliance_engine.model.Requirement;
 import com.compliancehub.compliance_engine.strategy.RequirementsComplianceChecker.IRequirementsComplianceChecker;
 import com.compliancehub.compliance_engine.strategy.RequirementsComplianceChecker.ProcessingLocationComplianceChecker;
 import org.junit.jupiter.api.BeforeEach;

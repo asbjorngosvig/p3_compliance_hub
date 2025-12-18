@@ -10,7 +10,7 @@ import com.compliancehub.data_processor_manager.DataProcessor;
 import com.compliancehub.data_processor_manager.DataProcessorRepository;
 import com.compliancehub.dpa_manager.DPA;
 import com.compliancehub.dpa_manager.DPARepository;
-import com.compliancehub.dpa_manager.Requirement;
+import com.compliancehub.compliance_engine.model.Requirement;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,6 +1,7 @@
 package com.compliancehub.dpa_manager;
 
 import com.compliancehub.compliance_engine.model.CommunicationStrategy;
+import com.compliancehub.compliance_engine.model.Requirement;
 import com.compliancehub.compliance_engine.model.Violation;
 import jakarta.persistence.*;
 import lombok.*;
