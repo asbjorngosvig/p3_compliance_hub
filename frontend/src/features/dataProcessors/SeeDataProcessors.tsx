@@ -6,7 +6,7 @@ import { Button } from "../../shared/components/Buttons.tsx";
 import { useDataFetching } from "../../shared/hooks/useDataFetching";
 import { useSearch } from "../../shared/hooks/useSearch";
 import { useDeleteWithConfirm} from "../../shared/hooks/useDeletewithConfirm.ts";
-import SearchInput from "../../shared/components/ui/SearchInput.tsx";
+import SearchInput from "../../shared/components/SearchInput.tsx";
 import LoadingState from "../../shared/components/ui/LoadingState.tsx";
 import EmptyState from "../../shared/components/ui/EmptyState.tsx";
 import PageHeader from "../../shared/components/ui/PageHeader.tsx";
