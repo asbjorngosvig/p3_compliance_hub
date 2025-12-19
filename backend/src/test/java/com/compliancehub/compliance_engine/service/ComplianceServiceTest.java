@@ -6,13 +6,13 @@ import com.compliancehub.compliance_engine.model.Violation;
 import com.compliancehub.compliance_engine.service.factory.CommunicationStrategyFactory;
 import com.compliancehub.compliance_engine.service.factory.ComplianceCheckerFactory;
 
-import com.compliancehub.compliance_engine.strategy.CommunicationActionGenerator.NeedEmailNotice;
+import com.compliancehub.compliance_engine.strategy.CommunicationActionStrategy.EmailNoticeStrategy;
 import com.compliancehub.compliance_engine.strategy.RequirementsComplianceChecker.ProcessingLocationComplianceChecker;
 import com.compliancehub.data_processor_manager.DataProcessor;
 import com.compliancehub.data_processor_manager.DataProcessorRepository;
 import com.compliancehub.dpa_manager.DPA;
 import com.compliancehub.dpa_manager.DPARepository;
-import com.compliancehub.dpa_manager.Requirement;
+import com.compliancehub.compliance_engine.model.Requirement;
 import com.compliancehub.mockClasses.MockDPA;
 import com.compliancehub.mockClasses.MockDataProcessor;
 import com.compliancehub.mockClasses.MockProcessingLocationsRequirement;
@@ -98,7 +98,7 @@ class ComplianceServiceTest {
 
             dpa.addCommunicationStrategy(communicationStrategy);
 
-            when(communicationStrategyFactory.create(any(), any())).thenReturn(new NeedEmailNotice(attributes));
+            when(communicationStrategyFactory.create(any(), any())).thenReturn(new EmailNoticeStrategy(attributes));
 
 
             List<String> allowedLocations = List.of("EU");
@@ -163,7 +163,7 @@ class ComplianceServiceTest {
 
         dpa.addCommunicationStrategy(communicationStrategy);
 
-        when(communicationStrategyFactory.create(any(), any())).thenReturn(new NeedEmailNotice(attributes));
+        when(communicationStrategyFactory.create(any(), any())).thenReturn(new EmailNoticeStrategy(attributes));
 
 
         List<String> allowedLocations = List.of("EU");

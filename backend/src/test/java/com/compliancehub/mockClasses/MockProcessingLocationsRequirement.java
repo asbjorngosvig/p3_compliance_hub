@@ -1,7 +1,7 @@
 package com.compliancehub.mockClasses;
 
 import com.compliancehub.dpa_manager.DPA;
-import com.compliancehub.dpa_manager.Requirement;
+import com.compliancehub.compliance_engine.model.Requirement;
 import com.compliancehub.shared.utils.Locations;
 
 import java.util.ArrayList;

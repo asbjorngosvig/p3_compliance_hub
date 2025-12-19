@@ -1,7 +1,7 @@
 package com.compliancehub.compliance_engine.service.factory;
 
 
-import com.compliancehub.compliance_engine.strategy.CommunicationActionGenerator.NeedEmailNotice;
+import com.compliancehub.compliance_engine.strategy.CommunicationActionStrategy.EmailNoticeStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +29,7 @@ public class CommunicationStrategyFactoryTest {
         attributes.put("email", "test@test.com");
 
 
-        assertInstanceOf(NeedEmailNotice.class, strategyFactory.create(strategy, attributes));
+        assertInstanceOf(EmailNoticeStrategy.class, strategyFactory.create(strategy, attributes));
     }
 
     @Test

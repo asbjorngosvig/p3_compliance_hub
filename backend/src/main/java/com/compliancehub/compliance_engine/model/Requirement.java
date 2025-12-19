@@ -1,5 +1,6 @@
-package com.compliancehub.dpa_manager;
+package com.compliancehub.compliance_engine.model;
 
+import com.compliancehub.dpa_manager.DPA;
 import com.fasterxml.jackson.annotation.JsonIgnore; // VIGTIG IMPORT
 import jakarta.persistence.*;
 import lombok.*;

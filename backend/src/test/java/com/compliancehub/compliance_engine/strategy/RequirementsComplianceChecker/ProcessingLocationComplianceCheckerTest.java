@@ -3,7 +3,7 @@ package com.compliancehub.compliance_engine.strategy.RequirementsComplianceCheck
 import com.compliancehub.compliance_engine.model.Violation;
 import com.compliancehub.data_processor_manager.DataProcessor;
 import com.compliancehub.dpa_manager.DPA;
-import com.compliancehub.dpa_manager.Requirement;
+import com.compliancehub.compliance_engine.model.Requirement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

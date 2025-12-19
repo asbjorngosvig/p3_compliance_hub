@@ -39,16 +39,28 @@ public class ProcessingLocationComplianceChecker implements IRequirementsComplia
 
         // samler alle landende som er mismathced og laver èn violation til dem
         if (!violationsFound.isEmpty()) {
+
+            // bygger en description. Skal tilføjes violation, men gøres også først
+            // for at den kan bruges til tjek om violation findes
+            String badLocationsString = String.join(", ", violationsFound);
+            String description = dataProcessor.getName() + " is processing in [" + badLocationsString + "] which is not allowed by " + dpa.getCustomerName();
+
+
+            // tjekker om violation findes
+            boolean violationAlreadyExists = dpa.getViolations().stream()
+                .anyMatch(v ->
+                    v.getDataProcessor().getId().equals(dataProcessor.getId()) && // Samme synder?
+                        v.getDescription().equals(description) // Samme forbrydelse?
+                );
+
+            // Hvis den allerede findes, så STOP her. Gør ingenting.
+            if (violationAlreadyExists) return;
+
+            //hvis vi når hertil laver vi en ny violation
             Violation newViolation = new Violation();
             newViolation.setDpa(dpa);
             newViolation.setDataProcessor(dataProcessor);
-
-            String badLocationsString = String.join(", ", violationsFound);
-
-            newViolation.setDescription(
-                dataProcessor.getName() + " is processing in [" + badLocationsString +
-                    "] which is not allowed by " + dpa.getCustomerName()
-            );
+            newViolation.setDescription(description);
 
             // Vigtigt: Brug helper metoden på DPA for at gemme relationen korrekt
             dpa.addViolation(newViolation);

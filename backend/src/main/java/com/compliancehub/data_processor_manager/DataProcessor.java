@@ -26,7 +26,7 @@ public class DataProcessor {
     private String name;
 
     @JdbcTypeCode(SqlTypes.ARRAY)
-    @Column(name = "processing_locations", columnDefinition = "text[]")
+    @Column(name = "processing_locations", columnDefinition = "text[]", nullable = false)
     private List<String> processingLocations = new ArrayList<>();
 
     @Column(length = 500, nullable = false)

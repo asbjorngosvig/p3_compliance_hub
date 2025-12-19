@@ -1,4 +1,4 @@
-package com.compliancehub.compliance_engine.strategy.CommunicationActionGenerator;
+package com.compliancehub.compliance_engine.strategy.CommunicationActionStrategy;
 
 import com.compliancehub.compliance_engine.model.Action;
 import com.compliancehub.dpa_manager.DPA;
@@ -12,10 +12,10 @@ import java.util.Map;
 @Getter
 @Setter
 @NoArgsConstructor
-public class NeedWrittenApproval implements ICommunicationStrategy {
+public class WrittenApprovalStrategy implements IActionStrategy {
     private String email;
 
-    public NeedWrittenApproval(Map<String, Object> attributes) {
+    public WrittenApprovalStrategy(Map<String, Object> attributes) {
         parseAttributes(attributes);
     }
 

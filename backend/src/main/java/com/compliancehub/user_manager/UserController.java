@@ -17,8 +17,7 @@ import java.util.UUID;
 
 public class UserController {
 
-    @Autowired
-    private UserService service;
+    private final UserService service;
 
     public UserController(UserService service) {
         this.service = service;
@@ -46,7 +45,6 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<UserDTO.CreateResponse> registerUser(@RequestBody UserDTO.CreateRequest createRequest) {
         var createdUser = service.registerUser(createRequest);
-        System.out.println(service.getByEmail("ryan@test.com"));
         return ResponseEntity.status(201).body(new UserDTO.CreateResponse(createdUser));
     }
 
