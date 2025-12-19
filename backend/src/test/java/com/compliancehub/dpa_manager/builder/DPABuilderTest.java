@@ -27,7 +27,7 @@ public class DPABuilderTest {
         assertEquals("NeedWrittenApproval", dpa.getCommunicationStrats().getFirst().getStrategy());
 
         // 2. Tjek at dagene er kommet med som attribut (Attributes)
-        assertEquals("email", dpa.getCommunicationStrats().getFirst().getAttributes().get("email"));
+        assertEquals(dpa.getCustomerName(), dpa.getCommunicationStrats().getFirst().getAttributes().get("email"));
     }
 
     @Test
