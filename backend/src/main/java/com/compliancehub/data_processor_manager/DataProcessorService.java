@@ -27,11 +27,11 @@ public class DataProcessorService {
         newDP.setWebsite(req.website());
         newDP.setProcessingLocations(req.processingLocations());
 
-        //2: tjekker compliance
-        complianceService.performComplianceCheckDP(newDP);
-
-        //3: gemmer i databasen
+        //2: gemmer i databasen
         dataProcessorRepository.save(newDP);
+
+        //3: tjekker compliance
+        complianceService.performComplianceCheckDP(newDP);
 
         //4: returnerer ny DP til frontend
         return new DataProcessorDTO.CreateResponse(
