@@ -42,7 +42,8 @@ public class DPAService {
         //først; requirement strategies. så; comm strategies.
         DPA dpa = new DPABuilder(req.customerName(), req.productName(), req.fileUrl())
             .withLocationRequirement(req.allowedProcessingLocations())
-            .withCommunicationRule(req.needWrittenApproval(), req.daysOfNotice())
+            .withWrittenApproval(req.needWrittenApproval())
+            .withEmailNotice(req.daysOfNotice())
             .build();
 
         //2: Tjek for violations

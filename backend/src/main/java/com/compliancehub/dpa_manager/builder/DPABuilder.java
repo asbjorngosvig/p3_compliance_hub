@@ -38,26 +38,21 @@ public class DPABuilder {
     }
 
     // 2. COMMUNICATION STRATEGIES (Strategy Pattern)
-    public DPABuilder withCommunicationRule(boolean writtenApprovalNeeded, int daysOfNotice){
+    public DPABuilder withWrittenApproval(boolean writtenApprovalNeeded){
+        if (!writtenApprovalNeeded) {
+            return this;
+        }
+
         CommunicationStrategy strat = new CommunicationStrategy();
         strat.setDpa(this.dpa);
 
         // Vælg strategi-navn
-        if (writtenApprovalNeeded) {
-            strat.setStrategy("NeedWrittenApproval");
-        } else {
-            strat.setStrategy("NeedEmailNotice");
-        }
+        strat.setStrategy("NeedWrittenApproval");
 
-        // Byg attributter (Dataen til strategien)
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("daysOfNotice", daysOfNotice);
-
-        // Hvis det er email, skal vi bruge en modtager (bruger kundenavn)
+        // Sætte attributes
         //!!dette skal fikses/updated!!
-        if (!writtenApprovalNeeded) {
-            attributes.put("email", dpa.getCustomerName());
-        }
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("email", dpa.getCustomerName());
 
         strat.setAttributes(attributes);
 
@@ -65,6 +60,26 @@ public class DPABuilder {
 
         return this;
     }
+
+    public DPABuilder withEmailNotice(int daysOfNotice){
+        CommunicationStrategy strat = new CommunicationStrategy();
+        strat.setDpa(this.dpa);
+
+        // Vælg strategi-navn
+        strat.setStrategy("NeedEmailNotice");
+
+        // Byg attributter (Dataen til strategien)
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("daysOfNotice", daysOfNotice);
+        attributes.put("email", dpa.getCustomerName());
+
+        strat.setAttributes(attributes);
+
+        this.dpa.addCommunicationStrategy(strat);
+
+        return this;
+    }
+
 
     // 3. BUILD
     public DPA build(){
