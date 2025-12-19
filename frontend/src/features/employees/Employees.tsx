@@ -1,5 +1,5 @@
 import { useMemo, useState, type FormEvent } from "react";
-import { Button } from "../../shared/components/Buttons.tsx";
+import { Button } from "../../shared/components/ui/Buttons.tsx";
 
 type Role = "Admin" | "Employee";
 

@@ -8,7 +8,7 @@ import {
     ListBulletIcon,
 } from "@heroicons/react/24/outline";
 import { Logo } from "./Logo";
-import { Button } from "./Buttons.tsx";
+import { Button } from "./ui/Buttons.tsx";
 import { authService } from "../services/AuthService.ts";
 
 type SidebarItem = {

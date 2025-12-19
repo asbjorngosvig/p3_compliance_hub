@@ -1,121 +1,94 @@
-import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { TrashIcon, DocumentMagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import type { IDataProcessor } from "../../shared/types/IDataProcessor.ts";
 import { dataProcessorService } from "../../shared/services/DataProcessorService.ts";
-import { Button } from "../../shared/components/Buttons.tsx";
-import { useConfirm } from "../../shared/components/ConfirmDialog.tsx";
-import {
-    TrashIcon,
-    DocumentMagnifyingGlassIcon,
-} from "@heroicons/react/24/outline";
-import { useNavigate } from "react-router-dom";
+import { Button} from "../../shared/components/ui/Buttons.tsx";
+import { useDataFetching} from "../../shared/hooks/useDataFetching.ts";
+import { useSearch} from "../../shared/hooks/useSearch.ts";
+import { useDeleteWithConfirm} from "../../shared/hooks/useDeletewithConfirm.ts";
+import SearchInput from "../../shared/components/form/SearchInput.tsx";
+import LoadingState from "../../shared/components/ui/LoadingState.tsx";
+import EmptyState from "../../shared/components/ui/EmptyState.tsx";
+import PageHeader from "../../shared/components/ui/PageHeader.tsx";
 
-const SeeDataProcessors: React.FC = () => {
-    const [search, setSearch] = useState("");
-    const [dataProcessors, setDataProcessors] = useState<IDataProcessor[]>([]);
-    const [loading, setLoading] = useState(true);
+const simplifyProcessingLocations = (locations: string[]) =>
+    locations.length === 0
+        ? "Unknown"
+        : locations.length === 1
+            ? locations[0]
+            : `${locations[0]} +${locations.length - 1}`;
 
-    const confirm = useConfirm();
+export default function SeeDataProcessors() {
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await dataProcessorService.getAll();
-                setDataProcessors(response.data.allDataProcessors);
-            } catch (error) {
-                console.error("Failed to fetch data processors:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+    // Fetch data processors with loading/error handling
+    const { data: dataProcessors, loading, refetch } = useDataFetching({
+        fetchFn: async () => {
+            const response = await dataProcessorService.getAll();
+            return response.data.allDataProcessors;
+        }
+    });
 
-        fetchData();
-    }, []);
+    // Search functionality
+    const { searchTerm, setSearchTerm, filteredData: filteredProcessors } = useSearch({
+        data: dataProcessors || [],
+        searchKeys: ['name']
+    });
 
-    const handleDelete = async (dp: IDataProcessor) => {
+    // Delete functionality with confirmation
+    const { handleDelete } = useDeleteWithConfirm({
+        onDelete: async (id) => {
+            await dataProcessorService.deleteById(id);
+        },
+        getItemName: (dp: IDataProcessor) => dp.name,
+        onSuccess: refetch
+    });
+
+    const handleDeleteClick = (dp: IDataProcessor) => {
         if (!dp.id) {
-            await confirm({
-                title: "Cannot Delete",
-                message: `Data processor "${dp.name}" does not have a valid ID and cannot be deleted.`,
-                confirmText: "OK",
-                cancelText: "",
-                type: "danger",
-            });
+            alert(`Data processor "${dp.name}" does not have a valid ID and cannot be deleted.`);
             return;
         }
-
-        const ok = await confirm({
-            title: "Delete Data Processor",
-            message: `Are you sure you want to delete "${dp.name}"? This action cannot be undone.`,
-            confirmText: "Delete",
-            cancelText: "Cancel",
-            type: "danger",
-        });
-
-        if (!ok) return;
-
-        try {
-            await dataProcessorService.deleteById(dp.id);
-            setDataProcessors((prev) => prev.filter((x) => x.id !== dp.id));
-        } catch (error) {
-            console.error("Failed to delete:", error);
-        }
+        handleDelete(dp, dp.id);
     };
 
-    const filteredProcessors = dataProcessors.filter((dp) =>
-        dp.name.toLowerCase().includes(search.toLowerCase()),
-    );
-
+    // Loading state
     if (loading) {
-        return <div className="p-8 text-gray-500">Loading data processors...</div>;
+        return (
+            <div className="flex items-center justify-center min-h-[400px]">
+                <LoadingState message="Loading data processors..." />
+            </div>
+        );
     }
-
-    const simplifyProcessingLocations = (locations: string[]) =>
-  locations.length === 0
-    ? "Unknown"
-    : locations.length === 1
-      ? locations[0]
-      : `${locations[0]} +${locations.length - 1}`;
 
     return (
         <div className="flex flex-col gap-6 px-8 py-6">
-            {/* Header + Add button */}
-            <div>
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-4xl font-semibold text-slate-700">
-                            Data Processors
-                        </h1>
-                    </div>
+            {/* Header with Add button */}
+            <PageHeader
+                title="Data Processors"
+                actions={
                     <Button to="/dataprocessors/add" variant="primary">
                         Add Data Processor
                     </Button>
-                </div>
-            </div>
+                }
+            />
 
-            {/* Search + grid */}
+            {/* Search + grid section */}
             <div className="rounded-2xl bg-white p-4 shadow-sm">
-                {/* Search + count */}
+                {/* Search bar + count */}
                 <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                    <div className="relative w-full max-w-md">
-                        <input
-                            type="text"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            placeholder="Search in data processors"
-                            className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-green-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-100"
-                        />
-                    </div>
+                    <SearchInput
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        placeholder="Search in data processors"
+                        className="w-full max-w-md"
+                    />
                     <div className="text-xs text-gray-500 md:text-sm">
-                        Showing:{" "}
-                        <span className="font-medium">
-                            {filteredProcessors.length}
-                        </span>{" "}
-                        data processors
+                        Showing: <span className="font-medium">{filteredProcessors.length}</span> data processors
                     </div>
                 </div>
 
-                {/* Grid */}
+                {/* Data processor cards */}
                 <div className="space-y-3">
                     {filteredProcessors.map((dp) => (
                         <article
@@ -132,8 +105,6 @@ const SeeDataProcessors: React.FC = () => {
                                         <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-green-500" />
                                         Processing Locations:{" " + simplifyProcessingLocations(dp.processingLocations)}
                                     </span>
-
-
                                 </div>
                             </div>
 
@@ -154,7 +125,7 @@ const SeeDataProcessors: React.FC = () => {
                                     className="flex items-center gap-1 text-xs"
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        handleDelete(dp);
+                                        handleDeleteClick(dp);
                                     }}
                                 >
                                     <TrashIcon className="h-4 w-4" />
@@ -164,20 +135,16 @@ const SeeDataProcessors: React.FC = () => {
                         </article>
                     ))}
 
+                    {/* Empty state */}
                     {filteredProcessors.length === 0 && (
-                        <div className="mt-6 rounded-2xl border border-dashed border-gray-200 bg-gray-50 px-6 py-10 text-center">
-                            <p className="text-sm font-medium text-gray-700">
-                                No data processors found
-                            </p>
-                            <p className="mt-1 text-xs text-gray-500">
-                                Try adjusting your search or add a new data processor.
-                            </p>
-                        </div>
+                        <EmptyState
+                            variant="dashed"
+                            title="No data processors found"
+                            description="Try adjusting your search or add a new data processor."
+                        />
                     )}
                 </div>
             </div>
         </div>
     );
-};
-
-export default SeeDataProcessors;
+}

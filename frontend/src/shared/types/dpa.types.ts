@@ -9,7 +9,7 @@ export interface IAction {
 }
 
 export interface IViolation {
-    id: string;            
+    id: string;
     description: string;
     actions: IAction[];
 
