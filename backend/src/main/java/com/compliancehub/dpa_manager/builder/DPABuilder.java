@@ -45,9 +45,9 @@ public class DPABuilder {
         // Vælg strategi-navn
         if (writtenApprovalNeeded) {
             strat.setStrategy("NeedWrittenApproval");
-        } else {
-            strat.setStrategy("NeedEmailNotice");
         }
+
+        strat.setStrategy("NeedEmailNotice");
 
         // Byg attributter (Dataen til strategien)
         Map<String, Object> attributes = new HashMap<>();

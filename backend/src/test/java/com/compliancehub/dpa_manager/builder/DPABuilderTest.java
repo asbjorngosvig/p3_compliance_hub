@@ -36,7 +36,7 @@ public class DPABuilderTest {
 
         DPA dpa = dpaBuilder.withCommunicationRule(false, 60).build();
 
-        // 1. Tjek at strategien nu hedder NeedEmailNotice (IKKE DaysOfNotice)
+        // 1. Tjek at strategien nu hedder NeedEmailNotice
         assertEquals("NeedEmailNotice", dpa.getCommunicationStrats().getFirst().getStrategy());
 
         // 2. Tjek attributterne
