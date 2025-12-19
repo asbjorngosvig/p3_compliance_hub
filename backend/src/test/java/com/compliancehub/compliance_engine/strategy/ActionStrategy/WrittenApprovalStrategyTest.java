@@ -1,5 +1,4 @@
-package com.compliancehub.compliance_engine.strategy.CommunicationActionStrategy;
-
+package com.compliancehub.compliance_engine.strategy.ActionStrategy;
 
 import com.compliancehub.compliance_engine.model.Action;
 import com.compliancehub.dpa_manager.DPA;
@@ -11,26 +10,24 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class EmailNoticeStrategyTest {
-    EmailNoticeStrategy strategy;
+class WrittenApprovalStrategyTest {
+
+    WrittenApprovalStrategy strategy;
     DPA dpa = new DPA();
     Map<String, Object> attributes = new HashMap<>();
     String email = "test@test.com";
-    int daysOfNotice = 30;
 
 
     @BeforeEach
     void setup() {
         attributes.put("email", email);
-        attributes.put("daysOfNotice", daysOfNotice);
-        strategy = new EmailNoticeStrategy(attributes);
+        strategy = new WrittenApprovalStrategy(attributes);
     }
 
 
     @Test
     void makeSureParsingIsRunWhenInitialized() {
         assertNotNull(strategy.getEmail());
-        assertTrue(strategy.getDaysOfNotice() != -1);
     }
     /**
      * Tester om attributes bliver mappet korrekt

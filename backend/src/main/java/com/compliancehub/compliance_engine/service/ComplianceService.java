@@ -2,9 +2,9 @@ package com.compliancehub.compliance_engine.service;
 
 import com.compliancehub.compliance_engine.model.CommunicationStrategy;
 import com.compliancehub.compliance_engine.model.Violation;
-import com.compliancehub.compliance_engine.service.factory.CommunicationStrategyFactory;
+import com.compliancehub.compliance_engine.service.factory.ActionStrategyFactory;
 import com.compliancehub.compliance_engine.service.factory.ComplianceCheckerFactory;
-import com.compliancehub.compliance_engine.strategy.CommunicationActionStrategy.IActionStrategy;
+import com.compliancehub.compliance_engine.strategy.ActionStrategy.IActionStrategy;
 import com.compliancehub.compliance_engine.strategy.RequirementsComplianceChecker.IRequirementsComplianceChecker;
 import com.compliancehub.data_processor_manager.DataProcessor;
 import com.compliancehub.data_processor_manager.DataProcessorRepository;
@@ -18,14 +18,14 @@ import java.util.List;
 @Service
 public class ComplianceService {
     private final ComplianceCheckerFactory checkerFactory;
-    private final CommunicationStrategyFactory actionFactory;
+    private final ActionStrategyFactory actionStrategyFactory;
     private final DataProcessorRepository dataProcessorRepository;
     private final DPARepository dpaRepository;
 
-    public ComplianceService(ComplianceCheckerFactory evalFac, CommunicationStrategyFactory commStratFac, DataProcessorRepository dpRepository, DPARepository dpaRepository) {
-        this.checkerFactory = evalFac;
-        this.actionFactory = commStratFac;
-        this.dataProcessorRepository = dpRepository;
+    public ComplianceService(ComplianceCheckerFactory checkerFactory, ActionStrategyFactory actionSrategyFactory, DataProcessorRepository dataProcessorRepository, DPARepository dpaRepository) {
+        this.checkerFactory = checkerFactory;
+        this.actionStrategyFactory = actionSrategyFactory;
+        this.dataProcessorRepository = dataProcessorRepository;
         this.dpaRepository = dpaRepository;
     }
     // Scenario 1: DPA oprettelse (Ingen save nødvendig her, klares i DPAService)
@@ -73,7 +73,7 @@ public class ComplianceService {
             if (!violation.getActions().isEmpty()) continue;
 
             for (CommunicationStrategy config : dpa.getCommunicationStrats()) {
-                IActionStrategy strategy = actionFactory.create(
+                IActionStrategy strategy = actionStrategyFactory.create(
                     config.getStrategy(), //eks "EMAIL_NOTICE"
                     config.getAttributes()
                 );
