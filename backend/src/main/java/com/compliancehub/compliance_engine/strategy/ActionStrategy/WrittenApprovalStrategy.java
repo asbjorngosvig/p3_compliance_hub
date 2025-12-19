@@ -1,4 +1,4 @@
-package com.compliancehub.compliance_engine.strategy.CommunicationActionStrategy;
+package com.compliancehub.compliance_engine.strategy.ActionStrategy;
 
 import com.compliancehub.compliance_engine.model.Action;
 import com.compliancehub.dpa_manager.DPA;

@@ -1,7 +1,7 @@
 package com.compliancehub.compliance_engine.service.factory;
 
 
-import com.compliancehub.compliance_engine.strategy.CommunicationActionStrategy.EmailNoticeStrategy;
+import com.compliancehub.compliance_engine.strategy.ActionStrategy.EmailNoticeStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,12 +12,12 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CommunicationStrategyFactoryTest {
-    public CommunicationStrategyFactory strategyFactory;
+public class ActionStrategyFactoryTest {
+    public ActionStrategyFactory factory;
 
     @BeforeEach
     void setUp(){
-        strategyFactory = new CommunicationStrategyFactory();
+        factory = new ActionStrategyFactory();
     }
 
     @Test
@@ -29,7 +29,7 @@ public class CommunicationStrategyFactoryTest {
         attributes.put("email", "test@test.com");
 
 
-        assertInstanceOf(EmailNoticeStrategy.class, strategyFactory.create(strategy, attributes));
+        assertInstanceOf(EmailNoticeStrategy.class, factory.create(strategy, attributes));
     }
 
     @Test
@@ -39,7 +39,7 @@ public class CommunicationStrategyFactoryTest {
 
         // tester at vi får en exception, hvis den er invalid
         assertThrows(InputMismatchException.class, ()-> {
-            strategyFactory.create(strategy, attributes);
+            factory.create(strategy, attributes);
         });
     }
 
